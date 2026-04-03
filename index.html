@@ -1163,7 +1163,8 @@
       }
 
       container.innerHTML = data.propiedades.map(p => {
-        const precio = p.precio ? `${p.moneda || 'USD'} ${Number(p.precio).toLocaleString()}` : 'Consultar';
+        const precioNum = parseInt(String(p.precio).replace(/[^0-9]/g, ''));
+        const precio = precioNum > 0 ? `${p.moneda || 'USD'} ${precioNum.toLocaleString('es-AR')}` : 'Consultar';
         const attrs = (p.atributos || []).slice(0, 2).join(' · ');
         const fuente = p.fuente || 'Portal';
         const ubicacion = p.ubicacion || 'Córdoba';
@@ -1231,5 +1232,4 @@
   });
 </script>
 </body>
-</html>
 </html>
