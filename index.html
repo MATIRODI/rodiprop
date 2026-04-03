@@ -894,27 +894,10 @@
       <span class="tag">Cerro de las Rosas</span>
       <span class="tag">Unquillo</span>
     </div>
-    <div class="prop-cards" style="margin-top:1.2rem;">
-      <div class="prop-card">
-        <div class="prop-img">🏢</div>
-        <span class="new-badge">nuevo</span>
-        <div class="prop-price">USD 62.000</div>
-        <div class="prop-address">Av. Vélez Sársfield 1240, Nueva Córdoba</div>
-        <div class="prop-meta"><span>2 amb.</span><span>58 m²</span><span class="prop-source">ZP</span></div>
-      </div>
-      <div class="prop-card">
-        <div class="prop-img">🏡</div>
-        <span class="new-badge">nuevo</span>
-        <div class="prop-price">USD 145.000</div>
-        <div class="prop-address">Los Aromos 540, Villa Allende</div>
-        <div class="prop-meta"><span>4 amb.</span><span>210 m²</span><span class="prop-source">AP</span></div>
-      </div>
-      <div class="prop-card">
-        <div class="prop-img">🏘️</div>
-        <span class="new-badge">nuevo</span>
-        <div class="prop-price">USD 89.000</div>
-        <div class="prop-address">Chacabuco 892, Güemes</div>
-        <div class="prop-meta"><span>3 amb.</span><span>85 m²</span><span class="prop-source">ML</span></div>
+    <div class="prop-cards" id="props-container" style="margin-top:1.2rem;">
+      <div style="text-align:center;padding:2rem;color:var(--gold);grid-column:1/-1">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">⏳</div>
+        Cargando propiedades reales...
       </div>
     </div>
   </div>
@@ -1139,6 +1122,95 @@
 </footer>
 
 <script>
+  // ── API REAL DE RAILWAY ──
+  const API_URL = "https://web-production-88fd4.up.railway.app";
+
+  // Cargar stats reales
+  async function cargarStats() {
+    try {
+      const res = await fetch(`${API_URL}/api/stats`);
+      const data = await res.json();
+      if (data.total > 0) {
+        document.querySelectorAll('.stat-num')[0].textContent = data.total.toLocaleString() + '+';
+      }
+    } catch(e) {}
+  }
+
+  // Cargar propiedades reales
+  async function cargarPropiedades(filtros = {}) {
+    const container = document.getElementById('props-container');
+    if (!container) return;
+
+    container.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--gold)">
+      <div style="font-size:1.5rem;margin-bottom:0.5rem">⏳</div>
+      Cargando propiedades reales...
+    </div>`;
+
+    try {
+      let url = `${API_URL}/api/propiedades?limit=6`;
+      if (filtros.zona) url += `&zona=${encodeURIComponent(filtros.zona)}`;
+      if (filtros.tipo) url += `&tipo=${encodeURIComponent(filtros.tipo)}`;
+      if (filtros.operacion) url += `&operacion=${encodeURIComponent(filtros.operacion)}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!data.propiedades || data.propiedades.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:2rem;color:rgba(247,244,239,0.5);grid-column:1/-1">
+          No hay propiedades disponibles aún. El scraper está actualizando...
+        </div>`;
+        return;
+      }
+
+      container.innerHTML = data.propiedades.map(p => {
+        const precio = p.precio ? `${p.moneda || 'USD'} ${Number(p.precio).toLocaleString()}` : 'Consultar';
+        const attrs = (p.atributos || []).slice(0, 2).join(' · ');
+        const fuente = p.fuente || 'Portal';
+        const ubicacion = p.ubicacion || 'Córdoba';
+        const titulo = p.titulo || 'Propiedad en venta';
+
+        return `
+        <div class="prop-card" onclick="window.open('${p.url}','_blank')" style="cursor:pointer">
+          <div class="prop-img" style="background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(13,27,42,0.5))">
+            ${p.imagen ? `<img src="${p.imagen}" style="width:100%;height:100%;object-fit:cover;border-radius:8px" onerror="this.style.display='none'">` : '🏘️'}
+          </div>
+          <span class="new-badge">nuevo</span>
+          <div class="prop-price">${precio}</div>
+          <div class="prop-address">${ubicacion}</div>
+          <div class="prop-meta">
+            <span>${attrs || titulo.substring(0,30)}</span>
+            <span class="prop-source">${fuente.substring(0,2).toUpperCase()}</span>
+          </div>
+        </div>`;
+      }).join('');
+
+    } catch(e) {
+      container.innerHTML = `<div style="text-align:center;padding:2rem;color:rgba(247,244,239,0.5);grid-column:1/-1">
+        Conectando con el servidor...
+      </div>`;
+    }
+  }
+
+  // Conectar botón de búsqueda
+  document.querySelector('.search-bar .btn-primary')?.addEventListener('click', () => {
+    const zona = document.querySelector('.search-input')?.value || '';
+    const operacion = document.querySelectorAll('.search-select')[0]?.value || '';
+    const tipo = document.querySelectorAll('.search-select')[1]?.value || '';
+    cargarPropiedades({ zona, operacion, tipo });
+  });
+
+  // Conectar tags de barrios
+  document.querySelectorAll('.tag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      document.querySelector('.search-input').value = tag.textContent;
+      cargarPropiedades({ zona: tag.textContent });
+    });
+  });
+
+  // Inicializar
+  cargarStats();
+  cargarPropiedades();
+
   // Reveal on scroll
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
@@ -1159,4 +1231,5 @@
   });
 </script>
 </body>
+</html>
 </html>
