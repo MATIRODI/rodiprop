@@ -1163,7 +1163,9 @@
       }
 
       container.innerHTML = data.propiedades.map(p => {
-        const precioNum = parseInt(String(p.precio).replace(/[^0-9]/g, ''));
+        // Tomar primer valor del rango de precio (ej: "98.000 - 150.000")
+        const precioRaw = String(p.precio || '').split(/[-–]/)[0].replace(/[^0-9]/g, '');
+        const precioNum = parseInt(precioRaw) || 0;
         const precio = precioNum > 0 ? `${p.moneda || 'USD'} ${precioNum.toLocaleString('es-AR')}` : 'Consultar';
         const attrs = (p.atributos || []).slice(0, 2).join(' · ');
         const fuente = p.fuente || 'Portal';
