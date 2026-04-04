@@ -1194,19 +1194,39 @@
     }
   }
 
-  // Conectar botón de búsqueda
-  document.getElementById('btn-buscar')?.addEventListener('click', () => {
-    const zona = document.getElementById('input-zona')?.value.trim() || '';
-    const selects = document.querySelectorAll('.search-select');
-    const operacion = selects[0]?.value || '';
-    const tipo = selects[1]?.value || '';
-    cargarPropiedades({ zona, operacion, tipo });
-  });
-
-  // Buscar con Enter
-  document.getElementById('input-zona')?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') document.getElementById('btn-buscar').click();
-  });
+  // Conectar botón de búsqueda - con delay para asegurar DOM listo
+  function initBusqueda() {
+    const btnBuscar = document.getElementById('btn-buscar');
+    const inputZona = document.getElementById('input-zona');
+    
+    if (btnBuscar) {
+      btnBuscar.addEventListener('click', () => {
+        const zona = inputZona?.value.trim() || '';
+        const selects = document.querySelectorAll('.search-select');
+        const operacion = selects[0]?.value || '';
+        const tipo = selects[1]?.value || '';
+        console.log('Buscando:', zona, operacion, tipo);
+        cargarPropiedades({ zona, operacion, tipo });
+      });
+    }
+    
+    if (inputZona) {
+      inputZona.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const zona = inputZona.value.trim() || '';
+          console.log('Enter - Buscando:', zona);
+          cargarPropiedades({ zona });
+        }
+      });
+    }
+  }
+  
+  // Ejecutar cuando DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBusqueda);
+  } else {
+    initBusqueda();
+  }
 
   // Conectar tags de barrios
   document.querySelectorAll('.tag').forEach(tag => {
