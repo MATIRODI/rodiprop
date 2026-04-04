@@ -864,7 +864,7 @@
   <h1>Todas las propiedades de <em>Córdoba</em> en un solo lugar</h1>
   <p class="hero-sub">Buscá entre +85.000 propiedades de ZonaProp, ArgenProp y MercadoLibre. Recibí alertas al instante cuando aparece algo que te interesa.</p>
   <div class="hero-actions">
-    <a href="#registro" class="btn-primary">🔔 Crear alerta gratis</a>
+    <a href="#" class="btn-primary" onclick="abrirModal();return false;">🔔 Crear alerta gratis</a>
     <a href="#como-funciona" class="btn-ghost">Cómo funciona</a>
   </div>
 
@@ -1106,7 +1106,7 @@
   <p class="section-label">Empezá hoy</p>
   <h2>Las mejores propiedades<br>se van en horas.<br><em style="color:var(--gold);font-style:normal;">Llegá primero.</em></h2>
   <p>14 días gratis. Sin tarjeta de crédito. Sin compromisos.</p>
-  <a href="#" class="btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem;">🔔 Crear mi alerta gratis</a>
+  <a href="#" class="btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem;" onclick="abrirModal();return false;">🔔 Crear mi alerta gratis</a>
 </section>
 
 <!-- FOOTER -->
@@ -1233,5 +1233,122 @@
     });
   });
 </script>
+
+<!-- MODAL REGISTRO -->
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#111E2D;border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:2.5rem;max-width:480px;width:90%;position:relative;animation:fadeUp 0.3s ease;">
+    <button onclick="cerrarModal()" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:rgba(247,244,239,0.5);font-size:1.5rem;cursor:pointer;">×</button>
+    
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:0.5rem;">Crear mi alerta 🔔</div>
+      <div style="color:rgba(247,244,239,0.6);font-size:0.9rem;">Te avisamos cuando aparezca lo que buscás</div>
+    </div>
+
+    <div id="form-registro">
+      <input id="reg-nombre" type="text" placeholder="Tu nombre" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
+      
+      <input id="reg-email" type="email" placeholder="Tu email *" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
+      
+      <input id="reg-whatsapp" type="tel" placeholder="WhatsApp (ej: 3513027146)" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
+      
+      <input id="reg-zona" type="text" placeholder="Zona que buscás (ej: Nueva Córdoba)" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
+      
+      <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
+        <select id="reg-operacion" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;">
+          <option value="venta">Comprar</option>
+          <option value="alquiler">Alquilar</option>
+        </select>
+        <select id="reg-tipo" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;">
+          <option value="">Cualquier tipo</option>
+          <option value="departamento">Departamento</option>
+          <option value="casa">Casa</option>
+          <option value="ph">PH</option>
+          <option value="terreno">Terreno</option>
+          <option value="local">Local</option>
+        </select>
+      </div>
+
+      <div id="reg-error" style="color:#ff6b6b;font-size:0.85rem;margin-bottom:0.8rem;display:none;"></div>
+
+      <button onclick="enviarRegistro()" style="width:100%;background:#C9A84C;color:#0D1B2A;padding:0.9rem;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.2s;">
+        🔔 Crear alerta gratis
+      </button>
+      <div style="text-align:center;margin-top:0.8rem;font-size:0.78rem;color:rgba(247,244,239,0.4);">Sin tarjeta de crédito · Gratis por 14 días</div>
+    </div>
+
+    <div id="form-exito" style="display:none;text-align:center;padding:1rem 0;">
+      <div style="font-size:3rem;margin-bottom:1rem;">🎉</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:0.8rem;">¡Alerta creada!</div>
+      <div style="color:rgba(247,244,239,0.6);font-size:0.95rem;line-height:1.6;">Te vamos a avisar por email y WhatsApp cuando aparezca algo que coincida con tu búsqueda.</div>
+      <button onclick="cerrarModal()" style="margin-top:1.5rem;background:#C9A84C;color:#0D1B2A;padding:0.7rem 2rem;border:none;border-radius:8px;font-weight:700;cursor:pointer;">Perfecto</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function abrirModal() {
+  const overlay = document.getElementById('modal-overlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal() {
+  document.getElementById('modal-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  document.getElementById('form-registro').style.display = 'block';
+  document.getElementById('form-exito').style.display = 'none';
+  document.getElementById('reg-error').style.display = 'none';
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) cerrarModal();
+});
+
+async function enviarRegistro() {
+  const email = document.getElementById('reg-email').value.trim();
+  const errDiv = document.getElementById('reg-error');
+  
+  if (!email) {
+    errDiv.textContent = 'El email es obligatorio';
+    errDiv.style.display = 'block';
+    return;
+  }
+
+  const btn = document.querySelector('#form-registro button');
+  btn.textContent = 'Registrando...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://web-production-88fd4.up.railway.app/api/usuarios/registro', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        nombre: document.getElementById('reg-nombre').value.trim(),
+        email: email,
+        whatsapp: document.getElementById('reg-whatsapp').value.trim(),
+        zona: document.getElementById('reg-zona').value.trim(),
+        tipo: document.getElementById('reg-tipo').value,
+        operacion: document.getElementById('reg-operacion').value,
+      })
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      document.getElementById('form-registro').style.display = 'none';
+      document.getElementById('form-exito').style.display = 'block';
+    } else {
+      errDiv.textContent = data.error || 'Error al registrar';
+      errDiv.style.display = 'block';
+      btn.textContent = '🔔 Crear alerta gratis';
+      btn.disabled = false;
+    }
+  } catch(e) {
+    errDiv.textContent = 'Error de conexión. Intentá de nuevo.';
+    errDiv.style.display = 'block';
+    btn.textContent = '🔔 Crear alerta gratis';
+    btn.disabled = false;
+  }
+}
+</script>
+
 </body>
 </html>
