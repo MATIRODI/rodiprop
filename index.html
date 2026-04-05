@@ -1236,9 +1236,11 @@
     });
   });
 
-  // Inicializar
-  cargarStats();
-  cargarPropiedades();
+  // Inicializar - con delay para mobile
+  setTimeout(() => {
+    cargarStats();
+    cargarPropiedades();
+  }, 500);
 
   // Reveal on scroll
   const reveals = document.querySelectorAll('.reveal');
@@ -1292,6 +1294,30 @@
           <option value="terreno">Terreno</option>
           <option value="local">Local</option>
         </select>
+      </div>
+
+      <!-- FILTROS AVANZADOS -->
+      <div style="border-top:1px solid rgba(201,168,76,0.15);margin:0.5rem 0 0.8rem;padding-top:0.8rem;">
+        <div style="font-size:0.78rem;color:rgba(247,244,239,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.6rem;">Filtros avanzados (opcional)</div>
+        <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
+          <select id="reg-ambientes" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+            <option value="">Ambientes</option>
+            <option value="1">1 amb.</option>
+            <option value="2">2 amb.</option>
+            <option value="3">3 amb.</option>
+            <option value="4">4 amb.</option>
+            <option value="5">5+ amb.</option>
+          </select>
+          <select id="reg-cocheras" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+            <option value="">Cochera</option>
+            <option value="1">Con cochera</option>
+            <option value="0">Sin cochera</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
+          <input id="reg-precio-min" type="number" placeholder="Precio mín (USD)" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+          <input id="reg-precio-max" type="number" placeholder="Precio máx (USD)" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+        </div>
       </div>
 
       <div id="reg-error" style="color:#ff6b6b;font-size:0.85rem;margin-bottom:0.8rem;display:none;"></div>
@@ -1355,6 +1381,10 @@ async function enviarRegistro() {
         zona: document.getElementById('reg-zona').value.trim(),
         tipo: document.getElementById('reg-tipo').value,
         operacion: document.getElementById('reg-operacion').value,
+        ambientes: document.getElementById('reg-ambientes').value,
+        cocheras: document.getElementById('reg-cocheras').value,
+        precio_min: document.getElementById('reg-precio-min').value || 0,
+        precio_max: document.getElementById('reg-precio-max').value || 999999999,
       })
     });
     const data = await res.json();
