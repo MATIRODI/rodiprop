@@ -1,477 +1,709 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RodiProp Premium — Alertas ilimitadas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --navy: #0D1B2A;
-      --navy-light: #152233;
-      --gold: #C9A84C;
-      --gold-light: #E2C47A;
-      --gold-pale: #F5ECD4;
-      --white: #FAFAF8;
-      --gray: #8A9BB0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RodiProp – Todas las propiedades de Córdoba en un solo lugar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D1B2A;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: rgba(201,168,76,0.15);
+    --white: #F7F4EF;
+    --gray: #8A8A8A;
+    --card-bg: #111E2D;
+    --border: rgba(201,168,76,0.2);
+  }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--navy); color: var(--white); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
 
-    body {
-      background: var(--navy);
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
 
-    /* Fondo animado */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(201,168,76,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 60% at 10% 80%, rgba(201,168,76,0.05) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 2.5rem;
+    backdrop-filter: blur(12px);
+    background: rgba(13,27,42,0.85);
+    border-bottom: 1px solid var(--border);
+  }
 
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 560px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem 4rem;
-    }
+  .logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .logo-mark {
+    width: 36px; height: 36px; background: var(--gold); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.1rem; color: var(--navy);
+  }
+  .logo-text { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--white); letter-spacing: 0.02em; }
+  .logo-text span { color: var(--gold); }
 
-    /* Header */
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 3.5rem;
-    }
-    .logo-mark {
-      width: 36px;
-      height: 36px;
-      background: var(--gold);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-      font-size: 18px;
-      color: var(--navy);
-    }
-    .logo-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: -0.3px;
-    }
+  .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(247,244,239,0.7); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta { background: var(--gold); color: var(--navy) !important; padding: 0.55rem 1.4rem; border-radius: 6px; font-weight: 600 !important; transition: background 0.2s !important; }
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; }
 
-    /* Badge */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(201,168,76,0.12);
-      border: 1px solid rgba(201,168,76,0.3);
-      border-radius: 99px;
-      padding: 5px 14px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--gold-light);
-      letter-spacing: 0.04em;
-      margin-bottom: 1.5rem;
-    }
-    .badge::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--gold);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 7rem 2rem 4rem;
+    position: relative; z-index: 1;
+  }
 
-    /* Título */
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 6vw, 2.8rem);
-      font-weight: 900;
-      line-height: 1.15;
-      margin-bottom: 1rem;
-      color: var(--white);
-    }
-    h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold-dim); border: 1px solid var(--border);
+    color: var(--gold); font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.45rem 1.1rem; border-radius: 100px;
+    margin-bottom: 2rem; animation: fadeUp 0.7s ease both;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px; background: var(--gold);
+    border-radius: 50%; animation: pulse 2s infinite;
+  }
 
-    .subtitle {
-      font-size: 16px;
-      color: var(--gray);
-      line-height: 1.6;
-      margin-bottom: 2.5rem;
-      font-weight: 300;
-    }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
 
-    /* Card de plan */
-    .plan-card {
-      background: var(--navy-light);
-      border: 1px solid rgba(201,168,76,0.2);
-      border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s;
-    }
-    .plan-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    .plan-card:hover {
-      border-color: rgba(201,168,76,0.4);
-    }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 900;
+    line-height: 1.05; max-width: 900px; margin-bottom: 1.5rem;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  h1 em { font-style: normal; color: var(--gold); position: relative; }
+  h1 em::after {
+    content: ''; position: absolute; bottom: 4px; left: 0; right: 0;
+    height: 3px; background: var(--gold); border-radius: 2px; opacity: 0.4;
+  }
 
-    .plan-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.5rem;
-    }
-    .plan-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--white);
-    }
-    .plan-tag {
-      background: rgba(201,168,76,0.15);
-      border: 1px solid rgba(201,168,76,0.3);
-      border-radius: 6px;
-      padding: 3px 10px;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--gold);
-      letter-spacing: 0.06em;
-    }
+  .hero-sub { font-size: 1.15rem; color: rgba(247,244,239,0.65); max-width: 560px; line-height: 1.7; margin-bottom: 2.5rem; animation: fadeUp 0.7s 0.2s ease both; }
 
-    .plan-price {
-      margin-bottom: 1.5rem;
-    }
-    .price-amount {
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      font-weight: 900;
-      color: var(--gold);
-      line-height: 1;
-    }
-    .price-currency {
-      font-size: 1.2rem;
-      font-weight: 400;
-      vertical-align: super;
-      margin-right: 2px;
-    }
-    .price-period {
-      font-size: 14px;
-      color: var(--gray);
-      margin-top: 4px;
-      font-weight: 300;
-    }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.7s 0.3s ease both; }
 
-    .features {
-      list-style: none;
-      margin-bottom: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .features li {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      color: var(--white);
-      font-weight: 300;
-    }
-    .features li::before {
-      content: '';
-      width: 18px;
-      height: 18px;
-      background: rgba(201,168,76,0.15);
-      border: 1px solid rgba(201,168,76,0.4);
-      border-radius: 50%;
-      flex-shrink: 0;
-      background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%23C9A84C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: center;
-    }
+  .btn-primary {
+    background: var(--gold); color: var(--navy); padding: 0.85rem 2rem;
+    border-radius: 8px; font-weight: 700; font-size: 1rem; text-decoration: none;
+    border: none; cursor: pointer; transition: background 0.2s, transform 0.15s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
 
-    /* Divider */
-    .or-divider {
-      text-align: center;
-      color: var(--gray);
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      margin: 1rem 0;
-      position: relative;
-    }
-    .or-divider::before, .or-divider::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 42%;
-      height: 1px;
-      background: rgba(255,255,255,0.08);
-    }
-    .or-divider::before { left: 0; }
-    .or-divider::after { right: 0; }
+  .btn-ghost {
+    background: transparent; color: var(--white); padding: 0.85rem 2rem;
+    border-radius: 8px; font-weight: 600; font-size: 1rem; text-decoration: none;
+    border: 1px solid var(--border); cursor: pointer; transition: border-color 0.2s, transform 0.15s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
 
-    /* Botones */
-    .btn-primary {
-      display: block;
-      width: 100%;
-      padding: 1rem 1.5rem;
-      background: var(--gold);
-      color: var(--navy);
-      border: none;
-      border-radius: 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-      margin-top: 1.5rem;
-    }
-    .btn-primary:hover {
-      background: var(--gold-light);
-      transform: translateY(-1px);
-    }
-    .btn-primary:active { transform: translateY(0); }
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
+  .stats-bar {
+    display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+    margin-top: 4rem; padding: 2rem; border-top: 1px solid var(--border);
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--gold); display: block; }
+  .stat-label { font-size: 0.8rem; color: rgba(247,244,239,0.5); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.2rem; }
 
-    .btn-secondary {
-      display: block;
-      width: 100%;
-      padding: 1rem 1.5rem;
-      background: transparent;
-      color: var(--white);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 16px;
-      font-weight: 400;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-      transition: border-color 0.2s, background 0.2s;
-      margin-top: 0.75rem;
-    }
-    .btn-secondary:hover {
-      border-color: rgba(201,168,76,0.4);
-      background: rgba(201,168,76,0.05);
-    }
+  .ticker-wrap {
+    overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: rgba(201,168,76,0.04); padding: 0.9rem 0; position: relative; z-index: 1;
+  }
+  .ticker { display: flex; gap: 3rem; animation: ticker 30s linear infinite; white-space: nowrap; }
+  .ticker-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: rgba(247,244,239,0.6); flex-shrink: 0; }
+  .ticker-item strong { color: var(--gold); font-weight: 600; }
+  .ticker-dot { color: var(--gold); font-size: 0.5rem; }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    /* Garantía */
-    .guarantee {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 1.5rem;
-      font-size: 12px;
-      color: var(--gray);
-      font-weight: 300;
-    }
-    .guarantee svg { flex-shrink: 0; }
+  section { position: relative; z-index: 1; padding: 6rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; font-weight: 600; color: var(--gold); margin-bottom: 1rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.2rem; }
+  .section-sub { color: rgba(247,244,239,0.6); font-size: 1rem; line-height: 1.7; max-width: 560px; }
 
-    /* Loading state */
-    .loading { display: none; }
-    .btn-primary.is-loading .label { display: none; }
-    .btn-primary.is-loading .loading { display: inline; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+  .step { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+  .step:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .step::before { content: attr(data-num); position: absolute; top: -10px; right: 1.5rem; font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; color: var(--gold-dim); line-height: 1; pointer-events: none; }
+  .step-icon { width: 48px; height: 48px; background: var(--gold-dim); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem; }
+  .step h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .step p { font-size: 0.9rem; color: rgba(247,244,239,0.6); line-height: 1.7; }
 
-    /* Estado de error */
-    .error-msg {
-      display: none;
-      background: rgba(220,50,50,0.1);
-      border: 1px solid rgba(220,50,50,0.3);
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 13px;
-      color: #f87171;
-      margin-top: 1rem;
-      text-align: center;
-    }
+  .pricing-section { background: rgba(201,168,76,0.03); }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; align-items: start; }
+  .plan { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 2.2rem; transition: transform 0.3s; }
+  .plan:hover { transform: translateY(-4px); }
+  .plan.featured { border-color: var(--gold); position: relative; }
+  .plan.featured::before { content: 'MÁS POPULAR'; position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; padding: 0.3rem 1rem; border-radius: 100px; }
+  .plan-name { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 1rem; }
+  .plan-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; line-height: 1; margin-bottom: 0.3rem; }
+  .plan-price sup { font-size: 1.2rem; vertical-align: super; font-family: 'DM Sans', sans-serif; font-weight: 400; }
+  .plan-period { font-size: 0.85rem; color: rgba(247,244,239,0.5); margin-bottom: 1.5rem; }
+  .plan-features { list-style: none; margin-bottom: 2rem; }
+  .plan-features li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: rgba(247,244,239,0.75); padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .plan-features li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
 
-    /* Footer */
-    .footer-note {
-      text-align: center;
-      margin-top: 3rem;
-      font-size: 12px;
-      color: var(--gray);
-      font-weight: 300;
-      line-height: 1.7;
-    }
-    .footer-note a {
-      color: var(--gold);
-      text-decoration: none;
-    }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+  .testimonial { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem; }
+  .stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 2px; }
+  .testimonial-text { font-size: 0.95rem; line-height: 1.7; color: rgba(247,244,239,0.8); margin-bottom: 1.5rem; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 0.8rem; }
+  .author-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--gold-dim); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--gold); font-size: 0.9rem; }
+  .author-name { font-weight: 600; font-size: 0.9rem; }
+  .author-role { font-size: 0.78rem; color: rgba(247,244,239,0.45); }
 
-    /* Animación de entrada */
-    .animate-in {
-      animation: fadeUp 0.5s ease both;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-    .delay-4 { animation-delay: 0.4s; }
-  </style>
+  .faq-list { margin-top: 3rem; max-width: 720px; }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-question { width: 100%; background: none; border: none; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; text-align: left; padding: 1.3rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; transition: color 0.2s; }
+  .faq-question:hover { color: var(--gold); }
+  .faq-icon { color: var(--gold); font-size: 1.3rem; line-height: 1; flex-shrink: 0; transition: transform 0.3s; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; font-size: 0.92rem; color: rgba(247,244,239,0.65); line-height: 1.7; }
+  .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 1.3rem; }
+
+  .sources { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 3rem; justify-content: center; }
+  .source-chip { display: flex; align-items: center; gap: 0.6rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 1.2rem; font-size: 0.85rem; font-weight: 500; color: rgba(247,244,239,0.7); transition: border-color 0.2s, color 0.2s; }
+  .source-chip:hover { border-color: var(--gold); color: var(--gold); }
+  .source-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+
+  .cta-final { text-align: center; padding: 7rem 2rem; position: relative; z-index: 1; }
+  .cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 300px; background: radial-gradient(ellipse, rgba(201,168,76,0.12) 0%, transparent 70%); pointer-events: none; }
+  .cta-final h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.15; max-width: 700px; margin: 0 auto 1.5rem; }
+  .cta-final p { color: rgba(247,244,239,0.6); margin-bottom: 2.5rem; font-size: 1rem; }
+
+  footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: relative; z-index: 1; }
+  .footer-brand { font-size: 0.85rem; color: rgba(247,244,239,0.4); }
+  .footer-brand strong { color: var(--gold); }
+  .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+  .footer-links a { color: rgba(247,244,239,0.4); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .search-preview { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; max-width: 700px; margin: 3rem auto 0; animation: fadeUp 0.7s 0.5s ease both; }
+  .search-bar { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+  .search-input { flex: 1; min-width: 180px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+  .search-input:focus { border-color: var(--gold); }
+  .search-input::placeholder { color: rgba(247,244,239,0.3); }
+  .search-select { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; cursor: pointer; transition: border-color 0.2s; -webkit-appearance: none; }
+  .search-select:focus { border-color: var(--gold); }
+  .search-select option { background: var(--navy); }
+  .tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+  .tag { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border); border-radius: 100px; padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .tag:hover { background: rgba(201,168,76,0.25); }
+
+  .prop-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+  @media (max-width: 600px) { .prop-cards { grid-template-columns: 1fr; } nav .nav-links { display: none; } h1 { font-size: 2.4rem; } .pricing-grid { grid-template-columns: 1fr; } }
+  .prop-card { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; transition: border-color 0.2s; cursor: pointer; }
+  .prop-card:hover { border-color: var(--gold); }
+  .prop-img { width: 100%; height: 90px; background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(13,27,42,0.5)); border-radius: 8px; margin-bottom: 0.7rem; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; overflow: hidden; }
+  .prop-price { font-weight: 700; font-size: 0.95rem; color: var(--gold); margin-bottom: 0.2rem; }
+  .prop-address { font-size: 0.78rem; color: rgba(247,244,239,0.6); margin-bottom: 0.4rem; }
+  .prop-meta { display: flex; gap: 0.6rem; font-size: 0.7rem; color: rgba(247,244,239,0.4); }
+  .prop-source { margin-left: auto; color: var(--gold); font-weight: 600; }
+  .new-badge { display: inline-block; background: var(--gold); color: var(--navy); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.4rem; }
+</style>
 </head>
 <body>
-<div class="container">
 
-  <div class="logo animate-in">
+<nav>
+  <a class="logo" href="#">
     <div class="logo-mark">R</div>
-    <span class="logo-text">RodiProp</span>
+    <span class="logo-text">Rodi<span>Prop</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#como-funciona">Cómo funciona</a></li>
+    <li><a href="#precios">Precios</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#registro" class="nav-cta">Empezar gratis</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">🔴 Monitoreo en vivo · Córdoba</div>
+  <h1>Todas las propiedades de <em>Córdoba</em> en un solo lugar</h1>
+  <p class="hero-sub">Buscá entre miles de propiedades de ArgenProp, MercadoLibre y LaVoz. Recibí alertas al instante cuando aparece algo que te interesa.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary" onclick="abrirModal();return false;">🔔 Crear alerta gratis</a>
+    <a href="#como-funciona" class="btn-ghost">Cómo funciona</a>
   </div>
 
-  <div class="badge animate-in delay-1">Alertas ilimitadas</div>
-
-  <h1 class="animate-in delay-1">Las mejores propiedades<br>se van en <em>horas</em>.</h1>
-  <p class="subtitle animate-in delay-2">Llegaste al límite de tu plan gratuito. Pasate a Premium y no te pierdas ninguna oportunidad del mercado cordobés.</p>
-
-  <!-- Plan Premium -->
-  <div class="plan-card animate-in delay-2" id="card-premium">
-    <div class="plan-header">
-      <div class="plan-name">Premium</div>
-      <div class="plan-tag">MÁS POPULAR</div>
+  <div class="search-preview">
+    <div class="search-bar">
+      <input id="input-zona" class="search-input" type="text" placeholder="Barrio o localidad… ej: Nueva Córdoba">
+      <select id="sel-operacion" class="search-select">
+        <option value="">Todos</option>
+        <option value="venta">Venta</option>
+        <option value="alquiler">Alquiler</option>
+      </select>
+      <select id="sel-tipo" class="search-select">
+        <option value="">Tipo</option>
+        <option value="departamento">Departamento</option>
+        <option value="casa">Casa</option>
+        <option value="ph">PH</option>
+        <option value="terreno">Terreno</option>
+      </select>
+      <button id="btn-buscar" class="btn-primary" style="padding:0.7rem 1.3rem;">Buscar</button>
     </div>
-    <div class="plan-price">
-      <div class="price-amount"><span class="price-currency">$</span>4.999</div>
-      <div class="price-period">ARS por mes · se debita automáticamente</div>
+    <div class="tag-row">
+      <span class="tag">Nueva Córdoba</span>
+      <span class="tag">Güemes</span>
+      <span class="tag">Villa Allende</span>
+      <span class="tag">Bº Jardín</span>
+      <span class="tag">Cerro de las Rosas</span>
+      <span class="tag">Unquillo</span>
     </div>
-    <ul class="features">
-      <li>Alertas ilimitadas por WhatsApp</li>
-      <li>Filtros avanzados (ambientes, precio, cochera)</li>
-      <li>MercadoLibre + ArgenProp + LaVoz Clasificados</li>
-      <li>Monitoreo 24/7 de 27 localidades de Córdoba</li>
-      <li>Cancelás cuando querés</li>
-    </ul>
-    <button class="btn-primary" id="btn-premium" onclick="pagar('premium', 'suscripcion')">
-      <span class="label">Suscribirme a Premium</span>
-      <span class="loading">Redirigiendo...</span>
-    </button>
-  </div>
-
-  <div class="or-divider animate-in delay-3">O TAMBIÉN</div>
-
-  <!-- Plan Inversor -->
-  <div class="plan-card animate-in delay-3" id="card-inversor">
-    <div class="plan-header">
-      <div class="plan-name">Inversor & Brokers</div>
-      <div class="plan-tag">PROFESIONAL</div>
+    <div class="prop-cards" id="props-container" style="margin-top:1.2rem;">
+      <div style="text-align:center;padding:2rem;color:var(--gold);grid-column:1/-1">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">⏳</div>
+        Cargando propiedades reales...
+      </div>
     </div>
-    <div class="plan-price">
-      <div class="price-amount"><span class="price-currency">$</span>15.000</div>
-      <div class="price-period">ARS por mes · todo lo de Premium más:</div>
+    <div style="text-align:center;margin-top:1rem;">
+      <a id="ver-mas-link" href="#" onclick="cargarMas();return false;" style="font-size:0.82rem;color:var(--gold);text-decoration:none;display:none;">Ver más propiedades ↓</a>
     </div>
-    <ul class="features">
-      <li>Tasador de Propiedades (informes PDF)</li>
-      <li>Analytics de precios por barrio</li>
-      <li>Asesor dedicado por WhatsApp</li>
-      <li>Acceso API (próximamente)</li>
-    </ul>
-    <button class="btn-secondary" id="btn-inversor" onclick="pagar('inversor', 'suscripcion')">
-      Suscribirme a Inversor
-    </button>
   </div>
 
-  <div id="error-msg" class="error-msg animate-in"></div>
-
-  <div class="guarantee animate-in delay-4">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M7 1L8.5 4.5L12.5 5L9.75 7.5L10.5 11.5L7 9.5L3.5 11.5L4.25 7.5L1.5 5L5.5 4.5L7 1Z" stroke="#8A9BB0" stroke-width="1" stroke-linejoin="round"/>
-    </svg>
-    Pago seguro con Mercado Pago · Cancelás cuando querés
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num" id="stat-total">...</span><span class="stat-label">Propiedades</span></div>
+    <div class="stat"><span class="stat-num" id="stat-fuentes">3</span><span class="stat-label">Fuentes activas</span></div>
+    <div class="stat"><span class="stat-num">27</span><span class="stat-label">Localidades</span></div>
+    <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Monitoreo</span></div>
   </div>
+</section>
 
-  <div class="footer-note animate-in delay-4">
-    Un producto de <a href="https://rodiprop.gruporodi.com.ar">Grupo Rodi Inmobiliaria</a><br>
-    <em>Soluciones Inteligentes para el Mercado</em>
+<!-- TICKER — se rellena con datos reales vía JS -->
+<div class="ticker-wrap">
+  <div class="ticker" id="ticker-inner">
+    <span class="ticker-item"><span class="ticker-dot">●</span> Cargando propiedades reales...</span>
   </div>
+</div>
 
+<section id="como-funciona">
+  <div class="container">
+    <p class="section-label reveal">Cómo funciona</p>
+    <h2 class="section-title reveal">Llegá primero a la mejor propiedad</h2>
+    <p class="section-sub reveal">En mercados de alta demanda las mejores oportunidades desaparecen en horas. RodiProp te avisa antes que nadie.</p>
+    <div class="steps">
+      <div class="step reveal" data-num="1">
+        <div class="step-icon">🔍</div>
+        <h3>Buscá sin entrar a cada portal</h3>
+        <p>ArgenProp, MercadoLibre y LaVoz Clasificados en un solo lugar. Filtrá por zona, precio, ambientes y más.</p>
+      </div>
+      <div class="step reveal" data-num="2">
+        <div class="step-icon">🔔</div>
+        <h3>Configurá tu alerta en 30 segundos</h3>
+        <p>Decile exactamente qué buscás. Recibirás un WhatsApp al instante cuando aparezca algo que coincida.</p>
+      </div>
+      <div class="step reveal" data-num="3">
+        <div class="step-icon">⚡</div>
+        <h3>Te avisamos antes que nadie</h3>
+        <p>Monitoreo 24/7. Las mejores propiedades se van rápido — ser el primero en contactar hace la diferencia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container" style="text-align:center;">
+    <p class="section-label reveal">Fuentes de datos</p>
+    <h2 class="section-title reveal">Agregamos los principales portales de Córdoba</h2>
+    <div class="sources reveal">
+      <div class="source-chip"><span class="source-dot"></span> ArgenProp</div>
+      <div class="source-chip"><span class="source-dot"></span> MercadoLibre Inmuebles</div>
+      <div class="source-chip"><span class="source-dot"></span> LaVoz Clasificados</div>
+      <div class="source-chip"><span class="source-dot"></span> + Más portales próximamente</div>
+    </div>
+  </div>
+</section>
+
+<section id="precios" class="pricing-section">
+  <div class="container">
+    <p class="section-label reveal">Planes</p>
+    <h2 class="section-title reveal">Simple. Sin letra chica.</h2>
+    <p class="section-sub reveal">Empezá gratis con 7 alertas. Cuando encontrés lo que buscás, seguís con Premium.</p>
+    <div class="pricing-grid">
+      <div class="plan reveal">
+        <div class="plan-name">Gratis</div>
+        <div class="plan-price">$0</div>
+        <div class="plan-period">para siempre</div>
+        <ul class="plan-features">
+          <li>7 alertas por WhatsApp incluidas</li>
+          <li>Búsqueda por zona y tipo</li>
+          <li>Acceso a todas las propiedades</li>
+          <li>Monitoreo 24/7</li>
+        </ul>
+        <a href="#" class="btn-ghost" style="display:block;text-align:center;" onclick="abrirModal();return false;">Empezar gratis</a>
+      </div>
+      <div class="plan featured reveal">
+        <div class="plan-name">Premium</div>
+        <div class="plan-price"><sup>$</sup>4.999</div>
+        <div class="plan-period">ARS / mes · débito automático</div>
+        <ul class="plan-features">
+          <li>Alertas ilimitadas por WhatsApp</li>
+          <li>Filtros por ambientes y cochera</li>
+          <li>Rango de precio personalizado</li>
+          <li>Las 3 fuentes activas</li>
+          <li>Cancelás cuando querés</li>
+        </ul>
+        <a href="/premium" class="btn-primary" style="display:block;text-align:center;">Suscribirme a Premium</a>
+      </div>
+      <div class="plan reveal">
+        <div class="plan-name">Inversor & Brokers</div>
+        <div class="plan-price"><sup>$</sup>15.000</div>
+        <div class="plan-period">ARS / mes</div>
+        <ul class="plan-features">
+          <li>Todo lo de Premium</li>
+          <li>Tasador de Propiedades (PDF)</li>
+          <li>Analytics de precios por barrio</li>
+          <li>Asesor dedicado por WhatsApp</li>
+          <li>Acceso API (próximamente)</li>
+        </ul>
+        <a href="/premium" class="btn-ghost" style="display:block;text-align:center;">Suscribirme</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <p class="section-label reveal">Testimonios</p>
+    <h2 class="section-title reveal">Lo que dicen nuestros usuarios</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Encontré mi departamento en Nueva Córdoba dos días antes de que apareciera en los portales. La alerta llegó al instante y pude ser el primero en llamar al dueño."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">ML</div>
+          <div><div class="author-name">Martín L.</div><div class="author-role">Compró depto en Nueva Córdoba</div></div>
+        </div>
+      </div>
+      <div class="testimonial reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Antes entraba a cada portal todos los días. Ahora RodiProp me manda todo junto. Me ahorro fácil una hora diaria de búsqueda."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">CF</div>
+          <div><div class="author-name">Carolina F.</div><div class="author-role">Buscando alquiler en Cerro de las Rosas</div></div>
+        </div>
+      </div>
+      <div class="testimonial reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Como inversor necesito ver oportunidades rápido. El analytics de precios por barrio me permite comparar en tiempo real. Imprescindible para el mercado cordobés."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">DP</div>
+          <div><div class="author-name">Diego P.</div><div class="author-role">Inversor inmobiliario</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <p class="section-label reveal">Preguntas frecuentes</p>
+    <h2 class="section-title reveal">Todo lo que necesitás saber</h2>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question">¿Es gratis? <span class="faq-icon">+</span></button>
+        <div class="faq-answer">Registrarte es gratis y tenés 7 alertas incluidas. Cuando las usás, podés pasarte a Premium por $4.999 ARS/mes para recibir alertas ilimitadas.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">¿De dónde salen las propiedades? <span class="faq-icon">+</span></button>
+        <div class="faq-answer">Monitoreamos en tiempo real ArgenProp, MercadoLibre Inmuebles y LaVoz Clasificados para Córdoba y sus 27 localidades. Los datos se actualizan automáticamente cada 2 horas.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">¿Cada cuánto llegan las alertas? <span class="faq-icon">+</span></button>
+        <div class="faq-answer">Las alertas llegan por WhatsApp apenas aparece una propiedad nueva que coincida con tu búsqueda. El sistema chequea cada 2 horas.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">¿Puedo buscar en todo Córdoba? <span class="faq-icon">+</span></button>
+        <div class="faq-answer">Sí. Cubrimos Capital, Gran Córdoba y 27 localidades del interior: Villa Allende, Mendiolaza, Unquillo, La Calera, Carlos Paz, Alta Gracia, Río Cuarto y más.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">¿Quién está detrás de RodiProp? <span class="faq-icon">+</span></button>
+        <div class="faq-answer">RodiProp es un producto de Grupo Rodi Inmobiliaria, inmobiliaria con trayectoria en Córdoba. Combinamos tecnología con conocimiento real del mercado local.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="registro" class="cta-final">
+  <div class="cta-glow"></div>
+  <p class="section-label">Empezá hoy</p>
+  <h2>Las mejores propiedades<br>se van en horas.<br><em style="color:var(--gold);font-style:normal;">Llegá primero.</em></h2>
+  <p>Gratis. Sin tarjeta de crédito. Sin compromisos.</p>
+  <a href="#" class="btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem;" onclick="abrirModal();return false;">🔔 Crear mi alerta gratis</a>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <strong>RodiProp</strong> · Un producto de Grupo Rodi Inmobiliaria · <em>Soluciones Inteligentes para el Mercado</em>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#">Términos y condiciones</a></li>
+    <li><a href="#">Contacto</a></li>
+    <li><a href="https://wa.me/543512345678">WhatsApp</a></li>
+  </ul>
+</footer>
+
+<script>
+  const API_URL = "https://web-production-88fd4.up.railway.app";
+  let offsetActual = 0;
+  let filtrosActuales = {};
+
+  async function cargarStats() {
+    try {
+      const res = await fetch(API_URL + "/");
+      const data = await res.json();
+      if (data.total > 0) {
+        document.getElementById('stat-total').textContent = data.total.toLocaleString('es-AR') + '+';
+      }
+    } catch(e) {}
+  }
+
+  async function cargarTicker() {
+    try {
+      const res = await fetch(API_URL + "/api/propiedades?limit=16");
+      const data = await res.json();
+      if (!data.propiedades || data.propiedades.length === 0) return;
+      const items = data.propiedades.map(p => {
+        const precioRaw = String(p.precio || '').replace(/[^0-9]/g, '');
+        const precioNum = parseInt(precioRaw) || 0;
+        const precio = precioNum > 0 ? (p.moneda || 'USD') + ' ' + precioNum.toLocaleString('es-AR') : 'Consultar';
+        const ubicacion = p.ubicacion || 'Córdoba';
+        return '<span class="ticker-item"><span class="ticker-dot">●</span> ' + ubicacion + ' · <strong>' + precio + '</strong></span>';
+      });
+      const html = items.join('') + items.join('');
+      document.getElementById('ticker-inner').innerHTML = html;
+    } catch(e) {}
+  }
+
+  async function cargarPropiedades(filtros, offset) {
+    filtros = filtros || {};
+    offset = offset || 0;
+    filtrosActuales = filtros;
+    offsetActual = offset;
+
+    const container = document.getElementById('props-container');
+    if (offset === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--gold);grid-column:1/-1"><div style="font-size:1.5rem;margin-bottom:0.5rem">⏳</div>Cargando propiedades reales...</div>';
+    }
+
+    try {
+      let url = API_URL + "/api/propiedades?limit=6";
+      if (filtros.zona) url += "&zona=" + encodeURIComponent(filtros.zona);
+      if (filtros.tipo) url += "&tipo=" + encodeURIComponent(filtros.tipo);
+      if (filtros.operacion) url += "&operacion=" + encodeURIComponent(filtros.operacion);
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!data.propiedades || data.propiedades.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(247,244,239,0.5);grid-column:1/-1">No hay propiedades para esos filtros. Probá con otra zona.</div>';
+        document.getElementById('ver-mas-link').style.display = 'none';
+        return;
+      }
+
+      container.innerHTML = data.propiedades.map(p => {
+        const precioRaw = String(p.precio || '').split(/[-–]/)[0].replace(/[^0-9]/g, '');
+        const precioNum = parseInt(precioRaw) || 0;
+        const precio = precioNum > 0 ? (p.moneda || 'USD') + ' ' + precioNum.toLocaleString('es-AR') : 'Consultar';
+        const attrs = (p.atributos || []).slice(0, 2).join(' · ');
+        const fuente = (p.fuente || 'Portal').substring(0, 2).toUpperCase();
+        const ubicacion = (p.ubicacion || 'Córdoba').substring(0, 35);
+        const titulo = (p.titulo || 'Propiedad').substring(0, 30);
+        const imgHtml = p.imagen
+          ? '<img src="' + p.imagen + '" style="width:100%;height:100%;object-fit:cover;border-radius:8px" loading="lazy" onerror="this.style.display=\'none\'">'
+          : '🏘️';
+        return '<div class="prop-card" onclick="window.open(\'' + p.url + '\',\'_blank\')">' +
+          '<div class="prop-img">' + imgHtml + '</div>' +
+          '<span class="new-badge">nuevo</span>' +
+          '<div class="prop-price">' + precio + '</div>' +
+          '<div class="prop-address">' + ubicacion + '</div>' +
+          '<div class="prop-meta"><span>' + (attrs || titulo) + '</span><span class="prop-source">' + fuente + '</span></div>' +
+          '</div>';
+      }).join('');
+
+      document.getElementById('ver-mas-link').style.display = 'inline';
+    } catch(e) {
+      container.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(247,244,239,0.5);grid-column:1/-1">Conectando con el servidor...</div>';
+    }
+  }
+
+  function cargarMas() {
+    abrirModal();
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btn-buscar').addEventListener('click', function() {
+      const zona = document.getElementById('input-zona').value.trim();
+      const operacion = document.getElementById('sel-operacion').value;
+      const tipo = document.getElementById('sel-tipo').value;
+      cargarPropiedades({ zona, operacion, tipo });
+    });
+
+    document.getElementById('input-zona').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') cargarPropiedades({ zona: this.value.trim() });
+    });
+
+    document.querySelectorAll('.tag').forEach(function(tag) {
+      tag.addEventListener('click', function() {
+        document.getElementById('input-zona').value = tag.textContent.trim();
+        cargarPropiedades({ zona: tag.textContent.trim() });
+      });
+    });
+
+    document.querySelectorAll('.faq-question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(function(el) { observer.observe(el); });
+
+    setTimeout(function() {
+      cargarStats();
+      cargarPropiedades();
+      cargarTicker();
+    }, 300);
+  });
+</script>
+
+<!-- MODAL REGISTRO -->
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#111E2D;border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:2.5rem;max-width:480px;width:90%;position:relative;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto;">
+    <button onclick="cerrarModal()" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:rgba(247,244,239,0.5);font-size:1.5rem;cursor:pointer;">×</button>
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:0.5rem;">Crear mi alerta 🔔</div>
+      <div style="color:rgba(247,244,239,0.6);font-size:0.9rem;">Te avisamos cuando aparezca lo que buscás</div>
+    </div>
+    <div id="form-registro">
+      <input id="reg-nombre" type="text" placeholder="Tu nombre" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
+      <input id="reg-email" type="email" placeholder="Tu email *" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
+      <input id="reg-whatsapp" type="tel" placeholder="WhatsApp (ej: 3513027146)" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
+      <input id="reg-zona" type="text" placeholder="Zona que buscás (ej: Nueva Córdoba)" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
+      <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
+        <select id="reg-operacion" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;">
+          <option value="venta">Comprar</option>
+          <option value="alquiler">Alquilar</option>
+        </select>
+        <select id="reg-tipo" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;">
+          <option value="">Cualquier tipo</option>
+          <option value="departamento">Departamento</option>
+          <option value="casa">Casa</option>
+          <option value="ph">PH</option>
+          <option value="terreno">Terreno</option>
+          <option value="local">Local</option>
+        </select>
+      </div>
+      <div style="border-top:1px solid rgba(201,168,76,0.15);margin:0.5rem 0 0.8rem;padding-top:0.8rem;">
+        <div style="font-size:0.78rem;color:rgba(247,244,239,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.6rem;">Filtros avanzados (opcional)</div>
+        <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
+          <select id="reg-ambientes" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+            <option value="">Ambientes</option>
+            <option value="1">1 amb.</option>
+            <option value="2">2 amb.</option>
+            <option value="3">3 amb.</option>
+            <option value="4">4 amb.</option>
+            <option value="5">5+ amb.</option>
+          </select>
+          <select id="reg-cocheras" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+            <option value="">Cochera</option>
+            <option value="1">Con cochera</option>
+            <option value="0">Sin cochera</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
+          <input id="reg-precio-min" type="number" placeholder="Precio mín (USD)" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+          <input id="reg-precio-max" type="number" placeholder="Precio máx (USD)" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+        </div>
+      </div>
+      <div id="reg-error" style="color:#ff6b6b;font-size:0.85rem;margin-bottom:0.8rem;display:none;"></div>
+      <button onclick="enviarRegistro()" style="width:100%;background:#C9A84C;color:#0D1B2A;padding:0.9rem;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.2s;">
+        🔔 Crear alerta gratis
+      </button>
+      <div style="text-align:center;margin-top:0.8rem;font-size:0.78rem;color:rgba(247,244,239,0.4);">Sin tarjeta de crédito · 7 alertas gratis</div>
+    </div>
+    <div id="form-exito" style="display:none;text-align:center;padding:1rem 0;">
+      <div style="font-size:3rem;margin-bottom:1rem;">🎉</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:0.8rem;">¡Alerta creada!</div>
+      <div style="color:rgba(247,244,239,0.6);font-size:0.95rem;line-height:1.6;">Te vamos a avisar por WhatsApp cuando aparezca algo que coincida con tu búsqueda.</div>
+      <button onclick="cerrarModal()" style="margin-top:1.5rem;background:#C9A84C;color:#0D1B2A;padding:0.7rem 2rem;border:none;border-radius:8px;font-weight:700;cursor:pointer;">Perfecto</button>
+    </div>
+  </div>
 </div>
 
 <script>
-  const BACKEND = 'https://web-production-88fd4.up.railway.app';
-
-  // Leer email desde URL si viene del WhatsApp (?email=xxx)
-  const params = new URLSearchParams(window.location.search);
-  const emailParam = params.get('email') || '';
-
-  async function pagar(plan, tipo) {
-    const btn = document.getElementById('btn-' + plan);
-    const errorDiv = document.getElementById('error-msg');
-    errorDiv.style.display = 'none';
-
-    // Pedir email si no viene en la URL
-    let email = emailParam;
-    if (!email) {
-      email = prompt('Ingresá tu email con el que te registraste en RodiProp:');
-      if (!email || !email.includes('@')) {
-        errorDiv.textContent = 'Email inválido. Intentá de nuevo.';
-        errorDiv.style.display = 'block';
-        return;
-      }
+function abrirModal() {
+  document.getElementById('modal-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function cerrarModal() {
+  document.getElementById('modal-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  document.getElementById('form-registro').style.display = 'block';
+  document.getElementById('form-exito').style.display = 'none';
+  document.getElementById('reg-error').style.display = 'none';
+}
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) cerrarModal();
+});
+async function enviarRegistro() {
+  const email = document.getElementById('reg-email').value.trim();
+  const errDiv = document.getElementById('reg-error');
+  if (!email) { errDiv.textContent = 'El email es obligatorio'; errDiv.style.display = 'block'; return; }
+  const btn = document.querySelector('#form-registro button');
+  btn.textContent = 'Registrando...'; btn.disabled = true;
+  try {
+    const res = await fetch(API_URL + '/api/usuarios/registro', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        nombre: document.getElementById('reg-nombre').value.trim(),
+        email: email,
+        whatsapp: document.getElementById('reg-whatsapp').value.trim(),
+        zona: document.getElementById('reg-zona').value.trim(),
+        tipo: document.getElementById('reg-tipo').value,
+        operacion: document.getElementById('reg-operacion').value,
+        ambientes: document.getElementById('reg-ambientes').value,
+        cocheras: document.getElementById('reg-cocheras').value,
+        precio_min: document.getElementById('reg-precio-min').value || 0,
+        precio_max: document.getElementById('reg-precio-max').value || 999999999,
+      })
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      document.getElementById('form-registro').style.display = 'none';
+      document.getElementById('form-exito').style.display = 'block';
+    } else {
+      errDiv.textContent = data.error || 'Error al registrar'; errDiv.style.display = 'block';
+      btn.textContent = '🔔 Crear alerta gratis'; btn.disabled = false;
     }
-
-    btn.disabled = true;
-    btn.classList.add('is-loading');
-
-    try {
-      const res = await fetch(BACKEND + '/api/pagos/crear', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim().toLowerCase(), plan: plan, tipo: tipo })
-      });
-      const data = await res.json();
-
-      if (data.init_point) {
-        window.location.href = data.init_point;
-      } else {
-        throw new Error(data.error || 'No se pudo crear el pago');
-      }
-    } catch (e) {
-      errorDiv.textContent = 'Error: ' + e.message + '. Intentá de nuevo o escribinos por WhatsApp.';
-      errorDiv.style.display = 'block';
-      btn.disabled = false;
-      btn.classList.remove('is-loading');
-    }
+  } catch(e) {
+    errDiv.textContent = 'Error de conexión. Intentá de nuevo.'; errDiv.style.display = 'block';
+    btn.textContent = '🔔 Crear alerta gratis'; btn.disabled = false;
   }
+}
 </script>
 </body>
 </html>
