@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Términos y Condiciones – RodiProp</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D1B2A; --gold: #C9A84C; --gold-light: #E8C97A;
+    --white: #F7F4EF; --gray: #8A9BB0; --card-bg: #111E2D;
+    --border: rgba(201,168,76,0.2);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--navy); color: var(--white); font-family: 'DM Sans', sans-serif; line-height: 1.7; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 2.5rem;
+    backdrop-filter: blur(12px);
+    background: rgba(13,27,42,0.9);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .logo-mark { width: 34px; height: 34px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; color: var(--navy); }
+  .logo-text { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); }
+  .logo-text span { color: var(--gold); }
+  .back-link { color: var(--gold); text-decoration: none; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 0.4rem; }
+  .back-link:hover { color: var(--gold-light); }
+
+  .hero {
+    background: linear-gradient(135deg, #0a1520 0%, #111E2D 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+  }
+  .hero-label { display: inline-block; background: rgba(201,168,76,0.12); border: 1px solid var(--border); border-radius: 99px; padding: 4px 16px; font-size: 0.78rem; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin-bottom: 1.2rem; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; margin-bottom: 0.8rem; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { color: var(--gray); font-size: 0.95rem; max-width: 520px; margin: 0 auto; }
+
+  .container { max-width: 800px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+  .update-note { background: rgba(201,168,76,0.08); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; padding: 0.9rem 1.2rem; margin-bottom: 2.5rem; font-size: 0.85rem; color: var(--gray); }
+  .update-note strong { color: var(--gold-light); }
+
+  .section { margin-bottom: 2.5rem; }
+  .section h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--gold-light); margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.6rem; }
+  .section h2::before { content: ''; display: inline-block; width: 4px; height: 1.2rem; background: var(--gold); border-radius: 2px; flex-shrink: 0; }
+  .section p { color: rgba(247,244,239,0.75); font-size: 0.95rem; margin-bottom: 0.7rem; }
+  .section ul { color: rgba(247,244,239,0.75); font-size: 0.95rem; padding-left: 1.4rem; }
+  .section ul li { margin-bottom: 0.5rem; }
+  .section strong { color: var(--white); }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+  .plan-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; font-size: 0.9rem; }
+  .plan-table th { background: rgba(201,168,76,0.12); color: var(--gold); font-weight: 600; padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+  .plan-table td { padding: 0.6rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: rgba(247,244,239,0.75); }
+  .plan-table tr:last-child td { border-bottom: none; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 2rem 2rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    max-width: 100%; margin-top: 0;
+  }
+  .footer-brand { font-size: 0.82rem; color: rgba(247,244,239,0.35); }
+  .footer-brand strong { color: var(--gold); }
+  .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+  .footer-links a { color: rgba(247,244,239,0.4); text-decoration: none; font-size: 0.82rem; }
+  .footer-links a:hover { color: var(--gold); }
+
+  .wa-float { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 20px rgba(37,211,102,.45); z-index: 999; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+  .wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.65); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">
+    <div class="logo-mark">R</div>
+    <span class="logo-text">Rodi<span>Prop</span></span>
+  </a>
+  <a href="/" class="back-link">← Volver al inicio</a>
+</nav>
+
+<div class="hero">
+  <span class="hero-label">Legal</span>
+  <h1>Términos y <span>Condiciones</span></h1>
+  <p>Por favor leé atentamente estas condiciones antes de usar el servicio.</p>
+</div>
+
+<div class="container">
+
+  <div class="update-note">
+    <strong>Última actualización:</strong> Junio 2026 · Versión 1.0 · Aplicable a todos los usuarios registrados en RodiProp.
+  </div>
+
+  <div class="section">
+    <h2>1. Descripción del servicio</h2>
+    <p>RodiProp es una plataforma de agregación de propiedades inmobiliarias para la provincia de Córdoba, Argentina. El servicio reúne listados de múltiples fuentes públicas y permite a los usuarios recibir alertas personalizadas vía WhatsApp cuando aparecen propiedades que coinciden con sus criterios de búsqueda.</p>
+    <p>RodiProp es operado por <strong>Grupo Rodi Inmobiliaria</strong>, con sede en Córdoba, Argentina.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>2. Condiciones de uso</h2>
+    <p>Al usar RodiProp, aceptás las siguientes condiciones:</p>
+    <ul>
+      <li>Tenés al menos 18 años de edad.</li>
+      <li>Los datos que proporcionás (nombre, email, WhatsApp) son verídicos y corresponden a tu persona.</li>
+      <li>No utilizarás el servicio para fines ilícitos, comerciales no autorizados, ni para enviar spam.</li>
+      <li>No intentarás acceder a funciones restringidas o realizar scraping de la plataforma.</li>
+      <li>No está permitido el uso automatizado de la plataforma sin autorización previa por escrito.</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>3. Planes y facturación</h2>
+    <p>RodiProp ofrece los siguientes planes:</p>
+    <table class="plan-table">
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Alertas</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gratis</strong></td>
+          <td>7 alertas de por vida</td>
+          <td>Sin costo</td>
+        </tr>
+        <tr>
+          <td><strong>Premium</strong></td>
+          <td>Ilimitadas</td>
+          <td>ARS 4.999 / mes</td>
+        </tr>
+        <tr>
+          <td><strong>Inversor</strong></td>
+          <td>Ilimitadas + Analytics</td>
+          <td>ARS 15.000 / mes</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.9rem;">Los pagos se procesan a través de <strong>Mercado Pago</strong>. Los precios pueden actualizarse con previo aviso de 30 días. Los planes pagos tienen vigencia mensual desde la fecha de pago.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>4. Alertas por WhatsApp</h2>
+    <p>Al registrarte, autorizás a RodiProp a enviarte mensajes de WhatsApp con alertas de propiedades que coincidan con tus filtros. Podés pausar o cancelar las alertas en cualquier momento respondiendo <strong>STOP</strong> al número de contacto.</p>
+    <p>El plan gratuito incluye un máximo de <strong>7 alertas</strong> de por vida. Una vez alcanzado ese límite, recibirás un mensaje con opciones para continuar con un plan pago.</p>
+    <p>RodiProp no garantiza un número mínimo de alertas diarias, ya que depende de la disponibilidad de propiedades que coincidan con tus criterios.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>5. Datos personales y privacidad</h2>
+    <p>RodiProp recopila: nombre, email y número de WhatsApp, junto con las preferencias de búsqueda que configures. Esta información se usa exclusivamente para:</p>
+    <ul>
+      <li>Enviar alertas de propiedades según tus filtros.</li>
+      <li>Gestionar tu cuenta y plan.</li>
+      <li>Procesar pagos a través de Mercado Pago.</li>
+    </ul>
+    <p><strong>No vendemos ni compartimos tus datos con terceros</strong> salvo lo estrictamente necesario para el funcionamiento del servicio (Mercado Pago, infraestructura de WhatsApp).</p>
+    <p>Conforme a la <strong>Ley 25.326 de Protección de Datos Personales</strong> de Argentina, tenés derecho a acceder, rectificar o eliminar tus datos. Para ejercer este derecho, escribinos a <a href="https://wa.me/543516508433" style="color:var(--gold);">WhatsApp</a> o al email de contacto.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>6. Exactitud de la información</h2>
+    <p>Los listados de propiedades que muestra RodiProp provienen de fuentes públicas (MercadoLibre, ArgenProp, ZonaProp, RE/MAX, La Voz Clasificados, entre otros). RodiProp <strong>no verifica ni garantiza</strong> la exactitud, disponibilidad ni veracidad de las publicaciones.</p>
+    <p>RodiProp no es una inmobiliaria y no interviene en ninguna transacción de compra, venta o alquiler. Toda operación se realiza directamente entre el usuario y el vendedor/inmobiliaria publicante.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>7. Limitación de responsabilidad</h2>
+    <p>En la máxima medida permitida por la ley, RodiProp no se hace responsable por:</p>
+    <ul>
+      <li>Daños directos, indirectos o consecuentes derivados del uso del servicio.</li>
+      <li>Información incorrecta o desactualizada proveniente de fuentes externas.</li>
+      <li>Interrupciones del servicio por mantenimiento, fallas técnicas o causas de fuerza mayor.</li>
+      <li>Operaciones inmobiliarias realizadas a partir de alertas recibidas.</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>8. Cancelación y baja</h2>
+    <p>Podés darte de baja del servicio en cualquier momento contactándonos por WhatsApp. Luego de la baja, tus datos serán eliminados en un plazo no mayor a 30 días hábiles.</p>
+    <p>Para los planes pagos, la cancelación surte efecto al término del período mensual en curso. No se realizan reembolsos proporcionales salvo falla imputable a RodiProp.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <h2>9. Contacto</h2>
+    <p>Ante cualquier consulta, reclamo o ejercicio de derechos sobre tus datos personales:</p>
+    <ul>
+      <li><strong>WhatsApp:</strong> <a href="https://wa.me/543516508433" target="_blank" style="color:var(--gold);">+54 351 650-8433</a></li>
+      <li><strong>Email:</strong> <a href="mailto:MATIAS@gruporodi.com.ar" style="color:var(--gold);">MATIAS@gruporodi.com.ar</a></li>
+      <li><strong>Empresa:</strong> Grupo Rodi Inmobiliaria · Córdoba, Argentina</li>
+    </ul>
+    <p>Estos términos se rigen por las leyes de la República Argentina. Ante cualquier controversia, las partes se someten a la jurisdicción de los tribunales ordinarios de la ciudad de Córdoba.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-brand">
+    <strong>RodiProp</strong> · Un producto de Grupo Rodi Inmobiliaria
+  </div>
+  <ul class="footer-links">
+    <li><a href="/">Inicio</a></li>
+    <li><a href="/premium.html">Premium</a></li>
+    <li><a href="https://wa.me/543516508433" target="_blank">WhatsApp</a></li>
+  </ul>
+</footer>
+
+<a href="https://wa.me/543516508433" target="_blank" class="wa-float" title="Consultanos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+</body>
+</html>
