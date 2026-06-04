@@ -4,616 +4,779 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RodiProp – Todas las propiedades de Córdoba en un solo lugar</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy: #0D1B2A;
-    --gold: #C9A84C;
-    --gold-light: #E8C97A;
-    --gold-dim: rgba(201,168,76,0.15);
-    --white: #F7F4EF;
-    --gray: #8A8A8A;
-    --card-bg: #111E2D;
-    --border: rgba(201,168,76,0.2);
-  }
+:root {
+  --ink:    #0A0D14;
+  --ink2:   #0F1520;
+  --ink3:   #161D2B;
+  --gold:   #C6A24A;
+  --gold2:  #DDB96A;
+  --gold3:  rgba(198,162,74,0.14);
+  --cream:  #F4EFE8;
+  --white:  #FFFFFF;
+  --muted:  rgba(244,239,232,0.55);
+  --dim:    rgba(244,239,232,0.30);
+  --border: rgba(198,162,74,0.18);
+  --soft:   rgba(255,255,255,0.06);
+  --radius: 14px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--navy); color: var(--white); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+/* ── NAV ────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem; height: 64px;
+  background: rgba(10,13,20,0.82);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-mark {
+  width: 32px; height: 32px; background: var(--gold); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.05rem; color: var(--ink);
+}
+.logo-text {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.25rem;
+  font-weight: 600; color: var(--cream); letter-spacing: 0.01em;
+}
+.logo-text span { color: var(--gold); }
+.nav-right { display: flex; align-items: center; gap: 2rem; list-style: none; }
+.nav-right a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 400; transition: color 0.2s; }
+.nav-right a:hover { color: var(--cream); }
+.btn-nav {
+  background: var(--gold); color: var(--ink); padding: 0.5rem 1.35rem;
+  border-radius: 7px; font-size: 0.875rem; font-weight: 600;
+  text-decoration: none; transition: opacity 0.2s;
+}
+.btn-nav:hover { opacity: 0.85; color: var(--ink); }
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0; opacity: 0.4;
-  }
+/* ── HERO ───────────────────────────────────── */
+.hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 9rem 2rem 5rem;
+  position: relative; overflow: hidden;
+}
+.hero-glow {
+  position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 500px;
+  background: radial-gradient(ellipse at center, rgba(198,162,74,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold3); border: 1px solid var(--border);
+  color: var(--gold2); font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  padding: 0.4rem 1rem; border-radius: 100px;
+  margin-bottom: 2rem; animation: fadeUp 0.6s both;
+}
+.badge-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
 
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 2.5rem;
-    backdrop-filter: blur(12px);
-    background: rgba(13,27,42,0.85);
-    border-bottom: 1px solid var(--border);
-  }
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 600; line-height: 1.06;
+  max-width: 820px; margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s 0.1s both;
+}
+h1 em { font-style: italic; color: var(--gold); }
 
-  .logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
-  .logo-mark {
-    width: 36px; height: 36px; background: var(--gold); border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.1rem; color: var(--navy);
-  }
-  .logo-text { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--white); letter-spacing: 0.02em; }
-  .logo-text span { color: var(--gold); }
+.hero-sub {
+  font-size: clamp(1rem, 1.8vw, 1.1rem); color: var(--muted);
+  max-width: 520px; line-height: 1.75; margin-bottom: 2.5rem;
+  animation: fadeUp 0.6s 0.2s both;
+}
+.hero-actions {
+  display: flex; gap: 0.85rem; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 0.6s 0.3s both;
+}
+.btn-primary {
+  background: var(--gold); color: var(--ink); padding: 0.875rem 2.2rem;
+  border-radius: 8px; font-weight: 600; font-size: 0.95rem;
+  text-decoration: none; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+.btn-outline {
+  background: transparent; color: var(--cream);
+  padding: 0.875rem 2.2rem; border-radius: 8px; font-weight: 500;
+  font-size: 0.95rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer; transition: border-color 0.2s, transform 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
 
-  .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
-  .nav-links a { color: rgba(247,244,239,0.7); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-cta { background: var(--gold); color: var(--navy) !important; padding: 0.55rem 1.4rem; border-radius: 6px; font-weight: 600 !important; transition: background 0.2s !important; }
-  .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; }
+/* ── STATS ──────────────────────────────────── */
+.stats-strip {
+  display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+  margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.07);
+  animation: fadeUp 0.6s 0.4s both;
+}
+.stat-item {
+  text-align: center; padding: 1.8rem 3rem;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem; font-weight: 600; color: var(--gold); display: block; line-height: 1;
+}
+.stat-lbl {
+  font-size: 0.72rem; color: var(--dim); text-transform: uppercase;
+  letter-spacing: 0.08em; margin-top: 0.35rem; display: block;
+}
 
-  .hero {
-    min-height: 100vh; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center; padding: 7rem 2rem 4rem;
-    position: relative; z-index: 1;
-  }
+/* ── TICKER ─────────────────────────────────── */
+.ticker-wrap {
+  overflow: hidden; border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.02); padding: 0.85rem 0;
+}
+.ticker { display: flex; gap: 3rem; animation: ticker 35s linear infinite; white-space: nowrap; width: max-content; }
+.ticker-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+.ticker-item strong { color: var(--gold2); font-weight: 500; }
+.ticker-sep { color: var(--gold); opacity: 0.4; }
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--gold-dim); border: 1px solid var(--border);
-    color: var(--gold); font-size: 0.8rem; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 0.45rem 1.1rem; border-radius: 100px;
-    margin-bottom: 2rem; animation: fadeUp 0.7s ease both;
-  }
-  .hero-badge::before {
-    content: ''; width: 6px; height: 6px; background: var(--gold);
-    border-radius: 50%; animation: pulse 2s infinite;
-  }
+/* ── SEARCH ─────────────────────────────────── */
+.search-section {
+  background: var(--ink2); border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05); padding: 3rem 2rem;
+}
+.search-wrap { max-width: 860px; margin: 0 auto; }
+.search-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--cream);
+}
+.search-row {
+  display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: stretch;
+}
+.si {
+  flex: 1; min-width: 160px;
+  background: var(--soft); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; padding: 0.8rem 1rem;
+  color: var(--cream); font-family: 'Inter', sans-serif; font-size: 0.875rem;
+  outline: none; transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.si:focus { border-color: var(--gold); }
+.si::placeholder { color: var(--dim); }
+.si option { background: var(--ink2); }
+.tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+.tag {
+  background: transparent; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px; padding: 0.3rem 0.9rem;
+  font-size: 0.78rem; color: var(--muted); cursor: pointer;
+  transition: border-color 0.2s, color 0.2s; font-family: 'Inter', sans-serif;
+}
+.tag:hover { border-color: var(--gold); color: var(--gold); }
 
-  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+/* ── PROPERTY GRID ──────────────────────────── */
+.props-section {
+  padding: 0 2rem 4rem; background: var(--ink2);
+}
+.props-wrap { max-width: 1100px; margin: 0 auto; }
+.props-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem; margin-top: 0;
+}
+.prop-card {
+  background: var(--ink3); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius); overflow: hidden;
+  cursor: pointer; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.prop-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.card-img {
+  width: 100%; height: 188px; background: var(--ink3);
+  position: relative; overflow: hidden;
+}
+.card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; transition: transform 0.4s;
+}
+.prop-card:hover .card-img img { transform: scale(1.04); }
+.card-img-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(198,162,74,0.08), rgba(10,13,20,0.6));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; color: rgba(198,162,74,0.3);
+}
+.card-source {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(10,13,20,0.85); backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+  padding: 3px 9px; font-size: 0.68rem; font-weight: 500;
+  color: var(--gold2); letter-spacing: 0.04em;
+}
+.card-op {
+  position: absolute; top: 10px; left: 10px;
+  background: var(--gold); border-radius: 5px;
+  padding: 2px 8px; font-size: 0.65rem; font-weight: 700;
+  color: var(--ink); text-transform: uppercase; letter-spacing: 0.06em;
+}
+.card-body { padding: 1.1rem; }
+.card-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 600; color: var(--cream);
+  line-height: 1; margin-bottom: 0.35rem;
+}
+.card-price span { font-size: 0.9rem; font-family: 'Inter', sans-serif; color: var(--gold2); font-weight: 500; }
+.card-title {
+  font-size: 0.82rem; color: var(--muted);
+  margin-bottom: 0.55rem; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-loc {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.78rem; color: var(--dim);
+}
+.card-loc svg { flex-shrink: 0; }
+.card-attrs { display: flex; gap: 0.6rem; margin-top: 0.6rem; flex-wrap: wrap; }
+.card-attr {
+  background: var(--soft); border-radius: 5px;
+  padding: 2px 8px; font-size: 0.7rem; color: var(--muted);
+}
 
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 900;
-    line-height: 1.05; max-width: 900px; margin-bottom: 1.5rem;
-    animation: fadeUp 0.7s 0.1s ease both;
-  }
-  h1 em { font-style: normal; color: var(--gold); position: relative; }
-  h1 em::after {
-    content: ''; position: absolute; bottom: 4px; left: 0; right: 0;
-    height: 3px; background: var(--gold); border-radius: 2px; opacity: 0.4;
-  }
+.load-more-row { text-align: center; padding: 2rem 0 0.5rem; }
+.btn-load {
+  background: transparent; color: var(--gold);
+  border: 1px solid var(--gold); border-radius: 8px;
+  padding: 0.65rem 2rem; font-family: 'Inter', sans-serif;
+  font-size: 0.85rem; font-weight: 500; cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-load:hover { background: var(--gold); color: var(--ink); }
+.props-empty { text-align: center; padding: 3rem; color: var(--muted); grid-column: 1/-1; }
 
-  .hero-sub { font-size: 1.15rem; color: rgba(247,244,239,0.65); max-width: 560px; line-height: 1.7; margin-bottom: 2.5rem; animation: fadeUp 0.7s 0.2s ease both; }
+/* ── SECTIONS ───────────────────────────────── */
+section { padding: 6rem 2rem; }
+.sec-inner { max-width: 1100px; margin: 0 auto; }
+.sec-kicker { font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 600; line-height: 1.12; margin-bottom: 1rem;
+}
+.sec-sub { color: var(--muted); font-size: 0.95rem; line-height: 1.75; max-width: 540px; }
 
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.7s 0.3s ease both; }
+/* HOW IT WORKS */
+.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+.step {
+  background: var(--ink2); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius); padding: 2rem 1.8rem;
+  position: relative; transition: border-color 0.3s, transform 0.3s;
+}
+.step:hover { border-color: var(--border); transform: translateY(-4px); }
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem; font-weight: 600; color: var(--gold3);
+  position: absolute; top: 1rem; right: 1.4rem; line-height: 1;
+}
+.step-icon { font-size: 1.6rem; margin-bottom: 1.1rem; display: block; }
+.step h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.6rem; color: var(--cream); }
+.step p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
 
-  .btn-primary {
-    background: var(--gold); color: var(--navy); padding: 0.85rem 2rem;
-    border-radius: 8px; font-weight: 700; font-size: 1rem; text-decoration: none;
-    border: none; cursor: pointer; transition: background 0.2s, transform 0.15s;
-    display: inline-flex; align-items: center; gap: 0.5rem;
-  }
-  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+/* SOURCES */
+.sources-section { background: var(--ink2); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.sources-grid { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 2.5rem; }
+.src-card {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--ink3); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px; padding: 0.9rem 1.4rem;
+  font-size: 0.875rem; color: var(--muted); font-weight: 500;
+  transition: border-color 0.2s, color 0.2s;
+}
+.src-card:hover { border-color: var(--border); color: var(--cream); }
+.src-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
 
-  .btn-ghost {
-    background: transparent; color: var(--white); padding: 0.85rem 2rem;
-    border-radius: 8px; font-weight: 600; font-size: 1rem; text-decoration: none;
-    border: 1px solid var(--border); cursor: pointer; transition: border-color 0.2s, transform 0.15s;
-  }
-  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+/* PRICING */
+.pricing-section { }
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.25rem; margin-top: 3.5rem; align-items: start; }
+.plan {
+  background: var(--ink2); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px; padding: 2.2rem;
+  transition: transform 0.3s;
+}
+.plan:hover { transform: translateY(-4px); }
+.plan.featured {
+  border-color: var(--gold);
+  background: linear-gradient(145deg, var(--ink3), var(--ink2));
+  position: relative;
+}
+.plan-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: var(--ink);
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+  padding: 3px 14px; border-radius: 100px; white-space: nowrap;
+}
+.plan-tier { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold2); font-weight: 600; margin-bottom: 1rem; }
+.plan-price { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 600; line-height: 1; margin-bottom: 0.3rem; }
+.plan-price sup { font-size: 1.2rem; vertical-align: super; font-family: 'Inter', sans-serif; font-weight: 400; }
+.plan-period { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.8rem; }
+.plan-feats { list-style: none; margin-bottom: 2rem; }
+.plan-feats li { display: flex; align-items: flex-start; gap: 8px; font-size: 0.875rem; color: var(--muted); padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.plan-feats li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.plan-btn {
+  display: block; text-align: center; text-decoration: none;
+  padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600;
+  transition: opacity 0.2s, transform 0.15s; cursor: pointer;
+}
+.plan-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.plan-btn-solid { background: var(--gold); color: var(--ink); border: none; }
+.plan-btn-outline { background: transparent; color: var(--cream); border: 1px solid rgba(255,255,255,0.18); }
 
-  .stats-bar {
-    display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
-    margin-top: 4rem; padding: 2rem; border-top: 1px solid var(--border);
-    animation: fadeUp 0.7s 0.4s ease both;
-  }
-  .stat { text-align: center; }
-  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--gold); display: block; }
-  .stat-label { font-size: 0.8rem; color: rgba(247,244,239,0.5); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.2rem; }
+/* TESTIMONIALS */
+.testi-section { background: var(--ink2); border-top: 1px solid rgba(255,255,255,0.05); }
+.testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 3.5rem; }
+.testi {
+  background: var(--ink3); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius); padding: 1.8rem;
+}
+.stars { color: var(--gold); font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 1rem; }
+.testi-text { font-size: 0.92rem; line-height: 1.75; color: var(--muted); font-style: italic; margin-bottom: 1.5rem; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.t-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--gold3); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-weight: 600;
+  color: var(--gold); font-size: 0.95rem;
+}
+.t-name { font-weight: 600; font-size: 0.875rem; color: var(--cream); }
+.t-role { font-size: 0.75rem; color: var(--dim); margin-top: 1px; }
 
-  .ticker-wrap {
-    overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    background: rgba(201,168,76,0.04); padding: 0.9rem 0; position: relative; z-index: 1;
-  }
-  .ticker { display: flex; gap: 3rem; animation: ticker 30s linear infinite; white-space: nowrap; }
-  .ticker-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: rgba(247,244,239,0.6); flex-shrink: 0; }
-  .ticker-item strong { color: var(--gold); font-weight: 600; }
-  .ticker-dot { color: var(--gold); font-size: 0.5rem; }
-  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+/* FAQ */
+.faq-wrap { max-width: 680px; margin-top: 3rem; }
+.faq-item { border-bottom: 1px solid rgba(255,255,255,0.07); }
+.faq-q {
+  width: 100%; background: none; border: none; color: var(--cream);
+  font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 400;
+  text-align: left; padding: 1.25rem 0; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  transition: color 0.2s;
+}
+.faq-q:hover { color: var(--gold); }
+.faq-icon { color: var(--gold); font-size: 1.2rem; line-height: 1; transition: transform 0.3s; flex-shrink: 0; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s;
+  font-size: 0.88rem; color: var(--muted); line-height: 1.75;
+}
+.faq-item.open .faq-a { max-height: 250px; padding-bottom: 1.25rem; }
 
-  section { position: relative; z-index: 1; padding: 6rem 2rem; }
-  .container { max-width: 1100px; margin: 0 auto; }
-  .section-label { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; font-weight: 600; color: var(--gold); margin-bottom: 1rem; }
-  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.2rem; }
-  .section-sub { color: rgba(247,244,239,0.6); font-size: 1rem; line-height: 1.7; max-width: 560px; }
+/* CTA */
+.cta-section {
+  text-align: center; padding: 8rem 2rem;
+  position: relative; overflow: hidden;
+}
+.cta-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(198,162,74,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-section h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 600; line-height: 1.12; max-width: 680px; margin: 0 auto 1.2rem; }
+.cta-section p { color: var(--muted); margin-bottom: 2.5rem; font-size: 0.95rem; }
 
-  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
-  .step { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
-  .step:hover { border-color: var(--gold); transform: translateY(-4px); }
-  .step::before { content: attr(data-num); position: absolute; top: -10px; right: 1.5rem; font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; color: var(--gold-dim); line-height: 1; pointer-events: none; }
-  .step-icon { width: 48px; height: 48px; background: var(--gold-dim); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem; }
-  .step h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem; }
-  .step p { font-size: 0.9rem; color: rgba(247,244,239,0.6); line-height: 1.7; }
+/* FOOTER */
+footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem 2.5rem; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+.f-brand { font-size: 0.82rem; color: var(--dim); }
+.f-brand strong { color: var(--gold2); }
+.f-links { display: flex; gap: 1.5rem; list-style: none; }
+.f-links a { color: var(--dim); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+.f-links a:hover { color: var(--gold); }
 
-  .pricing-section { background: rgba(201,168,76,0.03); }
-  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; align-items: start; }
-  .plan { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 2.2rem; transition: transform 0.3s; }
-  .plan:hover { transform: translateY(-4px); }
-  .plan.featured { border-color: var(--gold); position: relative; }
-  .plan.featured::before { content: 'MÁS POPULAR'; position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; padding: 0.3rem 1rem; border-radius: 100px; }
-  .plan-name { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 1rem; }
-  .plan-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; line-height: 1; margin-bottom: 0.3rem; }
-  .plan-price sup { font-size: 1.2rem; vertical-align: super; font-family: 'DM Sans', sans-serif; font-weight: 400; }
-  .plan-period { font-size: 0.85rem; color: rgba(247,244,239,0.5); margin-bottom: 1.5rem; }
-  .plan-features { list-style: none; margin-bottom: 2rem; }
-  .plan-features li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: rgba(247,244,239,0.75); padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .plan-features li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+/* FLOATING WA */
+.wa-float {
+  position: fixed; bottom: 2rem; right: 2rem; width: 54px; height: 54px;
+  background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: #fff; box-shadow: 0 4px 20px rgba(37,211,102,.4); z-index: 999;
+  text-decoration: none; transition: transform .2s, box-shadow .2s;
+}
+.wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.6); }
 
-  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
-  .testimonial { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem; }
-  .stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 2px; }
-  .testimonial-text { font-size: 0.95rem; line-height: 1.7; color: rgba(247,244,239,0.8); margin-bottom: 1.5rem; font-style: italic; }
-  .testimonial-author { display: flex; align-items: center; gap: 0.8rem; }
-  .author-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--gold-dim); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--gold); font-size: 0.9rem; }
-  .author-name { font-weight: 600; font-size: 0.9rem; }
-  .author-role { font-size: 0.78rem; color: rgba(247,244,239,0.45); }
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
-  .faq-list { margin-top: 3rem; max-width: 720px; }
-  .faq-item { border-bottom: 1px solid var(--border); }
-  .faq-question { width: 100%; background: none; border: none; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; text-align: left; padding: 1.3rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; transition: color 0.2s; }
-  .faq-question:hover { color: var(--gold); }
-  .faq-icon { color: var(--gold); font-size: 1.3rem; line-height: 1; flex-shrink: 0; transition: transform 0.3s; }
-  .faq-item.open .faq-icon { transform: rotate(45deg); }
-  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; font-size: 0.92rem; color: rgba(247,244,239,0.65); line-height: 1.7; }
-  .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 1.3rem; }
+/* MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+  z-index: 500; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal-box {
+  background: var(--ink2); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px; padding: 2.5rem 2rem; max-width: 460px; width: 92%;
+  position: relative; animation: fadeUp 0.3s ease; max-height: 92svh; overflow-y: auto;
+}
+.modal-close {
+  position: absolute; top: 1rem; right: 1.2rem;
+  background: none; border: none; color: var(--dim);
+  font-size: 1.4rem; cursor: pointer; transition: color 0.2s; line-height: 1;
+}
+.modal-close:hover { color: var(--cream); }
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem; font-weight: 600; text-align: center; margin-bottom: 0.4rem;
+}
+.modal-sub { text-align: center; font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+.field {
+  width: 100%; background: var(--soft); border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px; padding: 0.8rem 1rem; color: var(--cream);
+  font-family: 'Inter', sans-serif; font-size: 0.875rem;
+  margin-bottom: 0.75rem; outline: none; transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.field:focus { border-color: var(--gold); }
+.field::placeholder { color: var(--dim); }
+.field option { background: var(--ink2); }
+.row2 { display: flex; gap: 0.65rem; }
+.row2 .field { margin-bottom: 0; }
+.adv-label { font-size: 0.72rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; padding: 0.6rem 0 0.4rem; border-top: 1px solid rgba(255,255,255,0.06); margin-bottom: 0.5rem; }
+.field-err { color: #f87171; font-size: 0.82rem; margin-bottom: 0.75rem; display: none; }
+.btn-submit {
+  width: 100%; background: var(--gold); color: var(--ink);
+  padding: 0.9rem; border: none; border-radius: 8px;
+  font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; transition: opacity 0.2s; margin-top: 0.25rem;
+}
+.btn-submit:hover { opacity: 0.88; }
+.form-note { text-align: center; margin-top: 0.6rem; font-size: 0.75rem; color: var(--dim); }
+.form-success { display: none; text-align: center; padding: 1rem 0; }
+.form-success .big { font-size: 2.8rem; margin-bottom: 0.8rem; }
+.form-success h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 0.6rem; }
+.form-success p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
 
-  .sources { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 3rem; justify-content: center; }
-  .source-chip { display: flex; align-items: center; gap: 0.6rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 1.2rem; font-size: 0.85rem; font-weight: 500; color: rgba(247,244,239,0.7); transition: border-color 0.2s, color 0.2s; }
-  .source-chip:hover { border-color: var(--gold); color: var(--gold); }
-  .source-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
-
-  .cta-final { text-align: center; padding: 7rem 2rem; position: relative; z-index: 1; }
-  .cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 300px; background: radial-gradient(ellipse, rgba(201,168,76,0.12) 0%, transparent 70%); pointer-events: none; }
-  .cta-final h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.15; max-width: 700px; margin: 0 auto 1.5rem; }
-  .cta-final p { color: rgba(247,244,239,0.6); margin-bottom: 2.5rem; font-size: 1rem; }
-
-  footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: relative; z-index: 1; }
-  .footer-brand { font-size: 0.85rem; color: rgba(247,244,239,0.4); }
-  .footer-brand strong { color: var(--gold); }
-  .footer-links { display: flex; gap: 1.5rem; list-style: none; }
-  .footer-links a { color: rgba(247,244,239,0.4); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--gold); }
-  .wa-float { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 20px rgba(37,211,102,0.45); z-index: 999; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
-  .wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.65); }
-
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  .search-preview { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; max-width: 700px; margin: 3rem auto 0; animation: fadeUp 0.7s 0.5s ease both; }
-  .search-bar { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-  .search-input { flex: 1; min-width: 180px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
-  .search-input:focus { border-color: var(--gold); }
-  .search-input::placeholder { color: rgba(247,244,239,0.3); }
-  .search-select { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; cursor: pointer; transition: border-color 0.2s; -webkit-appearance: none; }
-  .search-select:focus { border-color: var(--gold); }
-  .search-select option { background: var(--navy); }
-  .tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
-  .tag { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border); border-radius: 100px; padding: 0.3rem 0.85rem; font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
-  .tag:hover { background: rgba(201,168,76,0.25); }
-
-  .prop-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
-  @media (max-width: 600px) { .prop-cards { grid-template-columns: 1fr; } nav .nav-links { display: none; } h1 { font-size: 2.4rem; } .pricing-grid { grid-template-columns: 1fr; } }
-  .prop-card { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; transition: border-color 0.2s; cursor: pointer; }
-  .prop-card:hover { border-color: var(--gold); }
-  .prop-img { width: 100%; height: 90px; background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(13,27,42,0.5)); border-radius: 8px; margin-bottom: 0.7rem; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; overflow: hidden; }
-  .prop-price { font-weight: 700; font-size: 0.95rem; color: var(--gold); margin-bottom: 0.2rem; }
-  .prop-address { font-size: 0.78rem; color: rgba(247,244,239,0.6); margin-bottom: 0.4rem; }
-  .prop-meta { display: flex; gap: 0.6rem; font-size: 0.7rem; color: rgba(247,244,239,0.4); }
-  .prop-source { margin-left: auto; color: var(--gold); font-weight: 600; }
-  .new-badge { display: inline-block; background: var(--gold); color: var(--navy); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.4rem; }
+@media(max-width:620px){
+  nav .nav-right li:not(:last-child){display:none;}
+  .stat-item{padding:1.4rem 1.5rem;}
+  .props-grid{grid-template-columns:1fr;}
+  .pricing-grid{grid-template-columns:1fr;}
+  h1{font-size:2.6rem;}
+}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <a class="logo" href="#">
     <div class="logo-mark">R</div>
     <span class="logo-text">Rodi<span>Prop</span></span>
   </a>
-  <ul class="nav-links">
+  <ul class="nav-right">
     <li><a href="#como-funciona">Cómo funciona</a></li>
     <li><a href="#precios">Precios</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="#registro" class="nav-cta">Empezar gratis</a></li>
+    <li><a href="#" class="btn-nav" onclick="abrirModal();return false;">Empezar gratis</a></li>
   </ul>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">🔴 Monitoreo en vivo · Córdoba</div>
-  <h1>Todas las propiedades de <em>Córdoba</em> en un solo lugar</h1>
-  <p class="hero-sub">Buscá entre miles de propiedades de ArgenProp, MercadoLibre y LaVoz. Recibí alertas al instante cuando aparece algo que te interesa.</p>
+  <div class="hero-glow"></div>
+  <div class="badge"><span class="badge-dot"></span>Monitoreo activo · Córdoba</div>
+  <h1>Todas las propiedades de<br><em>Córdoba</em> en un solo lugar</h1>
+  <p class="hero-sub">Reunimos ArgenProp, MercadoLibre, ZonaProp, RE/MAX y más. Recibí alertas al instante por WhatsApp cuando aparece algo que te interesa.</p>
   <div class="hero-actions">
-    <a href="#" class="btn-primary" onclick="abrirModal();return false;">🔔 Crear alerta gratis</a>
-    <a href="#como-funciona" class="btn-ghost">Cómo funciona</a>
+    <button class="btn-primary" onclick="abrirModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Crear alerta gratis
+    </button>
+    <a href="#propiedades" class="btn-outline">
+      Ver propiedades
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </a>
   </div>
+  <div class="stats-strip">
+    <div class="stat-item"><span class="stat-num" id="stat-total">—</span><span class="stat-lbl">Propiedades</span></div>
+    <div class="stat-item"><span class="stat-num">6</span><span class="stat-lbl">Fuentes</span></div>
+    <div class="stat-item"><span class="stat-num">27</span><span class="stat-lbl">Localidades</span></div>
+    <div class="stat-item"><span class="stat-num">24/7</span><span class="stat-lbl">Monitoreo</span></div>
+  </div>
+</section>
 
-  <div class="search-preview">
-    <div class="search-bar">
-      <input id="input-zona" class="search-input" type="text" placeholder="Barrio o localidad… ej: Nueva Córdoba">
-      <select id="sel-operacion" class="search-select">
-        <option value="">Todos</option>
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker" id="ticker-inner">
+    <span class="ticker-item"><span class="ticker-sep">·</span> Cargando propiedades...</span>
+  </div>
+</div>
+
+<!-- SEARCH + PROPS -->
+<div class="search-section" id="propiedades">
+  <div class="search-wrap">
+    <div class="search-title">Explorá el inventario en tiempo real</div>
+    <div class="search-row">
+      <input id="input-zona" class="si" type="text" placeholder="Barrio o localidad… ej: Nueva Córdoba">
+      <select id="sel-operacion" class="si" style="max-width:160px;">
+        <option value="">Todas</option>
         <option value="venta">Venta</option>
         <option value="alquiler">Alquiler</option>
       </select>
-      <select id="sel-tipo" class="search-select">
+      <select id="sel-tipo" class="si" style="max-width:160px;">
         <option value="">Tipo</option>
         <option value="departamento">Departamento</option>
         <option value="casa">Casa</option>
         <option value="ph">PH</option>
         <option value="terreno">Terreno</option>
+        <option value="local">Local</option>
       </select>
-      <button id="btn-buscar" class="btn-primary" style="padding:0.7rem 1.3rem;">Buscar</button>
+      <button id="btn-buscar" class="btn-primary" style="padding:0.8rem 1.6rem;white-space:nowrap;">Buscar</button>
     </div>
-    <div class="tag-row">
-      <span class="tag">Nueva Córdoba</span>
-      <span class="tag">Güemes</span>
-      <span class="tag">Villa Allende</span>
-      <span class="tag">Bº Jardín</span>
-      <span class="tag">Cerro de las Rosas</span>
-      <span class="tag">Unquillo</span>
+    <div class="tags">
+      <button class="tag">Nueva Córdoba</button>
+      <button class="tag">Güemes</button>
+      <button class="tag">Villa Allende</button>
+      <button class="tag">Cerro de las Rosas</button>
+      <button class="tag">Unquillo</button>
+      <button class="tag">Alta Gracia</button>
     </div>
-    <div class="prop-cards" id="props-container" style="margin-top:1.2rem;">
-      <div style="text-align:center;padding:2rem;color:var(--gold);grid-column:1/-1">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem">⏳</div>
-        Cargando propiedades reales...
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:1rem;">
-      <a id="ver-mas-link" href="#" onclick="cargarMas();return false;" style="font-size:0.82rem;color:var(--gold);text-decoration:none;display:none;">Ver más propiedades ↓</a>
-    </div>
-  </div>
-
-  <div class="stats-bar">
-    <div class="stat"><span class="stat-num" id="stat-total">...</span><span class="stat-label">Propiedades</span></div>
-    <div class="stat"><span class="stat-num" id="stat-fuentes">3</span><span class="stat-label">Fuentes activas</span></div>
-    <div class="stat"><span class="stat-num">27</span><span class="stat-label">Localidades</span></div>
-    <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Monitoreo</span></div>
-  </div>
-</section>
-
-<!-- TICKER — se rellena con datos reales vía JS -->
-<div class="ticker-wrap">
-  <div class="ticker" id="ticker-inner">
-    <span class="ticker-item"><span class="ticker-dot">●</span> Cargando propiedades reales...</span>
   </div>
 </div>
 
+<div class="props-section">
+  <div class="props-wrap">
+    <div class="props-grid" id="props-container">
+      <div class="props-empty">
+        <div style="font-size:1.8rem;margin-bottom:0.5rem;opacity:.4">⌛</div>
+        Cargando propiedades...
+      </div>
+    </div>
+    <div class="load-more-row">
+      <button class="btn-load" id="ver-mas-btn" style="display:none" onclick="abrirModal()">Ver más propiedades →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CÓMO FUNCIONA -->
 <section id="como-funciona">
-  <div class="container">
-    <p class="section-label reveal">Cómo funciona</p>
-    <h2 class="section-title reveal">Llegá primero a la mejor propiedad</h2>
-    <p class="section-sub reveal">En mercados de alta demanda las mejores oportunidades desaparecen en horas. RodiProp te avisa antes que nadie.</p>
-    <div class="steps">
-      <div class="step reveal" data-num="1">
-        <div class="step-icon">🔍</div>
-        <h3>Buscá sin entrar a cada portal</h3>
-        <p>ArgenProp, MercadoLibre y LaVoz Clasificados en un solo lugar. Filtrá por zona, precio, ambientes y más.</p>
+  <div class="sec-inner">
+    <p class="sec-kicker reveal">Cómo funciona</p>
+    <h2 class="sec-title reveal">Llegá primero a la<br>mejor propiedad</h2>
+    <p class="sec-sub reveal">En mercados de alta demanda las mejores oportunidades desaparecen en horas. RodiProp te avisa antes que nadie.</p>
+    <div class="steps-grid">
+      <div class="step reveal">
+        <span class="step-num">1</span>
+        <span class="step-icon">🔍</span>
+        <h3>Buscás en un solo lugar</h3>
+        <p>ArgenProp, MercadoLibre, ZonaProp, RE/MAX y más en una sola búsqueda. Sin abrir cada portal por separado.</p>
       </div>
-      <div class="step reveal" data-num="2">
-        <div class="step-icon">🔔</div>
-        <h3>Configurá tu alerta en 30 segundos</h3>
-        <p>Decile exactamente qué buscás. Recibirás un WhatsApp al instante cuando aparezca algo que coincida.</p>
+      <div class="step reveal">
+        <span class="step-num">2</span>
+        <span class="step-icon">🔔</span>
+        <h3>Configurás tu alerta</h3>
+        <p>Zona, tipo, precio, ambientes. 30 segundos y listo. Te avisamos por WhatsApp en cuanto aparezca algo que coincida.</p>
       </div>
-      <div class="step reveal" data-num="3">
-        <div class="step-icon">⚡</div>
-        <h3>Te avisamos antes que nadie</h3>
+      <div class="step reveal">
+        <span class="step-num">3</span>
+        <span class="step-icon">⚡</span>
+        <h3>Llegás antes que nadie</h3>
         <p>Monitoreo 24/7. Las mejores propiedades se van rápido — ser el primero en contactar hace la diferencia.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section>
-  <div class="container" style="text-align:center;">
-    <p class="section-label reveal">Fuentes de datos</p>
-    <h2 class="section-title reveal">Agregamos los principales portales de Córdoba</h2>
-    <div class="sources reveal">
-      <div class="source-chip"><span class="source-dot"></span> ArgenProp</div>
-      <div class="source-chip"><span class="source-dot"></span> MercadoLibre Inmuebles</div>
-      <div class="source-chip"><span class="source-dot"></span> LaVoz Clasificados</div>
-      <div class="source-chip"><span class="source-dot"></span> + Más portales próximamente</div>
+<!-- FUENTES -->
+<section class="sources-section">
+  <div class="sec-inner">
+    <p class="sec-kicker reveal">Fuentes de datos</p>
+    <h2 class="sec-title reveal">Los principales portales de<br>Córdoba en un solo lugar</h2>
+    <div class="sources-grid reveal">
+      <div class="src-card"><span class="src-dot"></span> ArgenProp</div>
+      <div class="src-card"><span class="src-dot"></span> MercadoLibre Inmuebles</div>
+      <div class="src-card"><span class="src-dot"></span> ZonaProp</div>
+      <div class="src-card"><span class="src-dot"></span> RE/MAX Argentina</div>
+      <div class="src-card"><span class="src-dot"></span> LaVoz Clasificados</div>
+      <div class="src-card"><span class="src-dot"></span> Inmuebles.com (Navent)</div>
     </div>
   </div>
 </section>
 
-<section id="precios" class="pricing-section">
-  <div class="container">
-    <p class="section-label reveal">Planes</p>
-    <h2 class="section-title reveal">Simple. Sin letra chica.</h2>
-    <p class="section-sub reveal">Empezá gratis con 7 alertas. Cuando encontrés lo que buscás, seguís con Premium.</p>
+<!-- PRECIOS -->
+<section id="precios">
+  <div class="sec-inner">
+    <p class="sec-kicker reveal">Planes</p>
+    <h2 class="sec-title reveal">Simple. Sin letra chica.</h2>
+    <p class="sec-sub reveal">Empezá gratis con 7 alertas. Cuando encontrés lo que buscás, continuás con Premium.</p>
     <div class="pricing-grid">
       <div class="plan reveal">
-        <div class="plan-name">Gratis</div>
+        <div class="plan-tier">Gratis</div>
         <div class="plan-price">$0</div>
         <div class="plan-period">para siempre</div>
-        <ul class="plan-features">
-          <li>7 alertas por WhatsApp incluidas</li>
+        <ul class="plan-feats">
+          <li>7 alertas por WhatsApp</li>
           <li>Búsqueda por zona y tipo</li>
           <li>Acceso a todas las propiedades</li>
           <li>Monitoreo 24/7</li>
         </ul>
-        <a href="#" class="btn-ghost" style="display:block;text-align:center;" onclick="abrirModal();return false;">Empezar gratis</a>
+        <button class="plan-btn plan-btn-outline" onclick="abrirModal()">Empezar gratis</button>
       </div>
       <div class="plan featured reveal">
-        <div class="plan-name">Premium</div>
+        <div class="plan-badge">MÁS POPULAR</div>
+        <div class="plan-tier">Premium</div>
         <div class="plan-price"><sup>$</sup>4.999</div>
-        <div class="plan-period">ARS / mes · débito automático</div>
-        <ul class="plan-features">
+        <div class="plan-period">ARS / mes</div>
+        <ul class="plan-feats">
           <li>Alertas ilimitadas por WhatsApp</li>
           <li>Filtros por ambientes y cochera</li>
           <li>Rango de precio personalizado</li>
-          <li>Las 3 fuentes activas</li>
+          <li>Todas las fuentes activas</li>
           <li>Cancelás cuando querés</li>
         </ul>
-        <a href="/premium" class="btn-primary" style="display:block;text-align:center;">Suscribirme a Premium</a>
+        <a href="/premium.html" class="plan-btn plan-btn-solid">Suscribirme a Premium</a>
       </div>
       <div class="plan reveal">
-        <div class="plan-name">Inversor & Brokers</div>
+        <div class="plan-tier">Inversor &amp; Brokers</div>
         <div class="plan-price"><sup>$</sup>15.000</div>
         <div class="plan-period">ARS / mes</div>
-        <ul class="plan-features">
+        <ul class="plan-feats">
           <li>Todo lo de Premium</li>
           <li>Tasador de Propiedades (PDF)</li>
           <li>Analytics de precios por barrio</li>
           <li>Asesor dedicado por WhatsApp</li>
           <li>Acceso API (próximamente)</li>
         </ul>
-        <a href="/premium" class="btn-ghost" style="display:block;text-align:center;">Suscribirme</a>
+        <a href="/premium.html" class="plan-btn plan-btn-outline">Suscribirme</a>
       </div>
     </div>
   </div>
 </section>
 
-<section>
-  <div class="container">
-    <p class="section-label reveal">Testimonios</p>
-    <h2 class="section-title reveal">Lo que dicen nuestros usuarios</h2>
-    <div class="testimonials-grid">
-      <div class="testimonial reveal">
+<!-- TESTIMONIOS -->
+<section class="testi-section">
+  <div class="sec-inner">
+    <p class="sec-kicker reveal">Testimonios</p>
+    <h2 class="sec-title reveal">Lo que dicen nuestros usuarios</h2>
+    <div class="testi-grid">
+      <div class="testi reveal">
         <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"Encontré mi departamento en Nueva Córdoba dos días antes de que apareciera en los portales. La alerta llegó al instante y pude ser el primero en llamar al dueño."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">ML</div>
-          <div><div class="author-name">Martín L.</div><div class="author-role">Compró depto en Nueva Córdoba</div></div>
+        <p class="testi-text">"Encontré mi departamento en Nueva Córdoba dos días antes de que apareciera en los portales. La alerta llegó al instante y pude ser el primero en llamar al dueño."</p>
+        <div class="testi-author">
+          <div class="t-avatar">ML</div>
+          <div><div class="t-name">Martín L.</div><div class="t-role">Compró depto en Nueva Córdoba</div></div>
         </div>
       </div>
-      <div class="testimonial reveal">
+      <div class="testi reveal">
         <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"Antes entraba a cada portal todos los días. Ahora RodiProp me manda todo junto. Me ahorro fácil una hora diaria de búsqueda."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">CF</div>
-          <div><div class="author-name">Carolina F.</div><div class="author-role">Buscando alquiler en Cerro de las Rosas</div></div>
+        <p class="testi-text">"Antes entraba a cada portal todos los días. Ahora RodiProp me manda todo junto. Me ahorro fácil una hora diaria de búsqueda."</p>
+        <div class="testi-author">
+          <div class="t-avatar">CF</div>
+          <div><div class="t-name">Carolina F.</div><div class="t-role">Buscando alquiler en Cerro de las Rosas</div></div>
         </div>
       </div>
-      <div class="testimonial reveal">
+      <div class="testi reveal">
         <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"Como inversor necesito ver oportunidades rápido. El analytics de precios por barrio me permite comparar en tiempo real. Imprescindible para el mercado cordobés."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">DP</div>
-          <div><div class="author-name">Diego P.</div><div class="author-role">Inversor inmobiliario</div></div>
+        <p class="testi-text">"Como inversor necesito ver oportunidades rápido. El analytics de precios por barrio me permite comparar en tiempo real. Imprescindible para el mercado cordobés."</p>
+        <div class="testi-author">
+          <div class="t-avatar">DP</div>
+          <div><div class="t-name">Diego P.</div><div class="t-role">Inversor inmobiliario</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- FAQ -->
 <section id="faq">
-  <div class="container">
-    <p class="section-label reveal">Preguntas frecuentes</p>
-    <h2 class="section-title reveal">Todo lo que necesitás saber</h2>
-    <div class="faq-list reveal">
+  <div class="sec-inner">
+    <p class="sec-kicker reveal">Preguntas frecuentes</p>
+    <h2 class="sec-title reveal">Todo lo que necesitás saber</h2>
+    <div class="faq-wrap reveal">
       <div class="faq-item">
-        <button class="faq-question">¿Es gratis? <span class="faq-icon">+</span></button>
-        <div class="faq-answer">Registrarte es gratis y tenés 7 alertas incluidas. Cuando las usás, podés pasarte a Premium por $4.999 ARS/mes para recibir alertas ilimitadas.</div>
+        <button class="faq-q">¿Es gratis? <span class="faq-icon">+</span></button>
+        <div class="faq-a">Registrarte es gratis y tenés 7 alertas incluidas. Cuando las usás, podés pasarte a Premium por $4.999 ARS/mes para recibir alertas ilimitadas.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">¿De dónde salen las propiedades? <span class="faq-icon">+</span></button>
-        <div class="faq-answer">Monitoreamos en tiempo real ArgenProp, MercadoLibre Inmuebles y LaVoz Clasificados para Córdoba y sus 27 localidades. Los datos se actualizan automáticamente cada 2 horas.</div>
+        <button class="faq-q">¿De dónde salen las propiedades? <span class="faq-icon">+</span></button>
+        <div class="faq-a">Monitoreamos en tiempo real ArgenProp, MercadoLibre, ZonaProp, RE/MAX, LaVoz Clasificados e Inmuebles.com para Córdoba y sus 27 localidades. Los datos se actualizan cada 2 horas.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">¿Cada cuánto llegan las alertas? <span class="faq-icon">+</span></button>
-        <div class="faq-answer">Las alertas llegan por WhatsApp apenas aparece una propiedad nueva que coincida con tu búsqueda. El sistema chequea cada 2 horas.</div>
+        <button class="faq-q">¿Cada cuánto llegan las alertas? <span class="faq-icon">+</span></button>
+        <div class="faq-a">Las alertas llegan por WhatsApp apenas aparece una propiedad nueva que coincida con tu búsqueda. El sistema chequea cada 2 horas.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">¿Puedo buscar en todo Córdoba? <span class="faq-icon">+</span></button>
-        <div class="faq-answer">Sí. Cubrimos Capital, Gran Córdoba y 27 localidades del interior: Villa Allende, Mendiolaza, Unquillo, La Calera, Carlos Paz, Alta Gracia, Río Cuarto y más.</div>
+        <button class="faq-q">¿Puedo buscar en todo Córdoba? <span class="faq-icon">+</span></button>
+        <div class="faq-a">Sí. Cubrimos Capital, Gran Córdoba y 27 localidades del interior: Villa Allende, Mendiolaza, Unquillo, La Calera, Carlos Paz, Alta Gracia, Río Cuarto y más.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">¿Quién está detrás de RodiProp? <span class="faq-icon">+</span></button>
-        <div class="faq-answer">RodiProp es un producto de Grupo Rodi Inmobiliaria, inmobiliaria con trayectoria en Córdoba. Combinamos tecnología con conocimiento real del mercado local.</div>
+        <button class="faq-q">¿Quién está detrás de RodiProp? <span class="faq-icon">+</span></button>
+        <div class="faq-a">RodiProp es un producto de Grupo Rodi Inmobiliaria, inmobiliaria con trayectoria en Córdoba. Combinamos tecnología con conocimiento real del mercado local.</div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="registro" class="cta-final">
+<!-- CTA FINAL -->
+<section class="cta-section" id="registro">
   <div class="cta-glow"></div>
-  <p class="section-label">Empezá hoy</p>
-  <h2>Las mejores propiedades<br>se van en horas.<br><em style="color:var(--gold);font-style:normal;">Llegá primero.</em></h2>
+  <p class="sec-kicker">Empezá hoy</p>
+  <h2>Las mejores propiedades<br>se van en horas.<br><em style="color:var(--gold);font-style:italic;">Llegá primero.</em></h2>
   <p>Gratis. Sin tarjeta de crédito. Sin compromisos.</p>
-  <a href="#" class="btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem;" onclick="abrirModal();return false;">🔔 Crear mi alerta gratis</a>
+  <button class="btn-primary" style="font-size:1rem;padding:1rem 2.5rem;" onclick="abrirModal()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    Crear mi alerta gratis
+  </button>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <div class="footer-brand">
-    <strong>RodiProp</strong> · Un producto de Grupo Rodi Inmobiliaria · <em>Soluciones Inteligentes para el Mercado</em>
-  </div>
-  <ul class="footer-links">
+  <div class="f-brand"><strong>RodiProp</strong> · Un producto de Grupo Rodi Inmobiliaria</div>
+  <ul class="f-links">
     <li><a href="/terminos.html">Términos y condiciones</a></li>
     <li><a href="https://wa.me/543516508433" target="_blank">Contacto</a></li>
     <li><a href="https://wa.me/543516508433" target="_blank">WhatsApp</a></li>
   </ul>
 </footer>
 
+<!-- FLOATING WA -->
 <a href="https://wa.me/543516508433" target="_blank" class="wa-float" title="Consultanos por WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<script>
-  const API_URL = "https://web-production-88fd4.up.railway.app";
-  let offsetActual = 0;
-  let filtrosActuales = {};
-
-  async function cargarStats() {
-    try {
-      const res = await fetch(API_URL + "/");
-      const data = await res.json();
-      if (data.total > 0) {
-        document.getElementById('stat-total').textContent = data.total.toLocaleString('es-AR') + '+';
-      }
-    } catch(e) {}
-  }
-
-  async function cargarTicker() {
-    try {
-      const res = await fetch(API_URL + "/api/propiedades?limit=16");
-      const data = await res.json();
-      if (!data.propiedades || data.propiedades.length === 0) return;
-      const items = data.propiedades.map(p => {
-        const precioRaw = String(p.precio || '').replace(/[^0-9]/g, '');
-        const precioNum = parseInt(precioRaw) || 0;
-        const precio = precioNum > 0 ? (p.moneda || 'USD') + ' ' + precioNum.toLocaleString('es-AR') : 'Consultar';
-        const ubicacion = p.ubicacion || 'Córdoba';
-        return '<span class="ticker-item"><span class="ticker-dot">●</span> ' + ubicacion + ' · <strong>' + precio + '</strong></span>';
-      });
-      const html = items.join('') + items.join('');
-      document.getElementById('ticker-inner').innerHTML = html;
-    } catch(e) {}
-  }
-
-  async function cargarPropiedades(filtros, offset) {
-    filtros = filtros || {};
-    offset = offset || 0;
-    filtrosActuales = filtros;
-    offsetActual = offset;
-
-    const container = document.getElementById('props-container');
-    if (offset === 0) {
-      container.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--gold);grid-column:1/-1"><div style="font-size:1.5rem;margin-bottom:0.5rem">⏳</div>Cargando propiedades reales...</div>';
-    }
-
-    try {
-      let url = API_URL + "/api/propiedades?limit=6";
-      if (filtros.zona) url += "&zona=" + encodeURIComponent(filtros.zona);
-      if (filtros.tipo) url += "&tipo=" + encodeURIComponent(filtros.tipo);
-      if (filtros.operacion) url += "&operacion=" + encodeURIComponent(filtros.operacion);
-
-      const res = await fetch(url);
-      const data = await res.json();
-
-      if (!data.propiedades || data.propiedades.length === 0) {
-        container.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(247,244,239,0.5);grid-column:1/-1">No hay propiedades para esos filtros. Probá con otra zona.</div>';
-        document.getElementById('ver-mas-link').style.display = 'none';
-        return;
-      }
-
-      container.innerHTML = data.propiedades.map(p => {
-        const precioRaw = String(p.precio || '').split(/[-–]/)[0].replace(/[^0-9]/g, '');
-        const precioNum = parseInt(precioRaw) || 0;
-        const precio = precioNum > 0 ? (p.moneda || 'USD') + ' ' + precioNum.toLocaleString('es-AR') : 'Consultar';
-        const attrs = (p.atributos || []).slice(0, 2).join(' · ');
-        const fuente = (p.fuente || 'Portal').substring(0, 2).toUpperCase();
-        const ubicacion = (p.ubicacion || 'Córdoba').substring(0, 35);
-        const titulo = (p.titulo || 'Propiedad').substring(0, 30);
-        const imgHtml = p.imagen
-          ? '<img src="' + p.imagen + '" style="width:100%;height:100%;object-fit:cover;border-radius:8px" loading="lazy" onerror="this.style.display=\'none\'">'
-          : '🏘️';
-        return '<div class="prop-card" onclick="window.open(\'' + p.url + '\',\'_blank\')">' +
-          '<div class="prop-img">' + imgHtml + '</div>' +
-          '<span class="new-badge">nuevo</span>' +
-          '<div class="prop-price">' + precio + '</div>' +
-          '<div class="prop-address">' + ubicacion + '</div>' +
-          '<div class="prop-meta"><span>' + (attrs || titulo) + '</span><span class="prop-source">' + fuente + '</span></div>' +
-          '</div>';
-      }).join('');
-
-      document.getElementById('ver-mas-link').style.display = 'inline';
-    } catch(e) {
-      container.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(247,244,239,0.5);grid-column:1/-1">Conectando con el servidor...</div>';
-    }
-  }
-
-  function cargarMas() {
-    abrirModal();
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('btn-buscar').addEventListener('click', function() {
-      const zona = document.getElementById('input-zona').value.trim();
-      const operacion = document.getElementById('sel-operacion').value;
-      const tipo = document.getElementById('sel-tipo').value;
-      cargarPropiedades({ zona, operacion, tipo });
-    });
-
-    document.getElementById('input-zona').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') cargarPropiedades({ zona: this.value.trim() });
-    });
-
-    document.querySelectorAll('.tag').forEach(function(tag) {
-      tag.addEventListener('click', function() {
-        document.getElementById('input-zona').value = tag.textContent.trim();
-        cargarPropiedades({ zona: tag.textContent.trim() });
-      });
-    });
-
-    document.querySelectorAll('.faq-question').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        const item = btn.parentElement;
-        const isOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
-        if (!isOpen) item.classList.add('open');
-      });
-    });
-
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(function(el) { observer.observe(el); });
-
-    setTimeout(function() {
-      cargarStats();
-      cargarPropiedades();
-      cargarTicker();
-    }, 300);
-  });
-</script>
-
 <!-- MODAL REGISTRO -->
-<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;align-items:center;justify-content:center;">
-  <div style="background:#111E2D;border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:2.5rem;max-width:480px;width:90%;position:relative;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto;">
-    <button onclick="cerrarModal()" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:rgba(247,244,239,0.5);font-size:1.5rem;cursor:pointer;">×</button>
-    <div style="text-align:center;margin-bottom:1.5rem;">
-      <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:0.5rem;">Crear mi alerta 🔔</div>
-      <div style="color:rgba(247,244,239,0.6);font-size:0.9rem;">Te avisamos cuando aparezca lo que buscás</div>
-    </div>
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="cerrarModal()">×</button>
+    <div class="modal-title">Crear mi alerta</div>
+    <div class="modal-sub">Te avisamos cuando aparezca lo que buscás</div>
     <div id="form-registro">
-      <input id="reg-nombre" type="text" placeholder="Tu nombre" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
-      <input id="reg-email" type="email" placeholder="Tu email *" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
-      <input id="reg-whatsapp" type="tel" placeholder="WhatsApp (ej: 3513027146)" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
-      <input id="reg-zona" type="text" placeholder="Zona que buscás (ej: Nueva Córdoba)" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.8rem;outline:none;">
-      <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
-        <select id="reg-operacion" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;">
+      <input id="reg-nombre" class="field" type="text" placeholder="Tu nombre">
+      <input id="reg-email" class="field" type="email" placeholder="Tu email *">
+      <input id="reg-whatsapp" class="field" type="tel" placeholder="WhatsApp (ej: 3513027146)">
+      <input id="reg-zona" class="field" type="text" placeholder="Zona que buscás (ej: Nueva Córdoba)">
+      <div class="row2">
+        <select id="reg-operacion" class="field">
           <option value="venta">Comprar</option>
           <option value="alquiler">Alquilar</option>
         </select>
-        <select id="reg-tipo" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.8rem 1rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;">
+        <select id="reg-tipo" class="field">
           <option value="">Cualquier tipo</option>
           <option value="departamento">Departamento</option>
           <option value="casa">Casa</option>
@@ -622,10 +785,10 @@
           <option value="local">Local</option>
         </select>
       </div>
-      <div style="border-top:1px solid rgba(201,168,76,0.15);margin:0.5rem 0 0.8rem;padding-top:0.8rem;">
-        <div style="font-size:0.78rem;color:rgba(247,244,239,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.6rem;">Filtros avanzados (opcional)</div>
-        <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
-          <select id="reg-ambientes" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+      <div style="margin-top:0.5rem;margin-bottom:0.25rem;">
+        <div class="adv-label">Filtros avanzados (opcional)</div>
+        <div class="row2" style="margin-bottom:0.65rem;">
+          <select id="reg-ambientes" class="field" style="margin-bottom:0;">
             <option value="">Ambientes</option>
             <option value="1">1 amb.</option>
             <option value="2">2 amb.</option>
@@ -633,33 +796,34 @@
             <option value="4">4 amb.</option>
             <option value="5">5+ amb.</option>
           </select>
-          <select id="reg-cocheras" style="flex:1;background:#111E2D;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+          <select id="reg-cocheras" class="field" style="margin-bottom:0;">
             <option value="">Cochera</option>
             <option value="1">Con cochera</option>
             <option value="0">Sin cochera</option>
           </select>
         </div>
-        <div style="display:flex;gap:0.8rem;margin-bottom:0.8rem;">
-          <input id="reg-precio-min" type="number" placeholder="Precio mín (USD)" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
-          <input id="reg-precio-max" type="number" placeholder="Precio máx (USD)" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:0.7rem 0.8rem;color:#F7F4EF;font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;">
+        <div class="row2">
+          <input id="reg-precio-min" class="field" type="number" placeholder="Precio mín" style="margin-bottom:0;">
+          <input id="reg-precio-max" class="field" type="number" placeholder="Precio máx" style="margin-bottom:0;">
         </div>
       </div>
-      <div id="reg-error" style="color:#ff6b6b;font-size:0.85rem;margin-bottom:0.8rem;display:none;"></div>
-      <button onclick="enviarRegistro()" style="width:100%;background:#C9A84C;color:#0D1B2A;padding:0.9rem;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.2s;">
-        🔔 Crear alerta gratis
-      </button>
-      <div style="text-align:center;margin-top:0.8rem;font-size:0.78rem;color:rgba(247,244,239,0.4);">Sin tarjeta de crédito · 7 alertas gratis</div>
+      <div id="reg-error" class="field-err"></div>
+      <button class="btn-submit" onclick="enviarRegistro()">Crear alerta gratis</button>
+      <div class="form-note">Sin tarjeta de crédito · 7 alertas incluidas</div>
     </div>
-    <div id="form-exito" style="display:none;text-align:center;padding:1rem 0;">
-      <div style="font-size:3rem;margin-bottom:1rem;">🎉</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:0.8rem;">¡Alerta creada!</div>
-      <div style="color:rgba(247,244,239,0.6);font-size:0.95rem;line-height:1.6;">Te vamos a avisar por WhatsApp cuando aparezca algo que coincida con tu búsqueda.</div>
-      <button onclick="cerrarModal()" style="margin-top:1.5rem;background:#C9A84C;color:#0D1B2A;padding:0.7rem 2rem;border:none;border-radius:8px;font-weight:700;cursor:pointer;">Perfecto</button>
+    <div id="form-exito" class="form-success">
+      <div class="big">🎉</div>
+      <h3>¡Alerta creada!</h3>
+      <p>Te vamos a avisar por WhatsApp cuando aparezca algo que coincida con tu búsqueda.</p>
+      <button class="btn-submit" style="margin-top:1.2rem;" onclick="cerrarModal()">Perfecto</button>
     </div>
   </div>
 </div>
 
 <script>
+const API_URL = "https://web-production-88fd4.up.railway.app";
+
+/* ── MODAL ── */
 function abrirModal() {
   document.getElementById('modal-overlay').style.display = 'flex';
   document.body.style.overflow = 'hidden';
@@ -674,11 +838,14 @@ function cerrarModal() {
 document.getElementById('modal-overlay').addEventListener('click', function(e) {
   if (e.target === this) cerrarModal();
 });
+
+/* ── REGISTRO ── */
 async function enviarRegistro() {
   const email = document.getElementById('reg-email').value.trim();
   const errDiv = document.getElementById('reg-error');
+  errDiv.style.display = 'none';
   if (!email) { errDiv.textContent = 'El email es obligatorio'; errDiv.style.display = 'block'; return; }
-  const btn = document.querySelector('#form-registro button');
+  const btn = document.querySelector('#form-registro .btn-submit');
   btn.textContent = 'Registrando...'; btn.disabled = true;
   try {
     const res = await fetch(API_URL + '/api/usuarios/registro', {
@@ -686,7 +853,7 @@ async function enviarRegistro() {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         nombre: document.getElementById('reg-nombre').value.trim(),
-        email: email,
+        email,
         whatsapp: document.getElementById('reg-whatsapp').value.trim(),
         zona: document.getElementById('reg-zona').value.trim(),
         tipo: document.getElementById('reg-tipo').value,
@@ -703,13 +870,126 @@ async function enviarRegistro() {
       document.getElementById('form-exito').style.display = 'block';
     } else {
       errDiv.textContent = data.error || 'Error al registrar'; errDiv.style.display = 'block';
-      btn.textContent = '🔔 Crear alerta gratis'; btn.disabled = false;
+      btn.textContent = 'Crear alerta gratis'; btn.disabled = false;
     }
   } catch(e) {
     errDiv.textContent = 'Error de conexión. Intentá de nuevo.'; errDiv.style.display = 'block';
-    btn.textContent = '🔔 Crear alerta gratis'; btn.disabled = false;
+    btn.textContent = 'Crear alerta gratis'; btn.disabled = false;
   }
 }
+
+/* ── STATS ── */
+async function cargarStats() {
+  try {
+    const d = await fetch(API_URL + '/').then(r => r.json());
+    if (d.total > 0) document.getElementById('stat-total').textContent = d.total.toLocaleString('es-AR') + '+';
+  } catch(e) {}
+}
+
+/* ── TICKER ── */
+async function cargarTicker() {
+  try {
+    const d = await fetch(API_URL + '/api/propiedades?limit=20').then(r => r.json());
+    if (!d.propiedades || !d.propiedades.length) return;
+    const items = d.propiedades.map(p => {
+      const n = parseInt(String(p.precio || '').replace(/[^0-9]/g, '')) || 0;
+      const precio = n > 0 ? (p.moneda || 'USD') + ' ' + n.toLocaleString('es-AR') : 'Consultar';
+      return `<span class="ticker-item"><span class="ticker-sep">◆</span> ${(p.ubicacion||'Córdoba').substring(0,30)} · <strong>${precio}</strong></span>`;
+    });
+    const html = items.join('') + items.join('');
+    document.getElementById('ticker-inner').innerHTML = html;
+  } catch(e) {}
+}
+
+/* ── PROP CARDS ── */
+function renderProps(props) {
+  if (!props || !props.length) {
+    return '<div class="props-empty"><div style="font-size:1.8rem;margin-bottom:.5rem;opacity:.4">🏚</div>No hay propiedades para esos filtros.</div>';
+  }
+  return props.map(p => {
+    const n = parseInt(String(p.precio || '').split(/[-–]/)[0].replace(/[^0-9]/g, '')) || 0;
+    const precio = n > 0 ? n.toLocaleString('es-AR') : 'Consultar';
+    const moneda = n > 0 ? (p.moneda || 'USD') : '';
+    const titulo = (p.titulo || 'Propiedad').substring(0, 60);
+    const ubicacion = (p.ubicacion || 'Córdoba').substring(0, 45);
+    const fuente = p.fuente || 'Portal';
+    const op = (p.operacion || '').toLowerCase() === 'alquiler' ? 'ALQUILER' : 'VENTA';
+    const attrs = (p.atributos || []).slice(0,3).filter(Boolean);
+
+    const imgHtml = p.imagen
+      ? `<img src="${p.imagen}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-img-placeholder>🏘</div>'">`
+      : `<div class="card-img-placeholder">🏘</div>`;
+
+    return `<div class="prop-card" onclick="window.open('${p.url}','_blank')">
+      <div class="card-img">
+        ${imgHtml}
+        <span class="card-source">${fuente}</span>
+        <span class="card-op">${op}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-price"><span>${moneda} </span>${precio}</div>
+        <div class="card-title">${titulo}</div>
+        <div class="card-loc">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${ubicacion}
+        </div>
+        ${attrs.length ? `<div class="card-attrs">${attrs.map(a=>`<span class="card-attr">${String(a).substring(0,20)}</span>`).join('')}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function cargarPropiedades(filtros) {
+  filtros = filtros || {};
+  const container = document.getElementById('props-container');
+  container.innerHTML = '<div class="props-empty"><div style="font-size:1.8rem;margin-bottom:.5rem;opacity:.4">⌛</div>Cargando...</div>';
+  try {
+    let url = API_URL + '/api/propiedades?limit=9';
+    if (filtros.zona) url += '&zona=' + encodeURIComponent(filtros.zona);
+    if (filtros.tipo) url += '&tipo=' + encodeURIComponent(filtros.tipo);
+    if (filtros.operacion) url += '&operacion=' + encodeURIComponent(filtros.operacion);
+    const d = await fetch(url).then(r => r.json());
+    container.innerHTML = renderProps(d.propiedades);
+    const btn = document.getElementById('ver-mas-btn');
+    btn.style.display = d.propiedades && d.propiedades.length >= 9 ? 'inline-block' : 'none';
+  } catch(e) {
+    container.innerHTML = '<div class="props-empty">Conectando con el servidor...</div>';
+  }
+}
+
+/* ── EVENTS ── */
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('btn-buscar').addEventListener('click', () => {
+    cargarPropiedades({
+      zona: document.getElementById('input-zona').value.trim(),
+      operacion: document.getElementById('sel-operacion').value,
+      tipo: document.getElementById('sel-tipo').value,
+    });
+  });
+  document.getElementById('input-zona').addEventListener('keypress', e => {
+    if (e.key === 'Enter') cargarPropiedades({ zona: e.target.value.trim() });
+  });
+  document.querySelectorAll('.tag').forEach(t => {
+    t.addEventListener('click', () => {
+      document.getElementById('input-zona').value = t.textContent.trim();
+      cargarPropiedades({ zona: t.textContent.trim() });
+    });
+  });
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const open = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!open) item.classList.add('open');
+    });
+  });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  setTimeout(() => { cargarStats(); cargarPropiedades(); cargarTicker(); }, 200);
+});
 </script>
 </body>
 </html>
