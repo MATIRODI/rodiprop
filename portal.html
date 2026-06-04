@@ -702,6 +702,11 @@ async function init() {
     const res = await apiFetch('/api/auth/me');
     if (!res.ok) { logout(); return; }
     user = await res.json();
+    // Preserve is_admin from login response in case the server version
+    // doesn't include it yet (backwards compatibility during deploy)
+    const stored = JSON.parse(localStorage.getItem('rp_user') || '{}');
+    if (!user.is_admin && stored.is_admin) user.is_admin = true;
+    localStorage.setItem('rp_user', JSON.stringify(user));
     updateUserUI();
     loadProps();
   } catch(e) {
