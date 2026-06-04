@@ -49,6 +49,7 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
 .plan-premium{background:var(--gold3);color:var(--gold2);}
 .plan-inversor{background:rgba(96,165,250,.12);color:var(--blue);}
 .plan-analitic{background:rgba(74,222,128,.1);color:var(--green);}
+.plan-admin{background:linear-gradient(135deg,rgba(198,162,74,.3),rgba(198,162,74,.1));color:var(--gold);border:1px solid var(--border);}
 
 /* ── NAV ── */
 .sb-nav{flex:1;overflow-y:auto;padding:.75rem 0;}
@@ -406,6 +407,10 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
     <a class="nav-item" data-sec="cuenta" onclick="showSection('cuenta')">
       <span class="nav-icon">👤</span> Mi Perfil
     </a>
+    <a class="nav-item nav-admin-link" id="nav-admin" href="/static/admin.html" target="_blank" style="display:none">
+      <span class="nav-icon">⚙️</span> Panel Admin
+      <span class="lock-chip" style="background:rgba(198,162,74,.2);color:var(--gold)">Admin</span>
+    </a>
   </nav>
 
   <div class="sb-foot">
@@ -707,19 +712,34 @@ async function init() {
 function updateUserUI() {
   document.getElementById('sb-nombre').textContent = user.nombre || user.email;
   const badge = document.getElementById('sb-plan-badge');
-  const planLabels = { gratis: 'Gratis', premium: 'Premium', inversor: 'Inversor', analitic: 'Analítics' };
-  badge.textContent = planLabels[user.plan] || user.plan;
-  badge.className = 'plan-badge plan-' + user.plan;
 
-  const hasAnalytics = ['inversor', 'analitic'].includes(user.plan);
-  ['zonas', 'precios'].forEach(s => {
-    const lock = document.getElementById('lock-' + s);
-    const navItem = document.querySelector('[data-sec="' + s + '"]');
-    if (hasAnalytics) {
+  if (user.is_admin) {
+    badge.textContent = '★ Administrador';
+    badge.className = 'plan-badge plan-admin';
+    // Unlock everything
+    ['zonas', 'precios'].forEach(s => {
+      const lock = document.getElementById('lock-' + s);
+      const navItem = document.querySelector('[data-sec="' + s + '"]');
       if (lock) lock.remove();
       if (navItem) navItem.classList.remove('nav-locked');
-    }
-  });
+    });
+    // Show admin panel link
+    const adminLink = document.getElementById('nav-admin');
+    if (adminLink) adminLink.style.display = 'flex';
+  } else {
+    const planLabels = { gratis: 'Gratis', premium: 'Premium', inversor: 'Inversor', analitic: 'Analítics' };
+    badge.textContent = planLabels[user.plan] || user.plan;
+    badge.className = 'plan-badge plan-' + user.plan;
+    const hasAnalytics = ['inversor', 'analitic'].includes(user.plan);
+    ['zonas', 'precios'].forEach(s => {
+      const lock = document.getElementById('lock-' + s);
+      const navItem = document.querySelector('[data-sec="' + s + '"]');
+      if (hasAnalytics) {
+        if (lock) lock.remove();
+        if (navItem) navItem.classList.remove('nav-locked');
+      }
+    });
+  }
 }
 
 function logout() {
@@ -942,7 +962,7 @@ async function loadDolar() {
 // ── ZONAS EN AUGE ─────────────────────────────────────────────────
 async function loadZonas() {
   const container = document.getElementById('zonas-container');
-  if (!['inversor','analitic'].includes(user?.plan)) {
+  if (!user?.is_admin && !['inversor','analitic'].includes(user?.plan)) {
     container.innerHTML = renderLocked('zonas');
     return;
   }
@@ -997,7 +1017,7 @@ function switchZonaTab(id, btn) {
 // ── PRECIOS ───────────────────────────────────────────────────────
 async function loadPrecios() {
   const container = document.getElementById('precios-container');
-  if (!['inversor','analitic'].includes(user?.plan)) {
+  if (!user?.is_admin && !['inversor','analitic'].includes(user?.plan)) {
     container.innerHTML = renderLocked('precios');
     return;
   }
