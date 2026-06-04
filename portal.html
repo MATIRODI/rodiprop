@@ -428,6 +428,27 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
 }
 .btn-danger:hover{background:rgba(248,113,113,.1);}
 
+/* ── STATS BAR ── */
+.stats-bar{
+  display:flex;gap:1rem;flex-wrap:wrap;align-items:center;
+  background:var(--ink3);border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:.75rem 1.1rem;margin-bottom:.9rem;font-size:.78rem;
+}
+.stat-item{display:flex;align-items:center;gap:.45rem;color:var(--muted);}
+.stat-item strong{color:var(--cream);font-weight:600;}
+.stat-sep{color:rgba(255,255,255,.1);font-size:.7rem;}
+
+/* ── PRICE BADGE ── */
+.price-badge{
+  position:absolute;bottom:10px;right:10px;
+  border-radius:5px;padding:2px 8px;font-size:.62rem;font-weight:700;
+  letter-spacing:.04em;backdrop-filter:blur(4px);
+}
+.badge-barato{background:rgba(74,222,128,.25);color:#4ade80;}
+.badge-justo{background:rgba(96,165,250,.2);color:#60a5fa;}
+.badge-caro{background:rgba(251,191,36,.2);color:#fbbf24;}
+.badge-muy-caro{background:rgba(248,113,113,.2);color:#f87171;}
+
 /* ── CARD ACTION BUTTONS ── */
 .card-actions{
   position:absolute;top:10px;right:10px;
@@ -563,10 +584,11 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
 
     <!-- ══ PROPIEDADES ══ -->
     <section id="sec-props" class="section active">
-      <div class="section-header">
+      <div class="section-header" style="margin-bottom:1rem;">
         <h2 class="section-title">Propiedades</h2>
         <p class="section-sub">Listados en tiempo real de las 6 fuentes integradas.</p>
       </div>
+      <div class="stats-bar" id="props-stats-bar" style="display:none"></div>
       <div class="filter-panel">
         <div class="filter-grid">
           <div>
@@ -1037,6 +1059,32 @@ function shareWa(propUrl, titulo, ubicacion, moneda, precio) {
   window.open(`https://wa.me/?text=${txt}`, '_blank');
 }
 
+function updateStatsBar() {
+  const bar = document.getElementById('props-stats-bar');
+  if (!allLoadedProps.length) { bar.style.display = 'none'; return; }
+
+  const ventas = allLoadedProps.filter(p => (p.operacion||'').toLowerCase() !== 'alquiler');
+  const alquileres = allLoadedProps.filter(p => (p.operacion||'').toLowerCase() === 'alquiler');
+
+  const usdPrices = ventas
+    .filter(p => !p.moneda || p.moneda === 'USD')
+    .map(p => parseInt(String(p.precio||'').replace(/[^0-9]/g,''))||0)
+    .filter(n => n > 5000);
+  window._avgPriceUsd = usdPrices.length
+    ? Math.round(usdPrices.reduce((a,b)=>a+b,0)/usdPrices.length) : 0;
+
+  let html = `<div class="stat-item">📦 <strong>${allLoadedProps.length}</strong> propiedades</div>`;
+  if (ventas.length && alquileres.length) {
+    html += `<span class="stat-sep">·</span><div class="stat-item">🏠 <strong>${ventas.length}</strong> venta</div>`;
+    html += `<span class="stat-sep">·</span><div class="stat-item">🔑 <strong>${alquileres.length}</strong> alquiler</div>`;
+  }
+  if (window._avgPriceUsd > 0) {
+    html += `<span class="stat-sep">·</span><div class="stat-item">💰 Precio prom. venta: <strong>USD ${window._avgPriceUsd.toLocaleString('es-AR')}</strong></div>`;
+  }
+  bar.innerHTML = html;
+  bar.style.display = 'flex';
+}
+
 function renderPropCard(p) {
   const n = parseInt(String(p.precio || '').split(/[-–]/)[0].replace(/[^0-9]/g, '')) || 0;
   const precio = n > 0 ? n.toLocaleString('es-AR') : 'Consultar';
@@ -1055,11 +1103,23 @@ function renderPropCard(p) {
   const safeTitulo = (p.titulo||'Propiedad').replace(/'/g,"\\'").substring(0,60);
   const safeUbic = (p.ubicacion||'Córdoba').replace(/'/g,"\\'").substring(0,50);
   const uid = 'c' + Math.random().toString(36).slice(2,8);
+
+  let priceBadgeHtml = '';
+  const avg = window._avgPriceUsd || 0;
+  if (n > 5000 && avg > 0 && (p.moneda||'USD') === 'USD' && op !== 'alquiler') {
+    const ratio = n / avg;
+    if (ratio < 0.7) priceBadgeHtml = '<span class="price-badge badge-barato">Muy barato</span>';
+    else if (ratio < 0.88) priceBadgeHtml = '<span class="price-badge badge-justo">Precio justo</span>';
+    else if (ratio > 1.4) priceBadgeHtml = '<span class="price-badge badge-muy-caro">Muy caro</span>';
+    else if (ratio > 1.15) priceBadgeHtml = '<span class="price-badge badge-caro">Caro</span>';
+  }
+
   return `<div class="prop-card" onclick="window.open('${safeUrl}','_blank')">
     <div class="card-img">
       ${imgHtml}
       <span class="card-op op-${op}">${opLabel}</span>
       <span class="fuente-chip">${p.fuente || ''}</span>
+      ${priceBadgeHtml}
       <div class="card-actions" onclick="event.stopPropagation()">
         <button class="card-action-btn wa-btn" title="Compartir por WhatsApp" onclick="shareWa('${safeUrl}','${safeTitulo}','${safeUbic}','${moneda}','${precio}')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.535 5.857L.057 23.986l6.305-1.654A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.51-5.17-1.402l-.37-.22-3.742.981.999-3.648-.241-.375A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
@@ -1082,7 +1142,7 @@ function renderPropCard(p) {
 }
 
 async function loadProps(reset = true) {
-  if (reset) { propsOffset = 0; allLoadedProps = []; }
+  if (reset) { propsOffset = 0; allLoadedProps = []; window._avgPriceUsd = 0; }
   const container = document.getElementById('props-container');
   if (reset) container.innerHTML = '<div class="loader"><div class="spinner"></div><br>Cargando...</div>';
   const zona = document.getElementById('f-zona').value.trim();
@@ -1096,6 +1156,7 @@ async function loadProps(reset = true) {
     const d = await apiFetch(url).then(r => r.json());
     const props = d.propiedades || [];
     allLoadedProps = reset ? props : [...allLoadedProps, ...props];
+    updateStatsBar();
     if (reset) {
       container.innerHTML = props.length ? props.map(renderPropCard).join('') :
         '<div class="props-empty">No hay propiedades para esos filtros.</div>';
