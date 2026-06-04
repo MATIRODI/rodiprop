@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Cuenta – RodiProp</title>
+<meta name="description" content="Administrá tus alertas de propiedades en RodiProp. Actualizá tus preferencias de búsqueda o cambiá tu plan.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0D14; --ink2:#0F1520; --ink3:#161D2B;
+  --gold:#C6A24A; --gold2:#DDB96A; --gold3:rgba(198,162,74,.14);
+  --cream:#F4EFE8; --muted:rgba(244,239,232,.55); --dim:rgba(244,239,232,.3);
+  --border:rgba(198,162,74,.18); --soft:rgba(255,255,255,.06);
+  --green:#4ade80; --red:#f87171;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;min-height:100svh;-webkit-font-smoothing:antialiased;}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;background:rgba(10,13,20,.85);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.05);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-mark{width:32px;height:32px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1rem;color:var(--ink);}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--cream);}
+.logo-text span{color:var(--gold);}
+.back{color:var(--muted);text-decoration:none;font-size:.875rem;display:flex;align-items:center;gap:6px;transition:color .2s;}
+.back:hover{color:var(--gold);}
+
+.page{max-width:720px;margin:0 auto;padding:3rem 2rem 5rem;}
+
+/* LOOKUP */
+.lookup-card{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:2.5rem;margin-bottom:2rem;}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;margin-bottom:.4rem;}
+.card-sub{font-size:.85rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.6;}
+.input-row{display:flex;gap:.75rem;flex-wrap:wrap;}
+.fi{flex:1;min-width:200px;background:var(--soft);border:1px solid rgba(255,255,255,.09);border-radius:8px;padding:.8rem 1rem;color:var(--cream);font-family:'Inter',sans-serif;font-size:.875rem;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--gold);}
+.fi::placeholder{color:var(--dim);}
+.btn{background:var(--gold);color:var(--ink);padding:.8rem 1.8rem;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:.875rem;font-weight:600;cursor:pointer;transition:opacity .2s;}
+.btn:hover{opacity:.88;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn-outline{background:transparent;color:var(--cream);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.75rem 1.5rem;font-family:'Inter',sans-serif;font-size:.875rem;font-weight:500;cursor:pointer;transition:border-color .2s,color .2s;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.btn-danger{background:transparent;color:var(--red);border:1px solid rgba(248,113,113,.3);border-radius:8px;padding:.75rem 1.5rem;font-family:'Inter',sans-serif;font-size:.875rem;font-weight:500;cursor:pointer;transition:background .2s;}
+.btn-danger:hover{background:rgba(248,113,113,.1);}
+.msg{font-size:.82rem;padding:.6rem 0;display:none;}
+.msg.err{color:var(--red);}
+.msg.ok{color:var(--green);}
+
+/* PROFILE */
+#profile{display:none;}
+.plan-badge{display:inline-flex;align-items:center;gap:7px;background:var(--gold3);border:1px solid var(--border);border-radius:100px;padding:4px 14px;font-size:.7rem;font-weight:600;color:var(--gold2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem;}
+.plan-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+.info-card{background:var(--ink3);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1.2rem 1.4rem;}
+.info-label{font-size:.68rem;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;}
+.info-value{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--gold);}
+.info-value.sm{font-size:1rem;font-family:'Inter',sans-serif;font-weight:500;color:var(--cream);}
+
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid rgba(255,255,255,.07);}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.2rem;}
+.fl{font-size:.68rem;font-weight:600;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem;display:block;}
+.form-actions{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin-top:1.5rem;}
+
+.upgrade-box{background:linear-gradient(135deg,rgba(198,162,74,.1),rgba(198,162,74,.04));border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.upgrade-txt{font-size:.875rem;color:var(--muted);}
+.upgrade-txt strong{color:var(--gold2);font-weight:600;}
+
+.danger-zone{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(248,113,113,.15);}
+.danger-title{font-size:.72rem;font-weight:600;color:rgba(248,113,113,.6);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;}
+
+.wa-float{position:fixed;bottom:2rem;right:2rem;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 20px rgba(37,211,102,.4);z-index:999;text-decoration:none;transition:transform .2s,box-shadow .2s;}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.6);}
+
+@media(max-width:580px){.info-grid,.form-grid{grid-template-columns:1fr;}.input-row{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <div class="logo-mark">R</div>
+    <span class="logo-text">Rodi<span>Prop</span></span>
+  </a>
+  <a class="back" href="/">← Volver al inicio</a>
+</nav>
+
+<div class="page">
+
+  <!-- LOOKUP -->
+  <div class="lookup-card">
+    <div class="card-title">Mi Cuenta</div>
+    <div class="card-sub">Ingresá tu email para ver y editar tus alertas.</div>
+    <div class="input-row">
+      <input class="fi" type="email" id="email-input" placeholder="tu@email.com">
+      <button class="btn" id="lookup-btn" onclick="buscarCuenta()">Ver mi cuenta</button>
+    </div>
+    <div class="msg err" id="lookup-err"></div>
+  </div>
+
+  <!-- PROFILE (hidden until lookup) -->
+  <div id="profile">
+
+    <!-- Plan badge + stats -->
+    <div class="plan-badge"><span class="plan-dot"></span><span id="plan-txt">Plan Gratis</span></div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-label">Alertas enviadas</div>
+        <div class="info-value" id="info-alertas">0</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">Límite de alertas</div>
+        <div class="info-value" id="info-limite">7</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">Zona de búsqueda</div>
+        <div class="info-value sm" id="info-zona">—</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">Tipo de operación</div>
+        <div class="info-value sm" id="info-operacion">—</div>
+      </div>
+    </div>
+
+    <!-- Upgrade prompt for gratis users -->
+    <div class="upgrade-box" id="upgrade-box" style="display:none;">
+      <div class="upgrade-txt">Estás en el plan <strong>Gratis</strong> (7 alertas). Pasate a Premium y recibí alertas ilimitadas.</div>
+      <a href="/premium.html" class="btn" id="upgrade-link">Activar Premium →</a>
+    </div>
+
+    <!-- EDIT PREFERENCES -->
+    <div class="lookup-card" style="margin-top:1.5rem;">
+      <div class="section-title">Editar mis preferencias</div>
+      <div class="form-grid">
+        <div>
+          <span class="fl">Zona</span>
+          <input class="fi" type="text" id="f-zona" placeholder="ej: Nueva Córdoba" style="width:100%;">
+        </div>
+        <div>
+          <span class="fl">WhatsApp</span>
+          <input class="fi" type="tel" id="f-whatsapp" placeholder="ej: 3513027146" style="width:100%;">
+        </div>
+        <div>
+          <span class="fl">Operación</span>
+          <select class="fi" id="f-operacion" style="width:100%;-webkit-appearance:none;">
+            <option value="venta">Comprar</option>
+            <option value="alquiler">Alquilar</option>
+          </select>
+        </div>
+        <div>
+          <span class="fl">Tipo de propiedad</span>
+          <select class="fi" id="f-tipo" style="width:100%;-webkit-appearance:none;">
+            <option value="">Cualquier tipo</option>
+            <option value="departamento">Departamento</option>
+            <option value="casa">Casa</option>
+            <option value="ph">PH</option>
+            <option value="terreno">Terreno</option>
+            <option value="local">Local</option>
+          </select>
+        </div>
+        <div>
+          <span class="fl">Ambientes</span>
+          <select class="fi" id="f-ambientes" style="width:100%;-webkit-appearance:none;">
+            <option value="">Cualquier cantidad</option>
+            <option value="1">1 ambiente</option>
+            <option value="2">2 ambientes</option>
+            <option value="3">3 ambientes</option>
+            <option value="4">4 ambientes</option>
+            <option value="5">5+ ambientes</option>
+          </select>
+        </div>
+        <div>
+          <span class="fl">Cochera</span>
+          <select class="fi" id="f-cocheras" style="width:100%;-webkit-appearance:none;">
+            <option value="">Indiferente</option>
+            <option value="1">Con cochera</option>
+            <option value="0">Sin cochera</option>
+          </select>
+        </div>
+        <div>
+          <span class="fl">Precio mínimo</span>
+          <input class="fi" type="number" id="f-precio-min" placeholder="0" style="width:100%;">
+        </div>
+        <div>
+          <span class="fl">Precio máximo</span>
+          <input class="fi" type="number" id="f-precio-max" placeholder="Sin límite" style="width:100%;">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn" onclick="guardarPreferencias()">Guardar cambios</button>
+        <div class="msg ok" id="save-ok">¡Preferencias actualizadas!</div>
+        <div class="msg err" id="save-err"></div>
+      </div>
+    </div>
+
+    <!-- DANGER ZONE -->
+    <div class="danger-zone">
+      <div class="danger-title">Zona de peligro</div>
+      <button class="btn-danger" onclick="darDeBaja()">Dar de baja mi cuenta</button>
+      <div class="msg err" id="baja-msg" style="margin-top:.5rem;"></div>
+    </div>
+
+  </div>
+</div>
+
+<a href="https://wa.me/543516508433" target="_blank" class="wa-float" title="Consultanos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const API = 'https://web-production-88fd4.up.railway.app';
+let currentEmail = '';
+
+const ep = new URLSearchParams(location.search).get('email') || '';
+if (ep) { document.getElementById('email-input').value = ep; buscarCuenta(); }
+
+async function buscarCuenta() {
+  const email = document.getElementById('email-input').value.trim().toLowerCase();
+  const errEl = document.getElementById('lookup-err');
+  errEl.style.display = 'none';
+  if (!email || !email.includes('@')) { errEl.textContent = 'Ingresá un email válido.'; errEl.style.display = 'block'; return; }
+  const btn = document.getElementById('lookup-btn');
+  btn.disabled = true; btn.textContent = 'Buscando...';
+  try {
+    const d = await fetch(API + '/api/usuarios/perfil?email=' + encodeURIComponent(email)).then(r => r.json());
+    if (d.error) { errEl.textContent = d.error === 'Usuario no encontrado' ? 'No encontramos una cuenta con ese email. ¿Querés crear una?' : d.error; errEl.style.display = 'block'; return; }
+    currentEmail = email;
+    poblarPerfil(d);
+    document.getElementById('profile').style.display = 'block';
+    document.getElementById('profile').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(e) {
+    errEl.textContent = 'Error de conexión. Intentá de nuevo.'; errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Ver mi cuenta';
+  }
+}
+
+function poblarPerfil(u) {
+  const plan = u.plan || 'gratis';
+  const planNames = { gratis: 'Plan Gratis', premium: 'Plan Premium', inversor: 'Plan Inversor' };
+  document.getElementById('plan-txt').textContent = planNames[plan] || plan;
+  document.getElementById('info-alertas').textContent = u.alertas_enviadas_count || 0;
+  document.getElementById('info-limite').textContent = (plan === 'gratis') ? '7' : '∞';
+  document.getElementById('info-zona').textContent = u.zona || '(sin zona)';
+  document.getElementById('info-operacion').textContent = u.operacion === 'alquiler' ? 'Alquiler' : 'Venta';
+
+  const upgradeBox = document.getElementById('upgrade-box');
+  if (plan === 'gratis') {
+    upgradeBox.style.display = 'flex';
+    document.getElementById('upgrade-link').href = '/premium.html?email=' + encodeURIComponent(currentEmail);
+  } else {
+    upgradeBox.style.display = 'none';
+  }
+
+  document.getElementById('f-zona').value = u.zona || '';
+  document.getElementById('f-whatsapp').value = u.whatsapp || '';
+  document.getElementById('f-operacion').value = u.operacion || 'venta';
+  document.getElementById('f-tipo').value = u.tipo || '';
+  document.getElementById('f-ambientes').value = u.ambientes || '';
+  document.getElementById('f-cocheras').value = u.cocheras || '';
+  document.getElementById('f-precio-min').value = u.precio_min > 0 ? u.precio_min : '';
+  document.getElementById('f-precio-max').value = u.precio_max < 999999999 ? u.precio_max : '';
+}
+
+async function guardarPreferencias() {
+  const okEl = document.getElementById('save-ok');
+  const errEl = document.getElementById('save-err');
+  okEl.style.display = 'none'; errEl.style.display = 'none';
+  try {
+    const r = await fetch(API + '/api/usuarios/actualizar', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: currentEmail,
+        zona: document.getElementById('f-zona').value.trim(),
+        whatsapp: document.getElementById('f-whatsapp').value.trim(),
+        operacion: document.getElementById('f-operacion').value,
+        tipo: document.getElementById('f-tipo').value,
+        ambientes: document.getElementById('f-ambientes').value,
+        cocheras: document.getElementById('f-cocheras').value,
+        precio_min: parseInt(document.getElementById('f-precio-min').value) || 0,
+        precio_max: parseInt(document.getElementById('f-precio-max').value) || 999999999,
+      })
+    });
+    const d = await r.json();
+    if (d.status === 'ok') { okEl.style.display = 'block'; setTimeout(() => okEl.style.display = 'none', 3000); }
+    else { errEl.textContent = d.error || 'Error al guardar.'; errEl.style.display = 'block'; }
+  } catch(e) {
+    errEl.textContent = 'Error de conexión.'; errEl.style.display = 'block';
+  }
+}
+
+async function darDeBaja() {
+  if (!confirm('¿Seguro que querés dar de baja tu cuenta? Vas a dejar de recibir alertas.')) return;
+  const msgEl = document.getElementById('baja-msg');
+  try {
+    const r = await fetch(API + '/api/usuarios/baja', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: currentEmail })
+    });
+    const d = await r.json();
+    if (d.status === 'ok') {
+      msgEl.textContent = 'Cuenta desactivada. Ya no recibirás alertas.';
+      msgEl.classList.remove('err'); msgEl.classList.add('ok'); msgEl.style.display = 'block';
+      document.getElementById('profile').style.opacity = '.5';
+    } else {
+      msgEl.textContent = d.error || 'Error al dar de baja.'; msgEl.style.display = 'block';
+    }
+  } catch(e) {
+    msgEl.textContent = 'Error de conexión.'; msgEl.style.display = 'block';
+  }
+}
+
+document.getElementById('email-input').addEventListener('keypress', e => { if (e.key === 'Enter') buscarCuenta(); });
+</script>
+</body>
+</html>

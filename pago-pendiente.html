@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pago pendiente – RodiProp</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0A0D14;--ink2:#0F1520;--gold:#C6A24A;--gold2:#DDB96A;--gold3:rgba(198,162,74,.14);--cream:#F4EFE8;--muted:rgba(244,239,232,.55);--border:rgba(198,162,74,.18);--yellow:#fbbf24;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;-webkit-font-smoothing:antialiased;}
+.card{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:3rem 2.5rem;max-width:460px;width:100%;text-align:center;}
+.icon{width:72px;height:72px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;}
+.icon svg{color:var(--yellow);}
+.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:100px;padding:4px 14px;font-size:.7rem;font-weight:600;color:var(--yellow);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem;}
+h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;margin-bottom:.6rem;}
+.sub{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;}
+.info-box{background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.2);border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:2rem;font-size:.83rem;color:var(--muted);line-height:1.7;text-align:left;}
+.info-box strong{color:var(--yellow);}
+.actions{display:flex;flex-direction:column;gap:.75rem;}
+.btn-primary{background:var(--gold);color:var(--ink);padding:.85rem 2rem;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;display:block;transition:opacity .2s;}
+.btn-primary:hover{opacity:.88;}
+.btn-outline{background:transparent;color:var(--cream);border:1px solid rgba(255,255,255,.15);padding:.85rem 2rem;border-radius:8px;font-size:.875rem;text-decoration:none;display:block;transition:border-color .2s;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;justify-content:center;margin-bottom:2.5rem;}
+.logo-mark{width:30px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:.95rem;color:var(--ink);}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;}
+.logo-text span{color:var(--gold);}
+.wa-float{position:fixed;bottom:2rem;right:2rem;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 20px rgba(37,211,102,.4);z-index:999;text-decoration:none;transition:transform .2s;}
+.wa-float:hover{transform:scale(1.1);}
+</style>
+</head>
+<body>
+<div class="card">
+  <a class="logo" href="/">
+    <div class="logo-mark">R</div>
+    <span class="logo-text">Rodi<span>Prop</span></span>
+  </a>
+  <div class="icon">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  </div>
+  <div class="badge">⏳ En proceso</div>
+  <h1>Pago en revisión</h1>
+  <p class="sub">Tu pago está siendo procesado. Mercado Pago puede tardar hasta 24 horas en confirmarlo.</p>
+  <div class="info-box">
+    <strong>¿Qué pasa ahora?</strong><br>
+    Cuando el pago sea confirmado, tu plan se activará automáticamente y empezarás a recibir alertas ilimitadas por WhatsApp.<br><br>
+    Si después de 24 horas no recibís la confirmación, escribinos por WhatsApp.
+  </div>
+  <div class="actions">
+    <a href="/" class="btn-primary">Volver al inicio</a>
+    <a href="https://wa.me/543516508433" target="_blank" class="btn-outline">Consultar por WhatsApp</a>
+  </div>
+</div>
+<a href="https://wa.me/543516508433" target="_blank" class="wa-float" title="Soporte WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+</body>
+</html>

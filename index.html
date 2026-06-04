@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RodiProp – Todas las propiedades de Córdoba en un solo lugar</title>
+<meta name="description" content="Buscá propiedades en venta y alquiler en Córdoba. Agregamos en tiempo real listados de MercadoLibre, ArgenProp, Zonaprop, Remax, La Voz y más.">
+<meta name="keywords" content="propiedades córdoba, alquiler córdoba, venta casas córdoba, departamentos córdoba, inmobiliaria córdoba">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="RodiProp – Propiedades en Córdoba">
+<meta property="og:description" content="Todas las propiedades de Córdoba en un solo lugar. Alertas por WhatsApp incluidas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rodiprop.gruporodi.com.ar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RodiProp – Propiedades en Córdoba">
+<meta name="twitter:description" content="Todas las propiedades de Córdoba en un solo lugar.">
+<link rel="canonical" href="https://rodiprop.gruporodi.com.ar">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -902,6 +913,16 @@ async function cargarTicker() {
 }
 
 /* ── PROP CARDS ── */
+function proxyImg(img) {
+  const orig = img.dataset.orig;
+  if (orig && !img.dataset.proxied) {
+    img.dataset.proxied = '1';
+    img.src = API_URL + '/api/imagen?url=' + encodeURIComponent(orig);
+  } else {
+    img.parentElement.innerHTML = '<div class="card-img-placeholder">🏘</div>';
+  }
+}
+
 function renderProps(props) {
   if (!props || !props.length) {
     return '<div class="props-empty"><div style="font-size:1.8rem;margin-bottom:.5rem;opacity:.4">🏚</div>No hay propiedades para esos filtros.</div>';
@@ -917,7 +938,7 @@ function renderProps(props) {
     const attrs = (p.atributos || []).slice(0,3).filter(Boolean);
 
     const imgHtml = p.imagen
-      ? `<img src="${p.imagen}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-img-placeholder>🏘</div>'">`
+      ? `<img src="${p.imagen}" loading="lazy" data-orig="${p.imagen}" onerror="proxyImg(this)">`
       : `<div class="card-img-placeholder">🏘</div>`;
 
     return `<div class="prop-card" onclick="window.open('${p.url}','_blank')">

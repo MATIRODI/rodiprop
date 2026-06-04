@@ -1,98 +1,128 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RodiProp Premium</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{--navy:#0D1B2A;--navy2:#111E2D;--navy3:#1A2F44;--gold:#C9A84C;--gold2:#E2C47A;--white:#F7F4EF;--gray:#8A9BB0;--border:rgba(201,168,76,0.2);}
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
-    .wa-float{position:fixed;bottom:2rem;right:2rem;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 20px rgba(37,211,102,.45);z-index:999;text-decoration:none;transition:transform .2s,box-shadow .2s;}
-    .wa-float:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.65);}
-    .split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;}
-    .left{position:relative;background:#050e17;overflow:hidden;}
-    .left-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80');background-size:cover;background-position:center;opacity:.35;}
-    .left-ov{position:absolute;inset:0;background:linear-gradient(160deg,rgba(13,27,42,.92) 0%,rgba(13,27,42,.55) 100%);}
-    .left-cnt{position:relative;z-index:1;padding:3rem;display:flex;flex-direction:column;height:100%;}
-    .logo{display:flex;align-items:center;gap:10px;}
-    .logo-mark{width:38px;height:38px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--navy);}
-    .logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;}
-    .left-hero{margin-top:auto;padding-bottom:.5rem;}
-    .left-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:900;line-height:1.1;margin-bottom:1rem;}
-    .left-hero h1 em{font-style:italic;color:var(--gold);}
-    .left-hero p{font-size:14px;color:rgba(247,244,239,.6);line-height:1.7;max-width:360px;font-weight:300;}
-    .left-stats{display:flex;gap:2rem;margin-top:2rem;}
-    .stat-num{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:var(--gold);display:block;}
-    .stat-lbl{font-size:10px;color:rgba(247,244,239,.4);text-transform:uppercase;letter-spacing:.07em;}
-    .right{background:var(--navy2);display:flex;align-items:center;justify-content:center;padding:3rem 2.5rem;overflow-y:auto;}
-    .fw{width:100%;max-width:420px;}
-    .f-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.1);border:1px solid var(--border);border-radius:99px;padding:4px 14px;font-size:11px;font-weight:500;color:var(--gold2);letter-spacing:.05em;margin-bottom:1.5rem;}
-    .f-badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:p 2s infinite;}
-    @keyframes p{0%,100%{opacity:1;}50%{opacity:.3;}}
-    .f-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:.4rem;}
-    .f-sub{font-size:13px;color:var(--gray);font-weight:300;margin-bottom:1.75rem;line-height:1.6;}
-    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem;}
-    .tab{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:.9rem 1rem;cursor:pointer;transition:all .2s;text-align:left;}
-    .tab:hover{border-color:rgba(201,168,76,.3);}
-    .tab.on{border-color:var(--gold);background:rgba(201,168,76,.07);}
-    .tab-badge{display:inline-block;background:var(--gold);color:var(--navy);font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;letter-spacing:.05em;margin-bottom:.35rem;}
-    .tab-name{font-weight:500;font-size:13px;margin-bottom:.15rem;}
-    .tab-price{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--gold);}
-    .tab-period{font-size:10px;color:var(--gray);font-weight:300;}
-    .feats{list-style:none;margin-bottom:1.5rem;}
-    .feats li{display:flex;align-items:center;gap:9px;font-size:13px;padding:.35rem 0;font-weight:300;color:rgba(247,244,239,.8);}
-    .feats li.hi{color:var(--gold2);font-weight:400;}
-    .fck{width:17px;height:17px;flex-shrink:0;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;}
-    .fck svg{width:8px;height:8px;}
-    .ftag{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:1px 5px;font-size:9px;font-weight:500;color:var(--gold);margin-left:4px;}
-    .el{display:block;font-size:11px;color:var(--gray);margin-bottom:5px;letter-spacing:.04em;}
-    .ei{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.8rem 1rem;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;margin-bottom:1rem;}
-    .ei:focus{border-color:var(--gold);}
-    .ei::placeholder{color:var(--gray);}
-    .tipo-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem;}
-    .tipo{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.55rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--gray);transition:all .2s;text-align:center;}
-    .tipo.on{border-color:var(--gold);color:var(--gold2);background:rgba(201,168,76,.07);}
-    .err{display:none;background:rgba(220,50,50,.1);border:1px solid rgba(220,50,50,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:#f87171;margin-bottom:1rem;text-align:center;}
-    .btn{display:block;width:100%;padding:.9rem;background:var(--gold);color:var(--navy);border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:background .2s,transform .15s;margin-bottom:1rem;}
-    .btn:hover{background:var(--gold2);transform:translateY(-1px);}
-    .btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-    .btn .l1{display:inline;}
-    .btn .l2{display:none;}
-    .btn.loading .l1{display:none;}
-    .btn.loading .l2{display:inline;}
-    .guar{display:flex;align-items:center;justify-content:center;gap:7px;font-size:11px;color:var(--gray);font-weight:300;}
-    .foot{margin-top:1.5rem;text-align:center;font-size:12px;color:var(--gray);font-weight:300;line-height:1.7;}
-    .foot a{color:var(--gold);text-decoration:none;}
-    @media(max-width:768px){.split{grid-template-columns:1fr;}.left{display:none;}.right{padding:2rem 1.5rem;}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RodiProp Premium – Alertas ilimitadas de propiedades en Córdoba</title>
+<meta name="description" content="Activá tu plan Premium y recibí alertas ilimitadas de propiedades en Córdoba por WhatsApp. Desde $4.999/mes, cancelás cuando querés.">
+<meta property="og:title" content="RodiProp Premium – Alertas ilimitadas">
+<meta property="og:description" content="Recibí alertas de propiedades al instante. Monitoreo 24/7 de ArgenProp, MercadoLibre, ZonaProp, RE/MAX y más.">
+<meta property="og:url" content="https://rodiprop.gruporodi.com.ar/premium.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0D14; --ink2:#0F1520; --ink3:#161D2B;
+  --gold:#C6A24A; --gold2:#DDB96A; --gold3:rgba(198,162,74,.14);
+  --cream:#F4EFE8; --muted:rgba(244,239,232,.55); --dim:rgba(244,239,232,.3);
+  --border:rgba(198,162,74,.18); --soft:rgba(255,255,255,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;}
+/* LEFT */
+.left{position:relative;background:#050a10;overflow:hidden;}
+.left-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80');background-size:cover;background-position:center;opacity:.28;}
+.left-ov{position:absolute;inset:0;background:linear-gradient(160deg,rgba(10,13,20,.95) 0%,rgba(10,13,20,.6) 100%);}
+.left-cnt{position:relative;z-index:1;padding:2.8rem 3rem;display:flex;flex-direction:column;min-height:100vh;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-mark{width:34px;height:34px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.1rem;color:var(--ink);}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--cream);}
+.logo-text span{color:var(--gold);}
+.left-body{margin-top:auto;padding-bottom:1rem;}
+.left-kicker{font-size:.7rem;font-weight:600;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;}
+.left-body h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:600;line-height:1.08;margin-bottom:1rem;}
+.left-body h1 em{font-style:italic;color:var(--gold);}
+.left-body p{font-size:.875rem;color:var(--muted);line-height:1.75;max-width:380px;}
+.left-stats{display:flex;gap:2.5rem;margin-top:2rem;}
+.sn{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:var(--gold);display:block;line-height:1;}
+.sl{font-size:.68rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:.25rem;display:block;}
+.left-feats{margin-top:2.5rem;border-top:1px solid rgba(255,255,255,.07);padding-top:1.5rem;}
+.lf-item{display:flex;align-items:center;gap:10px;font-size:.82rem;color:var(--muted);padding:.35rem 0;}
+.lf-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+/* RIGHT */
+.right{background:var(--ink2);display:flex;align-items:center;justify-content:center;padding:3rem 2.5rem;overflow-y:auto;}
+.fw{width:100%;max-width:420px;}
+.f-kicker{display:inline-flex;align-items:center;gap:7px;background:var(--gold3);border:1px solid var(--border);border-radius:100px;padding:4px 14px;font-size:.7rem;font-weight:600;color:var(--gold2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem;}
+.f-kicker::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.f-title{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:600;margin-bottom:.3rem;}
+.f-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.75rem;line-height:1.6;}
+/* PLAN TABS */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;}
+.tab{background:var(--soft);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:.9rem 1rem;cursor:pointer;transition:border-color .2s,background .2s;text-align:left;}
+.tab:hover{border-color:rgba(198,162,74,.3);}
+.tab.on{border-color:var(--gold);background:rgba(198,162,74,.07);}
+.tab-badge{display:inline-block;background:var(--gold);color:var(--ink);font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.06em;margin-bottom:.35rem;}
+.tab-name{font-weight:500;font-size:.82rem;color:var(--muted);margin-bottom:.2rem;}
+.tab.on .tab-name{color:var(--cream);}
+.tab-price{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--gold);}
+.tab-period{font-size:.68rem;color:var(--dim);}
+/* FEATS */
+.feats{list-style:none;margin-bottom:1.5rem;}
+.feats li{display:flex;align-items:flex-start;gap:9px;font-size:.83rem;color:var(--muted);padding:.38rem 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.feats li:last-child{border-bottom:none;}
+.feats li.hi{color:var(--gold2);}
+.fck{width:18px;height:18px;flex-shrink:0;border-radius:50%;background:var(--gold3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.ftag{background:rgba(198,162,74,.15);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:.65rem;font-weight:600;color:var(--gold);margin-left:5px;white-space:nowrap;}
+/* FORM */
+.f-label{display:block;font-size:.68rem;font-weight:600;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem;}
+.f-input{width:100%;background:var(--soft);border:1px solid rgba(255,255,255,.09);border-radius:8px;padding:.8rem 1rem;color:var(--cream);font-family:'Inter',sans-serif;font-size:.875rem;outline:none;transition:border-color .2s;margin-bottom:1rem;}
+.f-input:focus{border-color:var(--gold);}
+.f-input::placeholder{color:var(--dim);}
+.tipo-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem;}
+.tipo{background:var(--soft);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.55rem;cursor:pointer;font-family:'Inter',sans-serif;font-size:.78rem;color:var(--muted);transition:all .2s;text-align:center;}
+.tipo.on{border-color:var(--gold);color:var(--gold2);background:rgba(198,162,74,.07);}
+.f-err{display:none;background:rgba(220,50,50,.1);border:1px solid rgba(220,50,50,.3);border-radius:8px;padding:10px 14px;font-size:.8rem;color:#f87171;margin-bottom:1rem;text-align:center;}
+.btn{display:block;width:100%;padding:.9rem;background:var(--gold);color:var(--ink);border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:opacity .2s,transform .15s;margin-bottom:1rem;}
+.btn:hover{opacity:.88;transform:translateY(-1px);}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.guar{display:flex;align-items:center;justify-content:center;gap:7px;font-size:.75rem;color:var(--dim);}
+.foot{margin-top:1.5rem;text-align:center;font-size:.75rem;color:var(--dim);line-height:1.7;}
+.foot a{color:var(--gold);text-decoration:none;}
+/* WA */
+.wa-float{position:fixed;bottom:2rem;right:2rem;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 20px rgba(37,211,102,.4);z-index:999;text-decoration:none;transition:transform .2s,box-shadow .2s;}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.6);}
+@media(max-width:768px){.split{grid-template-columns:1fr;}.left{display:none;}.right{padding:2rem 1.5rem;min-height:100svh;}}
+</style>
 </head>
 <body>
 <div class="split">
+
+  <!-- LEFT -->
   <div class="left">
     <div class="left-bg"></div>
     <div class="left-ov"></div>
     <div class="left-cnt">
-      <div class="logo">
+      <a class="logo" href="/">
         <div class="logo-mark">R</div>
-        <span class="logo-text">RodiProp</span>
-      </div>
-      <div class="left-hero">
+        <span class="logo-text">Rodi<span>Prop</span></span>
+      </a>
+      <div class="left-body">
+        <p class="left-kicker">Plan Premium</p>
         <h1>Las mejores propiedades<br>se van en <em>horas</em>.</h1>
         <p>Activá Premium y llegás primero a cada oportunidad. Monitoreo 24/7 de los principales portales inmobiliarios de Córdoba.</p>
         <div class="left-stats">
-          <div><span class="stat-num" id="sn">6.000+</span><span class="stat-lbl">Propiedades</span></div>
-          <div><span class="stat-num">27</span><span class="stat-lbl">Localidades</span></div>
-          <div><span class="stat-num">24/7</span><span class="stat-lbl">Monitoreo</span></div>
+          <div><span class="sn" id="sn">6.000+</span><span class="sl">Propiedades</span></div>
+          <div><span class="sn">27</span><span class="sl">Localidades</span></div>
+          <div><span class="sn">24/7</span><span class="sl">Monitoreo</span></div>
+        </div>
+        <div class="left-feats">
+          <div class="lf-item"><span class="lf-dot"></span>ArgenProp · MercadoLibre · ZonaProp</div>
+          <div class="lf-item"><span class="lf-dot"></span>RE/MAX Argentina · LaVoz · Inmuebles.com</div>
+          <div class="lf-item"><span class="lf-dot"></span>Alertas por WhatsApp al instante</div>
+          <div class="lf-item"><span class="lf-dot"></span>Cancelás cuando querés</div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- RIGHT -->
   <div class="right">
     <div class="fw">
-      <div class="f-badge">Activar plan</div>
+      <div class="f-kicker">Activar plan</div>
       <div class="f-title">Elegí tu plan</div>
       <div class="f-sub">Sin permanencia. Cancelás cuando querés.</div>
 
@@ -112,116 +142,111 @@
 
       <ul class="feats" id="flist"></ul>
 
-      <label class="el">TU EMAIL DE REGISTRO</label>
-      <input class="ei" type="email" id="ei" placeholder="tu@email.com">
+      <label class="f-label" for="ei">Tu email de registro</label>
+      <input class="f-input" type="email" id="ei" placeholder="tu@email.com">
 
       <div class="tipo-row">
         <button class="tipo on" id="tipo-suscripcion" onclick="selTipo('suscripcion')">Débito automático</button>
         <button class="tipo" id="tipo-checkout" onclick="selTipo('checkout')">Pago único</button>
       </div>
 
-      <div class="err" id="err"></div>
+      <div class="f-err" id="err"></div>
 
       <button class="btn" id="btn" onclick="pagar()">
-        <span class="l1">Suscribirme a Premium</span>
-        <span class="l2">Redirigiendo a Mercado Pago...</span>
+        <span id="btn-txt">Suscribirme a Premium</span>
       </button>
 
       <div class="guar">
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L7.8 4.2L11.5 4.7L9 7L9.6 10.8L6.5 9L3.4 10.8L4 7L1.5 4.7L5.2 4.2L6.5 1Z" stroke="var(--gray)" stroke-width="1" stroke-linejoin="round"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         Pago seguro con Mercado Pago
       </div>
 
       <div class="foot">
-        Un producto de <a href="https://rodiprop.gruporodi.com.ar">Grupo Rodi Inmobiliaria</a><br>
-        <em>Soluciones Inteligentes para el Mercado</em>
+        Un producto de <a href="/">Grupo Rodi Inmobiliaria</a><br>
+        <a href="/terminos.html">Términos y condiciones</a> · <a href="https://wa.me/543516508433" target="_blank">Soporte WhatsApp</a>
       </div>
     </div>
   </div>
+
 </div>
-
-<script>
-  const API = 'https://web-production-88fd4.up.railway.app';
-  const ep = new URLSearchParams(location.search).get('email') || '';
-  if (ep) document.getElementById('ei').value = ep;
-
-  let plan = 'premium', tipo = 'suscripcion';
-
-  const FEATS = {
-    premium: [
-      {t:'Alertas ilimitadas por WhatsApp',hi:false},
-      {t:'Filtros por ambientes, cochera y precio',hi:false},
-      {t:'MercadoLibre + ArgenProp + LaVoz',hi:false},
-      {t:'27 localidades de Córdoba · monitoreo 24/7',hi:false},
-      {t:'Cancelás cuando querés',hi:false},
-    ],
-    inversor: [
-      {t:'Todo lo incluido en Premium',hi:false},
-      {t:'Tasador de Propiedades — informe PDF',hi:true},
-      {t:'Analytics de precios por barrio',hi:true},
-      {t:'Asesor dedicado por WhatsApp',hi:true},
-      {t:'Acceso API (próximamente)',hi:false},
-    ]
-  };
-
-  function renderFeats(p) {
-    document.getElementById('flist').innerHTML = FEATS[p].map(f =>
-      '<li class="' + (f.hi?'hi':'') + '">' +
-      '<div class="fck"><svg viewBox="0 0 9 8" fill="none"><path d="M1 4L3.2 6.2L8 1" stroke="#C9A84C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
-      f.t + (f.hi?'<span class="ftag">EXCLUSIVO</span>':'') + '</li>'
-    ).join('');
-  }
-
-  function selPlan(p) {
-    plan = p;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
-    document.getElementById('tab-' + p).classList.add('on');
-    renderFeats(p);
-    const btn = document.getElementById('btn');
-    btn.querySelector('.l1').textContent = p === 'premium' ? 'Suscribirme a Premium' : 'Suscribirme a Inversor';
-  }
-
-  function selTipo(t) {
-    tipo = t;
-    document.querySelectorAll('.tipo').forEach(b => b.classList.remove('on'));
-    document.getElementById('tipo-' + t).classList.add('on');
-  }
-
-  async function pagar() {
-    const email = document.getElementById('ei').value.trim().toLowerCase();
-    const err = document.getElementById('err');
-    err.style.display = 'none';
-    if (!email || !email.includes('@')) { err.textContent = 'Ingresá tu email de registro.'; err.style.display = 'block'; return; }
-    const btn = document.getElementById('btn');
-    btn.disabled = true; btn.classList.add('loading');
-    try {
-      const r = await fetch(API + '/api/pagos/crear', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ email, plan, tipo })
-      });
-      const d = await r.json();
-      if (d.init_point) { window.location.href = d.init_point; }
-      else { throw new Error(d.error || 'No se pudo crear el pago'); }
-    } catch(e) {
-      err.textContent = 'Error: ' + e.message + '. Intentá de nuevo o escribinos.';
-      err.style.display = 'block';
-      btn.disabled = false; btn.classList.remove('loading');
-    }
-  }
-
-  async function cargarStats() {
-    try {
-      const d = await fetch(API + '/').then(r => r.json());
-      if (d.total > 0) document.getElementById('sn').textContent = d.total.toLocaleString('es-AR') + '+';
-    } catch(e) {}
-  }
-
-  renderFeats('premium');
-  cargarStats();
-</script>
 
 <a href="https://wa.me/543516508433" target="_blank" class="wa-float" title="Consultanos por WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
+
+<script>
+const API = 'https://web-production-88fd4.up.railway.app';
+const ep = new URLSearchParams(location.search).get('email') || '';
+if (ep) document.getElementById('ei').value = ep;
+
+let plan = 'premium', tipo = 'suscripcion';
+
+const FEATS = {
+  premium:[
+    {t:'Alertas ilimitadas por WhatsApp',hi:false},
+    {t:'Filtros por ambientes, cochera y precio',hi:false},
+    {t:'6 portales: ML, ArgenProp, ZonaProp, Remax y más',hi:false},
+    {t:'27 localidades de Córdoba · monitoreo 24/7',hi:false},
+    {t:'Cancelás cuando querés',hi:false},
+  ],
+  inversor:[
+    {t:'Todo lo incluido en Premium',hi:false},
+    {t:'Tasador de Propiedades — informe PDF',hi:true},
+    {t:'Analytics de precios por barrio',hi:true},
+    {t:'Asesor dedicado por WhatsApp',hi:true},
+    {t:'Acceso API (próximamente)',hi:false},
+  ]
+};
+
+function renderFeats(p){
+  document.getElementById('flist').innerHTML=FEATS[p].map(f=>
+    `<li class="${f.hi?'hi':''}">`+
+    `<div class="fck"><svg viewBox="0 0 9 8" fill="none"><path d="M1 4L3.2 6.2L8 1" stroke="#C6A24A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`+
+    f.t+(f.hi?'<span class="ftag">EXCLUSIVO</span>':'')+`</li>`
+  ).join('');
+}
+
+function selPlan(p){
+  plan=p;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('tab-'+p).classList.add('on');
+  renderFeats(p);
+  document.getElementById('btn-txt').textContent=p==='premium'?'Suscribirme a Premium':'Suscribirme a Inversor';
+}
+
+function selTipo(t){
+  tipo=t;
+  document.querySelectorAll('.tipo').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tipo-'+t).classList.add('on');
+}
+
+async function pagar(){
+  const email=document.getElementById('ei').value.trim().toLowerCase();
+  const err=document.getElementById('err');
+  err.style.display='none';
+  if(!email||!email.includes('@')){err.textContent='Ingresá tu email de registro.';err.style.display='block';return;}
+  const btn=document.getElementById('btn');
+  btn.disabled=true;
+  document.getElementById('btn-txt').textContent='Redirigiendo a Mercado Pago...';
+  try{
+    const r=await fetch(API+'/api/pagos/crear',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,plan,tipo})});
+    const d=await r.json();
+    if(d.init_point){window.location.href=d.init_point;}
+    else{throw new Error(d.error||'No se pudo crear el pago');}
+  }catch(e){
+    err.textContent='Error: '+e.message+'. Intentá de nuevo o escribinos.';
+    err.style.display='block';
+    btn.disabled=false;
+    document.getElementById('btn-txt').textContent=plan==='premium'?'Suscribirme a Premium':'Suscribirme a Inversor';
+  }
+}
+
+async function cargarStats(){
+  try{const d=await fetch(API+'/').then(r=>r.json());if(d.total>0)document.getElementById('sn').textContent=d.total.toLocaleString('es-AR')+'+';}catch(e){}
+}
+
+renderFeats('premium');
+cargarStats();
+</script>
 </body>
 </html>
