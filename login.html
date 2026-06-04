@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingresar – RodiProp</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0D14;--ink2:#0F1520;--ink3:#161D2B;
+  --gold:#C6A24A;--gold2:#DDB96A;--gold3:rgba(198,162,74,.14);
+  --cream:#F4EFE8;--muted:rgba(244,239,232,.55);--dim:rgba(244,239,232,.25);
+  --border:rgba(198,162,74,.18);--soft:rgba(255,255,255,.06);
+  --red:#f87171;--green:#4ade80;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;
+  min-height:100svh;display:grid;grid-template-columns:1fr 1fr;
+  -webkit-font-smoothing:antialiased;
+}
+/* ── LEFT PANEL ── */
+.panel-left{
+  background:var(--ink2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:4rem 3.5rem;position:relative;overflow:hidden;
+}
+.panel-left::before{
+  content:'';position:absolute;top:-60px;left:-60px;
+  width:320px;height:320px;
+  background:radial-gradient(circle,rgba(198,162,74,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:3rem;}
+.logo-mark{
+  width:38px;height:38px;background:var(--gold);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.15rem;color:var(--ink);
+}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;}
+.logo-text span{color:var(--gold);}
+.panel-title{
+  font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:600;
+  line-height:1.2;margin-bottom:1rem;
+}
+.panel-sub{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:2.5rem;}
+.feature-list{display:flex;flex-direction:column;gap:.85rem;}
+.feature{display:flex;align-items:flex-start;gap:.75rem;}
+.feat-icon{
+  width:32px;height:32px;background:var(--gold3);border:1px solid var(--border);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:.9rem;
+}
+.feat-text{font-size:.83rem;color:var(--muted);line-height:1.5;padding-top:6px;}
+.feat-text strong{color:var(--cream);font-weight:500;}
+/* ── RIGHT PANEL ── */
+.panel-right{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:4rem 3rem;
+}
+.form-card{width:100%;max-width:400px;}
+/* ── TABS ── */
+.tabs{display:flex;gap:4px;background:var(--soft);border-radius:10px;padding:4px;margin-bottom:2rem;}
+.tab{
+  flex:1;padding:.6rem;text-align:center;font-size:.83rem;font-weight:500;
+  border-radius:8px;cursor:pointer;color:var(--muted);transition:all .2s;border:none;background:none;
+}
+.tab.active{background:var(--ink3);color:var(--cream);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+/* ── FORM ── */
+.form-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;margin-bottom:.3rem;}
+.form-sub{font-size:.83rem;color:var(--muted);margin-bottom:1.8rem;}
+.form-group{margin-bottom:1rem;}
+label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;}
+input[type=text],input[type=email],input[type=password],input[type=tel]{
+  width:100%;background:var(--ink3);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:.75rem 1rem;font-size:.9rem;color:var(--cream);
+  font-family:'Inter',sans-serif;transition:border-color .2s;outline:none;
+}
+input:focus{border-color:var(--gold);}
+.btn{
+  width:100%;padding:.85rem;background:var(--gold);color:var(--ink);
+  border:none;border-radius:8px;font-size:.9rem;font-weight:600;
+  cursor:pointer;transition:opacity .2s;font-family:'Inter',sans-serif;
+  margin-top:.5rem;
+}
+.btn:hover{opacity:.88;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn-ghost{
+  background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,.1);
+  margin-top:.5rem;
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);opacity:1;}
+.alert{
+  padding:.75rem 1rem;border-radius:8px;font-size:.82rem;margin-bottom:1rem;
+  display:none;
+}
+.alert-error{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red);}
+.alert-success{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:var(--green);}
+.divider{text-align:center;color:var(--dim);font-size:.78rem;margin:.8rem 0;position:relative;}
+.divider::before,.divider::after{
+  content:'';position:absolute;top:50%;width:40%;height:1px;background:rgba(255,255,255,.07);
+}
+.divider::before{left:0;}.divider::after{right:0;}
+.back-link{display:block;text-align:center;font-size:.8rem;color:var(--muted);text-decoration:none;margin-top:1.5rem;}
+.back-link:hover{color:var(--gold);}
+.form-panel{display:none;}
+.form-panel.active{display:block;}
+/* ── MOBILE ── */
+@media(max-width:768px){
+  body{grid-template-columns:1fr;}
+  .panel-left{display:none;}
+  .panel-right{padding:2.5rem 1.5rem;min-height:100svh;}
+}
+</style>
+</head>
+<body>
+<div class="panel-left">
+  <a class="logo" href="/">
+    <div class="logo-mark">R</div>
+    <span class="logo-text">Rodi<span>Prop</span></span>
+  </a>
+  <h2 class="panel-title">Tu portal<br>inmobiliario<br>privado.</h2>
+  <p class="panel-sub">Accedé a propiedades en tiempo real, configurá tus alertas y analizá el mercado de Córdoba.</p>
+  <div class="feature-list">
+    <div class="feature">
+      <div class="feat-icon">🏘</div>
+      <div class="feat-text"><strong>Listados en tiempo real</strong><br>6 fuentes integradas: MercadoLibre, Zonaprop, Remax y más.</div>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">🔔</div>
+      <div class="feat-text"><strong>Alertas por WhatsApp</strong><br>Recibís notificación en el momento en que aparece una propiedad.</div>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">🏦</div>
+      <div class="feat-text"><strong>Créditos hipotecarios</strong><br>Comparador de préstamos + simulador de cuota UVA.</div>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">📈</div>
+      <div class="feat-text"><strong>Analytics de mercado</strong><br>Zonas en auge y tendencia de precios. Plan Analítics.</div>
+    </div>
+  </div>
+</div>
+
+<div class="panel-right">
+  <div class="form-card">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('login')">Ingresar</button>
+      <button class="tab" onclick="showTab('register')">Crear cuenta</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="panel-login" class="form-panel active">
+      <h2 class="form-title">Bienvenido de vuelta</h2>
+      <p class="form-sub">Ingresá con tu email y contraseña.</p>
+      <div id="err-login" class="alert alert-error"></div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="l-email" placeholder="tu@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="btn" id="btn-login" onclick="doLogin()">Ingresar al portal</button>
+      <p class="divider">¿No tenés contraseña aún?</p>
+      <button class="btn btn-ghost" onclick="showTab('register')">Crear cuenta o establecer contraseña</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="panel-register" class="form-panel">
+      <h2 class="form-title">Crear cuenta</h2>
+      <p class="form-sub">Nuevo usuario o ya registrado — podés establecer tu contraseña acá.</p>
+      <div id="err-register" class="alert alert-error"></div>
+      <div id="ok-register" class="alert alert-success"></div>
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" id="r-nombre" placeholder="Tu nombre" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="r-email" placeholder="tu@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>WhatsApp <span style="font-weight:400;text-transform:none;font-size:.7rem">(para alertas)</span></label>
+        <input type="tel" id="r-wa" placeholder="549 351 1234567">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="r-pass" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+      </div>
+      <button class="btn" id="btn-register" onclick="doRegister()">Continuar</button>
+      <p class="divider">¿Ya tenés contraseña?</p>
+      <button class="btn btn-ghost" onclick="showTab('login')">Ingresar</button>
+    </div>
+
+    <a href="/" class="back-link">← Volver al sitio</a>
+  </div>
+</div>
+
+<script>
+const API = 'https://web-production-88fd4.up.railway.app';
+
+function showTab(tab) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', (i === 0) === (tab === 'login')));
+  document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+  document.getElementById('panel-register').classList.toggle('active', tab === 'register');
+}
+
+function setError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Procesando...' : (btnId === 'btn-login' ? 'Ingresar al portal' : 'Continuar');
+}
+
+async function doLogin() {
+  setError('err-login', '');
+  setLoading('btn-login', true);
+  try {
+    const res = await fetch(API + '/api/auth/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email: document.getElementById('l-email').value.trim(),
+        password: document.getElementById('l-pass').value
+      })
+    });
+    const d = await res.json();
+    if (!res.ok) { setError('err-login', d.error || 'Error al ingresar'); return; }
+    localStorage.setItem('rp_token', d.token);
+    localStorage.setItem('rp_user', JSON.stringify(d.user));
+    const returnTo = new URLSearchParams(location.search).get('from') || '/portal.html';
+    location.href = returnTo;
+  } catch(e) {
+    setError('err-login', 'Error de conexión. Intentá de nuevo.');
+  } finally {
+    setLoading('btn-login', false);
+  }
+}
+
+async function doRegister() {
+  setError('err-register', '');
+  document.getElementById('ok-register').style.display = 'none';
+  setLoading('btn-register', true);
+  try {
+    const res = await fetch(API + '/api/auth/register', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        nombre: document.getElementById('r-nombre').value.trim(),
+        email: document.getElementById('r-email').value.trim(),
+        whatsapp: document.getElementById('r-wa').value.trim(),
+        password: document.getElementById('r-pass').value
+      })
+    });
+    const d = await res.json();
+    if (!res.ok) { setError('err-register', d.error || 'Error al registrarse'); return; }
+    localStorage.setItem('rp_token', d.token);
+    localStorage.setItem('rp_user', JSON.stringify(d.user));
+    location.href = '/portal.html';
+  } catch(e) {
+    setError('err-register', 'Error de conexión. Intentá de nuevo.');
+  } finally {
+    setLoading('btn-register', false);
+  }
+}
+
+// Enter key
+document.addEventListener('keypress', e => {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('panel-login').classList.contains('active')) doLogin();
+  else doRegister();
+});
+
+// Redirect if already logged in
+if (localStorage.getItem('rp_token')) location.href = '/portal.html';
+</script>
+</body>
+</html>
