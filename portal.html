@@ -117,57 +117,83 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
 
 /* ── PROPERTY CARDS ── */
-.props-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;}
+.props-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem;}
 .prop-card{
-  background:var(--ink3);border:1px solid rgba(255,255,255,.06);border-radius:12px;
-  overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;
+  background:var(--ink3);border:1px solid rgba(255,255,255,.06);border-radius:14px;
+  overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;
 }
-.prop-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4);}
-.card-img{height:148px;overflow:hidden;background:var(--ink4);position:relative;}
-.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
-.prop-card:hover .card-img img{transform:scale(1.04);}
-.card-img-ph{height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;opacity:.3;}
+.prop-card:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.45);border-color:rgba(198,162,74,.2);}
+.card-img{height:200px;overflow:hidden;background:var(--ink4);position:relative;}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .35s;}
+.prop-card:hover .card-img img{transform:scale(1.05);}
+.card-img-ph{height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;opacity:.2;}
 .card-src{
-  position:absolute;top:8px;right:8px;background:rgba(10,13,20,.8);
-  backdrop-filter:blur(4px);border-radius:4px;padding:2px 6px;
-  font-size:.65rem;font-weight:600;color:var(--gold2);letter-spacing:.04em;
+  position:absolute;top:10px;right:10px;background:rgba(10,13,20,.85);
+  backdrop-filter:blur(6px);border-radius:5px;padding:3px 8px;
+  font-size:.63rem;font-weight:700;color:var(--gold2);letter-spacing:.05em;
 }
 .card-op{
-  position:absolute;top:8px;left:8px;border-radius:4px;padding:2px 7px;
-  font-size:.65rem;font-weight:600;letter-spacing:.04em;
+  position:absolute;top:10px;left:10px;border-radius:5px;padding:3px 8px;
+  font-size:.63rem;font-weight:700;letter-spacing:.05em;
 }
-.op-venta{background:rgba(198,162,74,.25);color:var(--gold);}
-.op-alquiler{background:rgba(96,165,250,.2);color:var(--blue);}
-.card-body{padding:.9rem;}
-.card-price{font-size:1rem;font-weight:600;color:var(--gold2);margin-bottom:.25rem;}
-.card-price span{font-size:.75rem;color:var(--muted);font-weight:400;}
-.card-title{font-size:.82rem;color:var(--cream);margin-bottom:.35rem;line-height:1.4;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.card-loc{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.op-venta{background:rgba(198,162,74,.3);color:var(--gold);backdrop-filter:blur(4px);}
+.op-alquiler{background:rgba(96,165,250,.25);color:var(--blue);backdrop-filter:blur(4px);}
+.card-body{padding:1rem;}
+.card-price{font-size:1.1rem;font-weight:700;color:var(--gold2);margin-bottom:.2rem;letter-spacing:-.01em;}
+.card-price span{font-size:.73rem;color:var(--muted);font-weight:400;}
+.card-title{font-size:.8rem;color:var(--cream);margin-bottom:.4rem;line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:.9;}
+.card-loc{font-size:.73rem;color:var(--muted);display:flex;align-items:center;gap:4px;margin-bottom:.45rem;}
+.card-attrs{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.3rem;}
+.card-attr{
+  font-size:.68rem;color:var(--muted);background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:2px 7px;
+  white-space:nowrap;
+}
 .props-empty{padding:3rem 1rem;text-align:center;color:var(--muted);font-size:.9rem;}
 
-/* ── FILTER BAR ── */
-.filter-bar{
-  display:flex;gap:.6rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center;
+/* ── FILTER PANEL ── */
+.filter-panel{
+  background:var(--ink3);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:1.1rem 1.25rem;margin-bottom:.9rem;
+}
+.filter-grid{
+  display:grid;grid-template-columns:1fr 1fr 2fr auto;
+  gap:.85rem;align-items:end;
+}
+.filter-col-label{
+  display:block;font-size:.62rem;font-weight:700;color:var(--dim);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;
 }
 .filter-input,.filter-select{
-  background:var(--ink3);border:1px solid rgba(255,255,255,.08);
-  border-radius:8px;padding:.55rem .9rem;font-size:.82rem;color:var(--cream);
+  width:100%;background:var(--ink4);border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;padding:.58rem .9rem;font-size:.83rem;color:var(--cream);
   font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;
 }
-.filter-input:focus,.filter-select:focus{border-color:var(--gold);}
-.filter-input{flex:1;min-width:140px;}
+.filter-input:focus,.filter-select:focus{border-color:rgba(198,162,74,.5);}
 .filter-select option{background:var(--ink3);}
 .btn-filter{
   background:var(--gold);color:var(--ink);border:none;border-radius:8px;
-  padding:.55rem 1.2rem;font-size:.82rem;font-weight:600;cursor:pointer;
-  font-family:'Inter',sans-serif;transition:opacity .2s;white-space:nowrap;
+  padding:.6rem 1.4rem;font-size:.83rem;font-weight:700;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:opacity .2s;white-space:nowrap;height:38px;
 }
 .btn-filter:hover{opacity:.88;}
+
+/* ── SORT ROW ── */
+.sort-row{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+.sort-label{font-size:.72rem;color:var(--dim);font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+.sort-chip{
+  font-size:.75rem;padding:.3rem .85rem;border-radius:100px;
+  background:transparent;border:1px solid rgba(255,255,255,.08);color:var(--muted);
+  cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;
+}
+.sort-chip.active{background:var(--gold3);border-color:var(--border);color:var(--gold2);font-weight:600;}
+.sort-chip:not(.active):hover{border-color:rgba(255,255,255,.15);color:var(--cream);}
+
 .load-more-wrap{text-align:center;margin-top:1.5rem;}
 .btn-loadmore{
   background:transparent;border:1px solid var(--border);color:var(--muted);
-  border-radius:8px;padding:.6rem 1.8rem;font-size:.83rem;cursor:pointer;
+  border-radius:8px;padding:.6rem 2rem;font-size:.83rem;cursor:pointer;
   font-family:'Inter',sans-serif;transition:all .2s;
 }
 .btn-loadmore:hover{border-color:var(--gold);color:var(--gold);}
@@ -210,26 +236,49 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
 }
 
 /* ── CRÉDITOS ── */
-.credits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:2rem;}
-.credit-card{
-  background:var(--ink3);border:1px solid rgba(255,255,255,.06);border-radius:12px;
-  padding:1.2rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
+.credits-summary{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:.75rem;margin-bottom:1.25rem;
 }
-.credit-card:hover{border-color:rgba(198,162,74,.3);transform:translateY(-1px);}
-.credit-card.selected{border-color:var(--gold);background:var(--gold3);}
-.credit-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
-.credit-bank{font-size:.7rem;color:var(--muted);margin-bottom:.2rem;font-weight:500;}
-.credit-product{font-size:.92rem;font-weight:600;margin-bottom:.4rem;}
-.credit-rate{
-  display:inline-flex;align-items:center;gap:6px;background:var(--gold3);
-  border:1px solid var(--border);border-radius:6px;padding:3px 9px;
-  font-size:.75rem;font-weight:600;color:var(--gold2);margin-bottom:.6rem;
+.credits-stat{
+  background:var(--ink3);border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:.9rem 1rem;text-align:center;
 }
-.credit-desc{font-size:.78rem;color:var(--muted);line-height:1.5;}
-.credit-meta{display:flex;gap:.75rem;margin-top:.75rem;}
-.credit-tag{
-  font-size:.7rem;background:var(--soft);border-radius:4px;padding:2px 8px;color:var(--muted);
+.credits-stat-label{font-size:.62rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem;}
+.credits-stat-val{font-size:1.35rem;font-weight:700;color:var(--gold2);}
+.credits-tbl{
+  width:100%;border-collapse:collapse;
+  background:var(--ink3);border-radius:12px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);margin-bottom:1.5rem;
 }
+.credits-tbl th{
+  font-size:.62rem;font-weight:700;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.08em;padding:.7rem 1rem;text-align:left;
+  border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);
+}
+.credits-tbl td{padding:.9rem 1rem;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.credits-tbl tr:last-child td{border-bottom:none;}
+.credits-tbl tbody tr{cursor:pointer;transition:background .15s;}
+.credits-tbl tbody tr:hover td{background:var(--soft);}
+.credits-tbl tbody tr.selected td{background:var(--gold3);}
+.bank-name{font-weight:600;font-size:.88rem;margin-bottom:.15rem;}
+.bank-sigla{font-size:.7rem;color:var(--dim);}
+.best-badge{
+  display:inline-block;font-size:.58rem;font-weight:700;padding:1px 7px;
+  border-radius:100px;background:rgba(74,222,128,.15);color:var(--green);
+  letter-spacing:.05em;text-transform:uppercase;margin-left:7px;vertical-align:middle;
+}
+.rate-val{font-weight:600;color:var(--cream);margin-bottom:.15rem;}
+.rate-sub{font-size:.72rem;color:var(--dim);}
+.fin-bar-wrap{width:70px;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;}
+.fin-bar{height:100%;background:var(--gold);border-radius:3px;}
+.fin-pct{font-size:.75rem;color:var(--muted);margin-left:6px;vertical-align:middle;}
+.btn-sim{
+  background:transparent;border:1px solid var(--border);color:var(--gold);
+  border-radius:6px;padding:.35rem .9rem;font-size:.75rem;font-weight:600;
+  cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;white-space:nowrap;
+}
+.btn-sim:hover,.btn-sim.active{background:var(--gold3);}
 
 /* ── SIMULADOR ── */
 .sim-card{background:var(--ink3);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1.5rem;}
@@ -379,6 +428,27 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
 }
 .btn-danger:hover{background:rgba(248,113,113,.1);}
 
+/* ── CARD ACTION BUTTONS ── */
+.card-actions{
+  position:absolute;top:10px;right:10px;
+  display:flex;gap:5px;
+}
+.card-action-btn{
+  width:30px;height:30px;border-radius:6px;border:none;cursor:pointer;
+  background:rgba(10,13,20,.82);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;transition:all .2s;color:var(--cream);
+}
+.card-action-btn:hover{background:rgba(10,13,20,.95);transform:scale(1.1);}
+.card-action-btn.fav-active{background:rgba(198,162,74,.3);color:var(--gold);}
+.card-action-btn.wa-btn:hover{background:#25D366;color:#fff;}
+.fuente-chip{
+  position:absolute;bottom:10px;left:10px;
+  background:rgba(10,13,20,.82);backdrop-filter:blur(6px);
+  border-radius:5px;padding:3px 8px;font-size:.65rem;font-weight:700;
+  color:var(--gold2);letter-spacing:.04em;
+}
+
 /* ── LOADER ── */
 .loader{text-align:center;padding:3rem;color:var(--muted);font-size:.88rem;}
 .spinner{
@@ -430,6 +500,9 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
     <div class="nav-section-label">Principal</div>
     <a class="nav-item active" data-sec="props" onclick="showSection('props')">
       <span class="nav-icon">🏘</span> Propiedades
+    </a>
+    <a class="nav-item" data-sec="favoritos" onclick="showSection('favoritos')">
+      <span class="nav-icon">⭐</span> Favoritos
     </a>
     <a class="nav-item" data-sec="alertas" onclick="showSection('alertas')">
       <span class="nav-icon">🔔</span> Mis Alertas
@@ -494,27 +567,53 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
         <h2 class="section-title">Propiedades</h2>
         <p class="section-sub">Listados en tiempo real de las 6 fuentes integradas.</p>
       </div>
-      <div class="filter-bar">
-        <input class="filter-input" id="f-zona" placeholder="Zona o barrio (ej. Nueva Córdoba)">
-        <select class="filter-select" id="f-op">
-          <option value="">Venta y Alquiler</option>
-          <option value="venta">Venta</option>
-          <option value="alquiler">Alquiler</option>
-        </select>
-        <select class="filter-select" id="f-tipo">
-          <option value="">Todos los tipos</option>
-          <option value="departamento">Departamentos</option>
-          <option value="casa">Casas</option>
-          <option value="local">Locales</option>
-          <option value="terreno">Terrenos</option>
-          <option value="oficina">Oficinas</option>
-        </select>
-        <button class="btn-filter" onclick="loadProps()">Buscar</button>
+      <div class="filter-panel">
+        <div class="filter-grid">
+          <div>
+            <label class="filter-col-label">Operación</label>
+            <select class="filter-select" id="f-op">
+              <option value="">Todos</option>
+              <option value="venta">Venta</option>
+              <option value="alquiler">Alquiler</option>
+            </select>
+          </div>
+          <div>
+            <label class="filter-col-label">Tipo</label>
+            <select class="filter-select" id="f-tipo">
+              <option value="">Todos</option>
+              <option value="departamento">Departamento</option>
+              <option value="casa">Casa</option>
+              <option value="local">Local comercial</option>
+              <option value="terreno">Terreno</option>
+              <option value="oficina">Oficina</option>
+            </select>
+          </div>
+          <div>
+            <label class="filter-col-label">Zona / Barrio</label>
+            <input class="filter-input" id="f-zona" placeholder="ej. Nueva Córdoba, Güemes...">
+          </div>
+          <button class="btn-filter" onclick="loadProps()">Buscar</button>
+        </div>
+      </div>
+      <div class="sort-row">
+        <span class="sort-label">Ordenar:</span>
+        <button class="sort-chip active" id="sort-chip-recientes" onclick="setSort('recientes',this)">Recientes</button>
+        <button class="sort-chip" id="sort-chip-precio_asc" onclick="setSort('precio_asc',this)">Precio ↑</button>
+        <button class="sort-chip" id="sort-chip-precio_desc" onclick="setSort('precio_desc',this)">Precio ↓</button>
       </div>
       <div id="props-container" class="props-grid">
         <div class="loader"><div class="spinner"></div><br>Cargando propiedades...</div>
       </div>
       <div class="load-more-wrap"><button id="btn-more" class="btn-loadmore" style="display:none" onclick="loadMore()">Cargar más</button></div>
+    </section>
+
+    <!-- ══ FAVORITOS ══ -->
+    <section id="sec-favoritos" class="section">
+      <div class="section-header">
+        <h2 class="section-title">Favoritos</h2>
+        <p class="section-sub">Propiedades que guardaste. Se almacenan en este dispositivo.</p>
+      </div>
+      <div id="favs-container" class="props-grid"></div>
     </section>
 
     <!-- ══ ALERTAS ══ -->
@@ -599,7 +698,7 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
         <h2 class="section-title">Créditos Hipotecarios</h2>
         <p class="section-sub">Comparador de préstamos UVA. Hacé clic en un banco para simular la cuota.</p>
       </div>
-      <div id="credits-container" class="credits-grid">
+      <div id="credits-container">
         <div class="loader"><div class="spinner"></div><br>Cargando...</div>
       </div>
       <div class="sim-card" id="sim-card">
@@ -808,6 +907,8 @@ let token = localStorage.getItem('rp_token');
 let user = null;
 let propsOffset = 0;
 let selectedCredit = null;
+let currentSort = 'recientes';
+let allLoadedProps = [];
 
 // ── SIDEBAR ────────────────────────────────────────────────────────
 function openSidebar() {
@@ -895,6 +996,7 @@ function showSection(id) {
   document.querySelector('[data-sec="' + id + '"]').classList.add('active');
   closeSidebar();
 
+  if (id === 'favoritos') loadFavs();
   if (id === 'alertas' && !document.getElementById('a-zona').value && user) fillAlertsForm();
   if (id === 'creditos' && document.getElementById('credits-container').querySelector('.loader')) loadCredits();
   if (id === 'dolar' && document.getElementById('dolar-container').querySelector('.loader')) loadDolar();
@@ -915,6 +1017,23 @@ function proxyImg(img) {
   }
 }
 
+const FUENTE_COLORS = {
+  'MercadoLibre':'#FFE600','ArgenProp':'#E84C3D','ZonaProp':'#00ADEF',
+  'LaVoz':'#CC0000','Remax':'#CC0000','Navent':'#0070C0'
+};
+
+function isFav(url) { return (JSON.parse(localStorage.getItem('rp_favs')||'[]')).includes(url); }
+function toggleFav(url, btn) {
+  let favs = JSON.parse(localStorage.getItem('rp_favs')||'[]');
+  if (favs.includes(url)) { favs = favs.filter(u=>u!==url); btn.classList.remove('fav-active'); btn.title='Guardar favorito'; }
+  else { favs.push(url); btn.classList.add('fav-active'); btn.title='Quitar favorito'; }
+  localStorage.setItem('rp_favs', JSON.stringify(favs));
+}
+function shareWa(url, titulo) {
+  const txt = encodeURIComponent(`📍 ${titulo}\n${url}`);
+  window.open(`https://wa.me/?text=${txt}`, '_blank');
+}
+
 function renderPropCard(p) {
   const n = parseInt(String(p.precio || '').split(/[-–]/)[0].replace(/[^0-9]/g, '')) || 0;
   const precio = n > 0 ? n.toLocaleString('es-AR') : 'Consultar';
@@ -924,11 +1043,27 @@ function renderPropCard(p) {
   const imgHtml = p.imagen
     ? `<img src="${p.imagen}" loading="lazy" data-orig="${p.imagen}" onerror="proxyImg(this)">`
     : `<div class="card-img-ph">🏘</div>`;
-  return `<div class="prop-card" onclick="window.open('${p.url}','_blank')">
+  const attrs = Array.isArray(p.atributos) ? p.atributos.filter(Boolean) : [];
+  const attrsHtml = attrs.length
+    ? `<div class="card-attrs">${attrs.slice(0,4).map(a=>`<span class="card-attr">${String(a).substring(0,20)}</span>`).join('')}</div>`
+    : '';
+  const fav = isFav(p.url);
+  const safeUrl = (p.url||'').replace(/'/g,"\\'");
+  const safeTitulo = (p.titulo||'Propiedad').replace(/'/g,"\\'").substring(0,60);
+  const uid = 'c' + Math.random().toString(36).slice(2,8);
+  return `<div class="prop-card" onclick="window.open('${safeUrl}','_blank')">
     <div class="card-img">
       ${imgHtml}
-      <span class="card-src">${p.fuente || ''}</span>
       <span class="card-op op-${op}">${opLabel}</span>
+      <span class="fuente-chip">${p.fuente || ''}</span>
+      <div class="card-actions" onclick="event.stopPropagation()">
+        <button class="card-action-btn wa-btn" title="Compartir por WhatsApp" onclick="shareWa('${safeUrl}','${safeTitulo}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.535 5.857L.057 23.986l6.305-1.654A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.51-5.17-1.402l-.37-.22-3.742.981.999-3.648-.241-.375A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        </button>
+        <button class="card-action-btn ${fav?'fav-active':''}" id="${uid}" title="${fav?'Quitar favorito':'Guardar favorito'}" onclick="toggleFav('${safeUrl}',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="${fav?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+      </div>
     </div>
     <div class="card-body">
       <div class="card-price"><span>${moneda} </span>${precio}</div>
@@ -937,24 +1072,26 @@ function renderPropCard(p) {
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         ${(p.ubicacion || 'Córdoba').substring(0,40)}
       </div>
+      ${attrsHtml}
     </div>
   </div>`;
 }
 
 async function loadProps(reset = true) {
-  if (reset) propsOffset = 0;
+  if (reset) { propsOffset = 0; allLoadedProps = []; }
   const container = document.getElementById('props-container');
   if (reset) container.innerHTML = '<div class="loader"><div class="spinner"></div><br>Cargando...</div>';
   const zona = document.getElementById('f-zona').value.trim();
   const op = document.getElementById('f-op').value;
   const tipo = document.getElementById('f-tipo').value;
-  let url = '/api/propiedades?limit=9&offset=' + propsOffset;
+  let url = '/api/propiedades?limit=12&offset=' + propsOffset;
   if (zona) url += '&zona=' + encodeURIComponent(zona);
   if (op) url += '&operacion=' + encodeURIComponent(op);
   if (tipo) url += '&tipo=' + encodeURIComponent(tipo);
   try {
     const d = await apiFetch(url).then(r => r.json());
     const props = d.propiedades || [];
+    allLoadedProps = reset ? props : [...allLoadedProps, ...props];
     if (reset) {
       container.innerHTML = props.length ? props.map(renderPropCard).join('') :
         '<div class="props-empty">No hay propiedades para esos filtros.</div>';
@@ -962,13 +1099,49 @@ async function loadProps(reset = true) {
       if (props.length) container.innerHTML += props.map(renderPropCard).join('');
     }
     propsOffset += props.length;
-    document.getElementById('btn-more').style.display = props.length >= 9 ? 'inline-block' : 'none';
+    document.getElementById('btn-more').style.display = props.length >= 12 ? 'inline-block' : 'none';
   } catch(e) {
     container.innerHTML = '<div class="props-empty">Error al cargar propiedades.</div>';
   }
 }
 
 function loadMore() { loadProps(false); }
+
+async function loadFavs() {
+  const container = document.getElementById('favs-container');
+  const favUrls = JSON.parse(localStorage.getItem('rp_favs') || '[]');
+  if (!favUrls.length) {
+    container.innerHTML = '<div class="props-empty">Todavía no guardaste ninguna propiedad.<br><small>Hacé click en ⭐ en cualquier propiedad para guardarla acá.</small></div>';
+    return;
+  }
+  container.innerHTML = '<div class="loader"><div class="spinner"></div><br>Cargando favoritos...</div>';
+  try {
+    const d = await apiFetch('/api/propiedades?limit=100').then(r => r.json());
+    const all = d.propiedades || [];
+    const favs = all.filter(p => favUrls.includes(p.url));
+    container.innerHTML = favs.length
+      ? favs.map(renderPropCard).join('')
+      : '<div class="props-empty">Las propiedades guardadas ya no están disponibles.</div>';
+  } catch(e) {
+    container.innerHTML = '<div class="props-empty">Error al cargar favoritos.</div>';
+  }
+}
+
+function setSort(type, btn) {
+  currentSort = type;
+  document.querySelectorAll('.sort-chip').forEach(c => c.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  // Sort already-loaded cards client-side
+  const sorted = [...allLoadedProps].sort((a, b) => {
+    const na = parseInt(String(a.precio||'').replace(/[^0-9]/g,''))||0;
+    const nb = parseInt(String(b.precio||'').replace(/[^0-9]/g,''))||0;
+    if (type === 'precio_asc') return na - nb;
+    if (type === 'precio_desc') return nb - na;
+    return 0; // recientes: keep order from API
+  });
+  const container = document.getElementById('props-container');
+  container.innerHTML = sorted.length ? sorted.map(renderPropCard).join('') : '<div class="props-empty">No hay propiedades.</div>';
+}
 
 // ── ALERTAS ───────────────────────────────────────────────────────
 function fillAlertsForm() {
@@ -1019,33 +1192,55 @@ async function saveAlerts() {
 
 // ── CRÉDITOS ──────────────────────────────────────────────────────
 async function loadCredits() {
+  const container = document.getElementById('credits-container');
   try {
     const d = await apiFetch('/api/creditos').then(r => r.json());
-    const container = document.getElementById('credits-container');
-    container.innerHTML = d.creditos.map((c, i) => `
-      <div class="credit-card" id="cc-${i}" onclick="selectCredit(${i})" style="--c-color:${c.color}">
-        <style>#cc-${i}::before{background:${c.color}}</style>
-        <div class="credit-bank">${c.banco}</div>
-        <div class="credit-product">${c.producto}</div>
-        <div class="credit-rate">📊 ${c.tipo_tasa}</div>
-        <div class="credit-desc">${c.descripcion}</div>
-        <div class="credit-meta">
-          <span class="credit-tag">Hasta ${c.plazo_max} años</span>
-          <span class="credit-tag">Financia ${c.financiacion_max}%</span>
-        </div>
-      </div>`).join('');
-    window._credits = d.creditos;
+    const creditos = d.creditos || [];
+    window._credits = creditos;
+    if (!creditos.length) { container.innerHTML = '<div class="props-empty">No hay datos de créditos.</div>'; return; }
+
+    const mejorTasa  = Math.min(...creditos.map(c => c.tasa));
+    const mayorPlazo = Math.max(...creditos.map(c => c.plazo_max));
+    const mayorFinanc= Math.max(...creditos.map(c => c.financiacion_max));
+
+    const summary = `<div class="credits-summary">
+      <div class="credits-stat"><div class="credits-stat-label">Mejor Tasa</div><div class="credits-stat-val">${mejorTasa}%</div></div>
+      <div class="credits-stat"><div class="credits-stat-label">Mayor Plazo</div><div class="credits-stat-val">${mayorPlazo} años</div></div>
+      <div class="credits-stat"><div class="credits-stat-label">Financ. Máx.</div><div class="credits-stat-val">${mayorFinanc}%</div></div>
+      <div class="credits-stat"><div class="credits-stat-label">Bancos</div><div class="credits-stat-val">${creditos.length}</div></div>
+    </div>`;
+
+    const rows = creditos.map((c, i) => {
+      const isBest = c.tasa === mejorTasa;
+      return `<tr id="cred-row-${i}" onclick="selectCredit(${i})">
+        <td><div class="bank-name">${c.banco}${isBest?'<span class="best-badge">Mejor tasa</span>':''}</div><div class="bank-sigla">${c.sigla||''}</div></td>
+        <td><div class="rate-val">UVA + ${c.tasa}%</div><div class="rate-sub">${c.tipo_tasa||''}</div></td>
+        <td style="font-weight:500">${c.plazo_max} años</td>
+        <td><div class="fin-bar-wrap"><div class="fin-bar" style="width:${c.financiacion_max}%"></div></div><span class="fin-pct">${c.financiacion_max}%</span></td>
+        <td><button class="btn-sim" id="btn-sim-${i}" onclick="selectCredit(${i});event.stopPropagation()">Simular</button></td>
+      </tr>`;
+    }).join('');
+
+    container.innerHTML = summary + `<table class="credits-tbl">
+      <thead><tr><th>Banco</th><th>Tasa (UVA+)</th><th>Plazo máx.</th><th>Financiamiento</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
   } catch(e) {
-    document.getElementById('credits-container').innerHTML = '<div class="props-empty">Error al cargar créditos.</div>';
+    container.innerHTML = '<div class="props-empty">Error al cargar créditos. <button class="refresh-btn" onclick="loadCredits()">Reintentar</button></div>';
   }
 }
 
 function selectCredit(i) {
-  document.querySelectorAll('.credit-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('cc-' + i).classList.add('selected');
+  document.querySelectorAll('.credits-tbl tbody tr').forEach(r => r.classList.remove('selected'));
+  document.querySelectorAll('.btn-sim').forEach(b => b.classList.remove('active'));
+  const row = document.getElementById('cred-row-' + i);
+  const btn = document.getElementById('btn-sim-' + i);
+  if (row) row.classList.add('selected');
+  if (btn) btn.classList.add('active');
   selectedCredit = window._credits[i];
   document.getElementById('sim-bank-note').textContent =
-    `Simulando con: ${selectedCredit.banco} – ${selectedCredit.tipo_tasa} · Hasta ${selectedCredit.plazo_max} años · Financia hasta ${selectedCredit.financiacion_max}%`;
+    `Simulando: ${selectedCredit.banco} · UVA + ${selectedCredit.tasa}% · Hasta ${selectedCredit.plazo_max} años · Financia ${selectedCredit.financiacion_max}%`;
+  document.getElementById('sim-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   calcSim();
 }
 
