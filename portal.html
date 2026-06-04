@@ -261,6 +261,54 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
 }
 .refresh-btn:hover{border-color:var(--gold);color:var(--gold);}
 
+/* ── IA SEARCH ── */
+.ia-form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem;margin-bottom:1rem;}
+.ia-form-wide{grid-column:1/-1;}
+.ia-btn{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--ink);
+  border:none;border-radius:10px;padding:.9rem 2.5rem;font-size:.95rem;font-weight:700;
+  cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .2s;
+  display:inline-flex;align-items:center;gap:.5rem;
+}
+.ia-btn:hover{opacity:.88;}
+.ia-btn:disabled{opacity:.5;cursor:not-allowed;}
+.ia-result-header{
+  background:var(--gold3);border:1px solid var(--border);border-radius:10px;
+  padding:1rem 1.25rem;margin-bottom:1.25rem;
+}
+.ia-result-header h4{color:var(--gold2);font-size:.9rem;margin-bottom:.3rem;}
+.ia-result-header p{font-size:.82rem;color:var(--muted);}
+.ia-badge{
+  display:inline-flex;align-items:center;gap:5px;background:var(--gold3);
+  border:1px solid var(--border);border-radius:100px;padding:3px 10px;
+  font-size:.65rem;font-weight:600;color:var(--gold2);letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:.75rem;
+}
+.ia-expl{
+  font-size:.78rem;color:var(--muted);background:var(--soft2);
+  border-left:2px solid var(--gold);padding:.45rem .75rem;margin-top:.5rem;
+  border-radius:0 6px 6px 0;line-height:1.5;
+}
+.ia-props-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;}
+.fuente-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem;}
+.fuente-card{
+  background:var(--ink3);border:1px solid rgba(255,255,255,.06);border-radius:10px;
+  padding:1rem;text-align:center;
+}
+.fuente-name{font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;}
+.fuente-num{font-size:1.6rem;font-weight:700;color:var(--cream);}
+.fuente-sub{font-size:.72rem;color:var(--dim);margin-top:.2rem;}
+.zona-chip{
+  display:inline-flex;align-items:center;gap:6px;background:var(--soft2);
+  border:1px solid rgba(255,255,255,.06);border-radius:8px;
+  padding:.5rem .85rem;margin:.3rem;font-size:.82rem;transition:all .15s;cursor:default;
+}
+.zona-chip:hover{border-color:var(--border);background:var(--gold3);}
+.zona-count{
+  font-size:.68rem;background:var(--gold3);color:var(--gold2);
+  border-radius:100px;padding:1px 6px;font-weight:600;
+}
+
 /* ── ANALYTICS ── */
 .analytics-locked{
   background:var(--ink3);border:1px solid rgba(255,255,255,.06);border-radius:12px;
@@ -391,6 +439,11 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
     </a>
     <a class="nav-item" data-sec="dolar" onclick="showSection('dolar')">
       <span class="nav-icon">💵</span> Cotización Dólar
+    </a>
+
+    <a class="nav-item nav-ia nav-locked" id="nav-ia-item" data-sec="ia" onclick="showSection('ia')">
+      <span class="nav-icon">🤖</span> Buscar con IA
+      <span class="lock-chip" id="lock-ia">Premium</span>
     </a>
 
     <div class="nav-section-label" style="margin-top:.5rem;">Analítics</div>
@@ -604,11 +657,82 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
       <p class="dolar-updated" id="dolar-ts"></p>
     </section>
 
+    <!-- ══ BUSCAR CON IA ══ -->
+    <section id="sec-ia" class="section">
+      <div class="section-header">
+        <h2 class="section-title">🤖 Buscar con IA</h2>
+        <p class="section-sub">Describí lo que buscás y la IA seleccionará las mejores opciones disponibles.</p>
+      </div>
+      <div id="ia-locked-box" style="display:none"></div>
+      <div id="ia-form-box" class="alert-card">
+        <div class="ia-form-grid">
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Operación</label>
+            <select class="form-control" id="ia-op">
+              <option value="">Venta o Alquiler</option>
+              <option value="venta">Venta</option>
+              <option value="alquiler">Alquiler</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Tipo de propiedad</label>
+            <select class="form-control" id="ia-tipo">
+              <option value="">Todos</option>
+              <option value="departamento">Departamento</option>
+              <option value="casa">Casa</option>
+              <option value="local">Local comercial</option>
+              <option value="terreno">Terreno</option>
+              <option value="oficina">Oficina</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Zona / Barrio</label>
+            <input class="form-control" id="ia-zona" placeholder="ej. Nueva Córdoba, Güemes">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Dormitorios</label>
+            <select class="form-control" id="ia-amb">
+              <option value="">Sin filtro</option>
+              <option value="1">1 dormitorio</option>
+              <option value="2">2 dormitorios</option>
+              <option value="3">3 dormitorios</option>
+              <option value="4">4 o más</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Presupuesto máximo</label>
+            <input class="form-control" type="number" id="ia-precio" placeholder="ej. 150000">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Moneda</label>
+            <select class="form-control" id="ia-moneda">
+              <option value="USD">USD</option>
+              <option value="ARS">ARS</option>
+            </select>
+          </div>
+          <div class="form-group ia-form-wide" style="margin:0">
+            <label class="form-label">¿Qué más buscás? <span style="font-weight:400;text-transform:none;font-size:.72rem">(opcional — ej: "con jardín", "planta baja", "luminoso", "cerca de colegios")</span></label>
+            <input class="form-control" id="ia-desc" placeholder="Describí características importantes para vos...">
+          </div>
+          <div class="form-group" style="margin:0;display:flex;align-items:center;gap:.5rem;padding-top:1.4rem;">
+            <input type="checkbox" id="ia-cochera" style="width:16px;height:16px;accent-color:var(--gold)">
+            <label for="ia-cochera" style="font-size:.85rem;cursor:pointer;">Necesito cochera</label>
+          </div>
+        </div>
+        <div style="margin-top:.75rem;">
+          <button class="ia-btn" id="ia-search-btn" onclick="buscarConIA()">
+            <span>🔍</span> Buscar con IA
+          </button>
+        </div>
+      </div>
+      <div id="ia-results" style="margin-top:1.5rem;"></div>
+    </section>
+
     <!-- ══ ZONAS EN AUGE ══ -->
     <section id="sec-zonas" class="section">
       <div class="section-header">
         <h2 class="section-title">📍 Zonas en Auge</h2>
-        <p class="section-sub">Barrios con mayor demanda de búsqueda y actividad reciente.</p>
+        <p class="section-sub">Demanda de búsqueda por zona y actividad de publicaciones por fuente.</p>
       </div>
       <div id="zonas-container">
         <div class="loader"><div class="spinner"></div><br>Cargando análisis...</div>
@@ -619,7 +743,7 @@ body{background:var(--ink);color:var(--cream);font-family:'Inter',sans-serif;dis
     <section id="sec-precios" class="section">
       <div class="section-header">
         <h2 class="section-title">📈 Tendencia de Precios</h2>
-        <p class="section-sub">Comparativa de precios promedio: últimas 2 semanas vs período anterior.</p>
+        <p class="section-sub">Precios promedio y mediana por tipo de operación y moneda.</p>
       </div>
       <div id="precios-container">
         <div class="loader"><div class="spinner"></div><br>Cargando análisis...</div>
@@ -718,33 +842,37 @@ function updateUserUI() {
   document.getElementById('sb-nombre').textContent = user.nombre || user.email;
   const badge = document.getElementById('sb-plan-badge');
 
+  const hasPaid = user.is_admin || ['premium','inversor','analitic'].includes(user.plan);
+  const hasAnalytics = user.is_admin || ['inversor','analitic'].includes(user.plan);
+
   if (user.is_admin) {
     badge.textContent = '★ Administrador';
     badge.className = 'plan-badge plan-admin';
-    // Unlock everything
-    ['zonas', 'precios'].forEach(s => {
-      const lock = document.getElementById('lock-' + s);
-      const navItem = document.querySelector('[data-sec="' + s + '"]');
-      if (lock) lock.remove();
-      if (navItem) navItem.classList.remove('nav-locked');
-    });
-    // Show admin panel link
     const adminLink = document.getElementById('nav-admin');
     if (adminLink) adminLink.style.display = 'flex';
   } else {
     const planLabels = { gratis: 'Gratis', premium: 'Premium', inversor: 'Inversor', analitic: 'Analítics' };
     badge.textContent = planLabels[user.plan] || user.plan;
     badge.className = 'plan-badge plan-' + user.plan;
-    const hasAnalytics = ['inversor', 'analitic'].includes(user.plan);
-    ['zonas', 'precios'].forEach(s => {
-      const lock = document.getElementById('lock-' + s);
-      const navItem = document.querySelector('[data-sec="' + s + '"]');
-      if (hasAnalytics) {
-        if (lock) lock.remove();
-        if (navItem) navItem.classList.remove('nav-locked');
-      }
-    });
   }
+
+  // Unlock IA search for paid users
+  if (hasPaid) {
+    const lockIa = document.getElementById('lock-ia');
+    const navIa = document.getElementById('nav-ia-item');
+    if (lockIa) lockIa.remove();
+    if (navIa) navIa.classList.remove('nav-locked');
+  }
+
+  // Unlock analytics for inversor/analitic/admin
+  ['zonas', 'precios'].forEach(s => {
+    const lock = document.getElementById('lock-' + s);
+    const navItem = document.querySelector('[data-sec="' + s + '"]');
+    if (hasAnalytics) {
+      if (lock) lock.remove();
+      if (navItem) navItem.classList.remove('nav-locked');
+    }
+  });
 }
 
 function logout() {
@@ -772,6 +900,7 @@ function showSection(id) {
   if (id === 'dolar' && document.getElementById('dolar-container').querySelector('.loader')) loadDolar();
   if (id === 'zonas' && document.getElementById('zonas-container').querySelector('.loader')) loadZonas();
   if (id === 'precios' && document.getElementById('precios-container').querySelector('.loader')) loadPrecios();
+  if (id === 'ia') initIASection();
   if (id === 'cuenta' && user) fillCuentaForm();
 }
 
@@ -965,11 +1094,96 @@ async function loadDolar() {
 }
 
 // ── ZONAS EN AUGE ─────────────────────────────────────────────────
+// ── IA SEARCH ─────────────────────────────────────────────────────
+function initIASection() {
+  const hasPaid = user?.is_admin || ['premium','inversor','analitic'].includes(user?.plan);
+  const lockedBox = document.getElementById('ia-locked-box');
+  const formBox = document.getElementById('ia-form-box');
+  if (!hasPaid) {
+    lockedBox.style.display = 'block';
+    lockedBox.innerHTML = renderLocked('ia');
+    formBox.style.display = 'none';
+  } else {
+    lockedBox.style.display = 'none';
+    formBox.style.display = 'block';
+  }
+}
+
+async function buscarConIA() {
+  const btn = document.getElementById('ia-search-btn');
+  const results = document.getElementById('ia-results');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner" style="width:16px;height:16px;border-width:2px;display:inline-block;margin-right:.4rem"></span> Buscando...';
+  results.innerHTML = '<div class="loader"><div class="spinner"></div><br>La IA está analizando las propiedades disponibles...</div>';
+  try {
+    const res = await apiFetch('/api/buscar-ia', {
+      method: 'POST',
+      body: JSON.stringify({
+        operacion: document.getElementById('ia-op').value,
+        tipo: document.getElementById('ia-tipo').value,
+        zona: document.getElementById('ia-zona').value.trim(),
+        ambientes: document.getElementById('ia-amb').value,
+        precio_max: parseInt(document.getElementById('ia-precio').value) || 0,
+        moneda: document.getElementById('ia-moneda').value,
+        cochera: document.getElementById('ia-cochera').checked,
+        descripcion: document.getElementById('ia-desc').value.trim(),
+      })
+    });
+    const d = await res.json();
+    if (!res.ok) {
+      if (d.upgrade) { results.innerHTML = renderLocked('ia'); return; }
+      results.innerHTML = `<div class="props-empty">${d.error || 'Error en la búsqueda.'}</div>`; return;
+    }
+    const props = d.propiedades || [];
+    const header = `
+      <div class="ia-result-header">
+        ${d.ia_powered ? '<div class="ia-badge">🤖 Ranking por IA</div>' : ''}
+        <h4>${d.ia_powered ? '🤖 La IA seleccionó las mejores coincidencias' : `Se encontraron ${props.length} propiedades`}</h4>
+        ${d.ia_resumen ? `<p>${d.ia_resumen}</p>` : ''}
+      </div>`;
+    if (!props.length) {
+      results.innerHTML = header + '<div class="props-empty">No se encontraron propiedades con esos criterios. Probá ampliando la búsqueda.</div>';
+      return;
+    }
+    const cards = props.map(p => {
+      const n = parseInt(String(p.precio||'').replace(/[^0-9]/g,''))||0;
+      const precio = n > 0 ? n.toLocaleString('es-AR') : 'Consultar';
+      const op = (p.operacion||'').toLowerCase()==='alquiler' ? 'alquiler':'venta';
+      const imgHtml = p.imagen
+        ? `<img src="${p.imagen}" loading="lazy" data-orig="${p.imagen}" onerror="proxyImg(this)">`
+        : `<div class="card-img-ph">🏘</div>`;
+      return `<div>
+        <div class="prop-card" onclick="window.open('${p.url}','_blank')">
+          <div class="card-img">${imgHtml}
+            <span class="card-src">${p.fuente||''}</span>
+            <span class="card-op op-${op}">${op.toUpperCase()}</span>
+          </div>
+          <div class="card-body">
+            <div class="card-price"><span>${p.moneda||''} </span>${precio}</div>
+            <div class="card-title">${(p.titulo||'').substring(0,65)}</div>
+            <div class="card-loc">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              ${(p.ubicacion||'').substring(0,40)}
+            </div>
+          </div>
+        </div>
+        ${p.ia_explicacion ? `<div class="ia-expl">🤖 ${p.ia_explicacion}</div>` : ''}
+      </div>`;
+    }).join('');
+    results.innerHTML = header + `<div class="ia-props-grid">${cards}</div>`;
+  } catch(e) {
+    results.innerHTML = '<div class="props-empty">Error de conexión. Intentá de nuevo.</div>';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>🔍</span> Buscar con IA';
+  }
+}
+
+// ── ZONAS EN AUGE ─────────────────────────────────────────────────
 async function loadZonas() {
   const container = document.getElementById('zonas-container');
   if (!user?.is_admin && !['inversor','analitic'].includes(user?.plan)) {
-    container.innerHTML = renderLocked('zonas');
-    return;
+    container.innerHTML = renderLocked('zonas'); return;
   }
   container.innerHTML = '<div class="loader"><div class="spinner"></div><br>Analizando datos...</div>';
   try {
@@ -977,35 +1191,62 @@ async function loadZonas() {
     const d = await res.json();
     if (!res.ok || d.upgrade) { container.innerHTML = renderLocked('zonas'); return; }
 
-    const demanda = (d.demanda || []).slice(0, 10);
-    const oferta = (d.oferta || []).slice(0, 10);
-    const maxUsers = Math.max(...demanda.map(x => x.usuarios_buscando), 1);
+    const demanda = d.demanda || [];
+    const fuentes = d.oferta_fuentes || [];
+    const zonas_props = d.zonas_props || [];
+    const maxU = Math.max(...demanda.map(x=>x.usuarios_buscando), 1);
+    const maxF = Math.max(...fuentes.map(x=>x.esta_semana), 1);
 
     container.innerHTML = `
       <div class="section-tabs">
-        <button class="stab active" onclick="switchZonaTab('demanda',this)">Demanda (búsquedas)</button>
-        <button class="stab" onclick="switchZonaTab('oferta',this)">Oferta (nuevos listados)</button>
+        <button class="stab active" onclick="switchZonaTab('demanda',this)">Demanda (usuarios)</button>
+        <button class="stab" onclick="switchZonaTab('fuentes',this)">Actividad por fuente</button>
+        <button class="stab" onclick="switchZonaTab('zonas',this)">Zonas más activas</button>
       </div>
+
       <div id="tab-demanda">
-        ${demanda.length ? demanda.map(z => `
-          <div class="analytic-row">
-            <div class="zona-name">${z.zona}</div>
-            <div class="trend-bar-wrap"><div class="trend-bar trend-up" style="width:${Math.round(z.usuarios_buscando/maxUsers*100)}%"></div></div>
-            <div class="analytic-count">${z.usuarios_buscando} usuarios buscando · ${z.props_disponibles} propiedades</div>
-            <div>${z.presupuesto_promedio > 0 ? 'USD ' + Math.round(z.presupuesto_promedio).toLocaleString('es-AR') : '–'}</div>
-          </div>`).join('') : '<div class="props-empty">Sin datos suficientes aún.</div>'}
+        ${demanda.length ? `
+          <p style="font-size:.78rem;color:var(--dim);margin-bottom:.85rem">Zonas donde tus usuarios registrados están buscando activamente.</p>
+          ${demanda.map(z=>`
+            <div class="analytic-row">
+              <div class="zona-name" style="text-transform:capitalize">${z.zona}</div>
+              <div class="trend-bar-wrap"><div class="trend-bar trend-up" style="width:${Math.round(z.usuarios_buscando/maxU*100)}%"></div></div>
+              <div class="analytic-count">${z.usuarios_buscando} usuario${z.usuarios_buscando!==1?'s':''} buscando</div>
+              <div style="font-size:.8rem;color:var(--muted)">${z.presupuesto_promedio>0 ? 'Hasta USD '+Math.round(z.presupuesto_promedio/1000)+'k' : '–'}</div>
+            </div>`).join('')}` :
+          '<div class="props-empty">Aún no hay suficientes usuarios registrados con zona configurada.</div>'}
       </div>
-      <div id="tab-oferta" style="display:none">
-        ${oferta.length ? oferta.map(z => `
-          <div class="analytic-row">
-            <div class="zona-name">${z.zona}</div>
-            <div class="trend-bar-wrap">
-              <div class="trend-bar ${z.tendencia === 'alza' ? 'trend-up' : z.tendencia === 'baja' ? 'trend-down' : 'trend-stable'}"
-                   style="width:${Math.min(Math.abs(z.pct_cambio) / 2, 100)}%"></div>
-            </div>
-            <div class="analytic-count">${z.esta_semana} esta semana · ${z.semana_pasada} semana anterior</div>
-            <span class="trend-tag tag-${z.tendencia}">${z.delta > 0 ? '+' : ''}${z.delta} (${z.pct_cambio > 0 ? '+' : ''}${z.pct_cambio}%)</span>
-          </div>`).join('') : '<div class="props-empty">Sin datos suficientes aún.</div>'}
+
+      <div id="tab-fuentes" style="display:none">
+        <p style="font-size:.78rem;color:var(--dim);margin-bottom:.85rem">Publicaciones nuevas por portal esta semana vs total acumulado.</p>
+        <div class="fuente-cards">
+          ${fuentes.map(f=>`
+            <div class="fuente-card">
+              <div class="fuente-name">${f.fuente}</div>
+              <div class="fuente-num">${f.esta_semana}</div>
+              <div class="fuente-sub">Esta semana</div>
+              <div class="fuente-sub" style="margin-top:.25rem">${f.total} totales</div>
+            </div>`).join('')}
+        </div>
+        <div style="margin-top:1rem">
+          ${fuentes.map(f=>`
+            <div class="analytic-row" style="grid-template-columns:1fr 2fr 80px">
+              <div class="zona-name">${f.fuente}</div>
+              <div class="trend-bar-wrap"><div class="trend-bar trend-up" style="width:${Math.round(f.esta_semana/maxF*100)}%"></div></div>
+              <div class="analytic-count">${f.esta_semana} esta semana</div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <div id="tab-zonas" style="display:none">
+        <p style="font-size:.78rem;color:var(--dim);margin-bottom:.85rem">Barrios y zonas con más publicaciones en la base de datos.</p>
+        <div style="display:flex;flex-wrap:wrap;">
+          ${zonas_props.map(z=>`
+            <div class="zona-chip">
+              <span style="text-transform:capitalize">${z.zona}</span>
+              <span class="zona-count">${z.total_props}</span>
+            </div>`).join('')}
+        </div>
       </div>`;
   } catch(e) {
     container.innerHTML = '<div class="props-empty">Error al cargar análisis. <button class="refresh-btn" onclick="loadZonas()">Reintentar</button></div>';
@@ -1013,10 +1254,12 @@ async function loadZonas() {
 }
 
 function switchZonaTab(id, btn) {
-  document.querySelectorAll('#zonas-container .stab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#zonas-container .stab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('tab-demanda').style.display = id === 'demanda' ? 'block' : 'none';
-  document.getElementById('tab-oferta').style.display = id === 'oferta' ? 'block' : 'none';
+  ['demanda','fuentes','zonas'].forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    if (el) el.style.display = t===id ? 'block':'none';
+  });
 }
 
 // ── PRECIOS ───────────────────────────────────────────────────────
@@ -1051,8 +1294,8 @@ async function loadPrecios() {
         <thead>
           <tr>
             <th>Operación</th><th>Moneda</th>
-            <th>Precio reciente</th><th>Período anterior</th>
-            <th>Variación</th><th>Muestras</th>
+            <th>Promedio</th><th>Mediana</th>
+            <th>Rango</th><th>Variación</th><th>Muestras</th>
           </tr>
         </thead>
         <tbody>
@@ -1060,15 +1303,16 @@ async function loadPrecios() {
             <tr>
               <td style="text-transform:capitalize;">${p.operacion || '–'}</td>
               <td><strong>${p.moneda || '–'}</strong></td>
-              <td>${fmt(p.precio_reciente)}</td>
-              <td style="color:var(--muted)">${fmt(p.precio_anterior)}</td>
+              <td>${fmt(p.avg_precio)}</td>
+              <td style="color:var(--muted)">${fmt(p.mediana)}</td>
+              <td style="color:var(--dim);font-size:.78rem">${fmt(p.precio_min)} – ${fmt(p.precio_max)}</td>
               <td>${pctFmt(p.pct_cambio)}</td>
-              <td style="color:var(--muted);font-size:.78rem">${p.cnt_reciente} props</td>
+              <td style="color:var(--muted);font-size:.78rem">${p.cnt} props</td>
             </tr>`).join('')}
         </tbody>
       </table>
       <p style="font-size:.73rem;color:var(--dim);margin-top:1rem">
-        Comparativa: últimas 2 semanas vs 2–8 semanas atrás. Precios en unidad original de cada portal.
+        Precios basados en los últimos 60 días. Variación vs período anterior cuando hay datos disponibles.
       </p>`;
   } catch(e) {
     container.innerHTML = '<div class="props-empty">Error al cargar análisis. <button class="refresh-btn" onclick="loadPrecios()">Reintentar</button></div>';
